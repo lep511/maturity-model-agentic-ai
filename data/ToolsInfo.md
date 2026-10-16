@@ -9,6 +9,7 @@ AWS Well-Architected Agentic AI Lens documentation still resolves. All of them r
 | Tool | Used by |
 | --- | --- |
 | `python3` (3.9+, standard library only) | `tools/build_lens_content.py`, `tools/validate_content.py` |
+| `node` (18+) | `tools/api_smoke_test.mjs` |
 | `bash`, `grep`, `sed`, `find`, `realpath` | `data/count_chars.sh`, `data/extract_link.sh` |
 | `curl` | `data/check_link_action.sh` |
 
@@ -37,6 +38,14 @@ python3 -I tools/validate_content.py [--max-chars 2500]
 ```
 
 Fails (exit code 1) when: a JSON file does not parse; `manifest.json` lists a missing path or a wrong `total`; an item lacks a required field, has a duplicate id or an id that does not match its filename, an unknown pillar or focus area, or an invalid risk level; an item file exceeds the character limit; a focus area has fewer than 5 maturity levels; or an item has no matching `guidance/` file.
+
+## 2b. `tools/api_smoke_test.mjs` — read-only API test
+
+```bash
+node tools/api_smoke_test.mjs
+```
+
+Imports `lib/api/router.mjs` and issues requests in-process (no server, no network) against the repository content: index counts, OpenAPI document, pillars, focus areas, best-practice filters and pagination, guidance in markdown and JSON, roadmap, definitions, error codes (400/404/405) and CORS/cache headers. Exit code 1 on any failure. Requires Node.js 18+.
 
 ## 3. `data/count_chars.sh` — item size check
 
@@ -77,4 +86,4 @@ Requests every link with `curl`, follows redirects and writes `links_checked.jso
 
 ## GitHub Actions
 
-The workflow triggers on pushes and pull requests that modify `data/**`, `guidance/**`, `tools/**` or the workflow file itself, runs the validator, the size check, the link extraction and the link check, and uploads `links_checked.json` (always) and `large_files.json` (only when oversized files are found) as artifacts.
+The workflow triggers on pushes and pull requests that modify `data/**`, `guidance/**`, `tools/**`, `api/**`, `lib/**`, `vercel.json` or the workflow file itself, runs the validator, the API smoke test (Node 24), the size check, the link extraction and the link check, and uploads `links_checked.json` (always) and `large_files.json` (only when oversized files are found) as artifacts.

@@ -6,12 +6,18 @@ on:
       - "data/**"
       - "guidance/**"
       - "tools/**"
+      - "api/**"
+      - "lib/**"
+      - "vercel.json"
       - ".github/workflows/check-links.yml"
   pull_request:
     paths:
       - "data/**"
       - "guidance/**"
       - "tools/**"
+      - "api/**"
+      - "lib/**"
+      - "vercel.json"
       - ".github/workflows/check-links.yml"
 
 jobs:
@@ -30,6 +36,14 @@ jobs:
 
       - name: Validate generated content
         run: python3 -I tools/validate_content.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: API smoke test
+        run: node tools/api_smoke_test.mjs
 
       - name: Count characters
         id: count_chars

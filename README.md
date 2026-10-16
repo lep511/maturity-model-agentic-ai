@@ -21,12 +21,44 @@ A static web app for self-assessing an agentic AI workload against the **AWS Wel
 
 Scoring uses a 6-point coverage scale per best practice: 0%, 25%, 50%, 75%, 100% or *Excluded from analysis*.
 
+## Read-only API
+
+The same content is exposed as a read-only JSON API implemented as a single Vercel Function (`api/index.mjs`, routed by `lib/api/router.mjs`). All endpoints are `GET`, public, CORS-enabled (`Access-Control-Allow-Origin: *`) and cached at the CDN per deployment. An OpenAPI 3.1 description is served at `/api/openapi.json`.
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api` | Index: lens metadata, counts, endpoint list |
+| `GET /api/lens` | Abstract, design principles, pillars, roadmap, definitions |
+| `GET /api/pillars`, `GET /api/pillars/{slug}` | Pillars with counts; detail adds design principles and focus areas (`slug`, name, prefix or abbreviation such as `SEC`) |
+| `GET /api/focus-areas`, `GET /api/focus-areas/{id}` | Focus areas (`?pillar=`, `?roadmap=`, `?expand=1`); detail adds capability intent, 5 maturity levels, common issues and the best practices |
+| `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=`, `?fields=`, `?limit=`, `?offset=` |
+| `GET /api/best-practices/{id}` | One best practice (`?include=guidance` embeds the guidance markdown); ids accept `AGENTOPS01-BP01` or `AGENTOPS01_BP01` |
+| `GET /api/best-practices/{id}/guidance` | Condensed implementation guidance as `text/markdown` (`?format=json` for JSON) |
+| `GET /api/roadmap`, `GET /api/roadmap/{id}` | Lens roadmap reading paths (`first-agent`, `production`, `multi-agent`, `hardening`) |
+| `GET /api/definitions?q=` | Glossary terms |
+
+Add `?pretty=1` to any endpoint for indented JSON. Errors are JSON: `{"error": {"code": "...", "message": "..."}}` with 400, 404, 405 or 500.
+
+```bash
+curl -s https://aws-maturity-model.vercel.app/api/best-practices?pillar=security&risk=High&fields=id,title
+curl -s https://aws-maturity-model.vercel.app/api/focus-areas/AGENTSEC03?pretty=1
+curl -s https://aws-maturity-model.vercel.app/api/best-practices/AGENTOPS01-BP01/guidance
+```
+
+The function reads the generated `data/` and `guidance/` files at runtime (`includeFiles` in `vercel.json` bundles them) and caches them in memory per instance. `node tools/api_smoke_test.mjs` runs the router in-process against the repository content; CI runs it on every change.
+
 ## Project structure
 
 ```
 .
 ├── index.html                 # App shell (layout, modals, sidebar, header)
-├── vercel.json                # Vercel deployment config (cache headers for data/ and guidance/)
+├── vercel.json                # Vercel config: static headers, /api/* rewrite, function includeFiles
+├── api/
+│   └── index.mjs              # Single Vercel Function entry point for the read-only API
+├── lib/api/
+│   ├── data.mjs               # Loads and indexes data/ + guidance/ (cached per instance)
+│   ├── router.mjs             # Routes /api/* by pathname, shapes responses
+│   └── openapi.mjs            # OpenAPI 3.1 document builder
 ├── css/
 │   ├── styles.css             # Main styles (pillar colors --r1..--r6, Lens components)
 │   ├── responsive.css         # Mobile breakpoints
@@ -52,7 +84,8 @@ Scoring uses a 6-point coverage scale per best practice: 0%, 25%, 50%, 75%, 100%
 ├── guidance/<pillar>/<bp-id>.md   # 150 condensed implementation guidance pages (rendered in a modal)
 └── tools/
     ├── build_lens_content.py  # Generates data/ and guidance/ from the AWS docs (stdlib only)
-    └── validate_content.py    # Offline consistency checks (used by CI)
+    ├── validate_content.py    # Offline consistency checks (used by CI)
+    └── api_smoke_test.mjs     # In-process tests for the read-only API (used by CI)
 ```
 
 ### Item schema
@@ -112,12 +145,13 @@ Production: https://aws-maturity-model.vercel.app
 
 ## CI
 
-`.github/workflows/check-links.yml` runs on every push or pull request that touches `data/`, `guidance/` or `tools/`:
+`.github/workflows/check-links.yml` runs on every push or pull request that touches `data/`, `guidance/`, `tools/`, `api/`, `lib/` or `vercel.json`:
 
 1. `tools/validate_content.py` — manifest, schema, counts, risk values, guidance files
-2. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
-3. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
-4. `data/check_link_action.sh` — fails on any 4xx/5xx response
+2. `tools/api_smoke_test.mjs` — the read-only API routed in-process against the repository content
+3. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
+4. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
+5. `data/check_link_action.sh` — fails on any 4xx/5xx response
 
 See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 
@@ -132,6 +166,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * CSV export / import (imports read the `ID`, `Score` and `Comments` columns)
 * Print preview with cards or table layout, color or black & white, risk and AWS services columns
 * Responsive layout for tablets and phones
+* Read-only JSON API (`/api`, OpenAPI at `/api/openapi.json`) over the same content
 
 ## License
 
