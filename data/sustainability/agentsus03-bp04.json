@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS03-BP04",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS03",
+  "focus_area": "Agent governance",
+  "recommendation": "Decommission unused agents and prevent agent sprawl",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Every agent that stays deployed past its usefulness consumes infrastructure, expands the attack surface, and adds operational overhead that never shows up as an explicit line item. Active portfolio management helps prevent the silent accumulation of cost and complexity that comes with scaled adoption.",
+  "how_to_check": "• Every deployed agent has a documented owner, a clear business purpose, and measurable usage.\n• Agents that no longer deliver value move through a structured decommissioning lifecycle and are retired.\n• Teams search the agent registry for existing capabilities before initiating new agent development.\n• Portfolio health, total agent count, percentage with active usage, percentage with current documentation, is visible at the organizational level.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp04.html'>AGENTSUS03-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp04.html"
+}

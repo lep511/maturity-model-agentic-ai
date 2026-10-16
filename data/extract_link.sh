@@ -1,67 +1,76 @@
 #!/bin/bash
 # ============================================================
-# extract_links.sh
-# Escanea archivos JSON en un directorio y extrae todos los
-# links (URLs), generando un JSON de salida con nombre de
-# archivo y link encontrado.
-# 
-# Uso: ./extract_links.sh <directorio> [archivo_salida.json]
+# extract_link.sh
+# Scans JSON, JSONL and Markdown files in a directory and extracts
+# every link that points to the Agentic AI Lens documentation,
+# writing a JSON array of {"file_name", "link"} objects.
+# Duplicate (file, link) pairs are emitted once.
+#
+# Usage: ./extract_link.sh <directory> [output.json]
 # ============================================================
 set -euo pipefail
 
-# --- Argumentos ---
+# --- Arguments ---
 DIRECTORY="${1:-.}"
 OUTPUT_FILE="${2:-links_output.json}"
 
-# --- Filtro de prefijo ---
-readonly URL_PREFIX="https://maturitymodel.security.aws.dev"
+# --- Prefix filter: only links into the Lens documentation are checked ---
+readonly URL_PREFIX="https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens"
 
-# --- Validaciones ---
+# --- Validations ---
 if [[ ! -d "$DIRECTORY" ]]; then
-  echo "❌ Error: El directorio '$DIRECTORY' no existe." >&2
+  echo "❌ Error: Directory '$DIRECTORY' does not exist." >&2
   exit 1
 fi
-command -v grep  >/dev/null 2>&1 || { echo "❌ Se requiere 'grep'."  >&2; exit 1; }
-command -v sed   >/dev/null 2>&1 || { echo "❌ Se requiere 'sed'."   >&2; exit 1; }
+command -v grep  >/dev/null 2>&1 || { echo "❌ 'grep' is required."  >&2; exit 1; }
+command -v sed   >/dev/null 2>&1 || { echo "❌ 'sed' is required."   >&2; exit 1; }
 
-# --- Procesamiento ---
-echo "🔍 Escaneando archivos JSON en: $DIRECTORY"
-echo "🎯 Filtrando links que empiecen con: $URL_PREFIX"
+# --- Processing ---
+echo "🔍 Scanning JSON and Markdown files in: $DIRECTORY"
+echo "🎯 Keeping links that start with: $URL_PREFIX"
 
-# Patrón que captura:
-#   1. URLs dentro de href='...' o href="..."
-#   2. URLs planas que empiecen con http:// o https://
+# Pattern that captures:
+#   1. URLs inside href='...' or href="..."
+#   2. Markdown link targets (...)
+#   3. Bare URLs starting with http:// or https://
 URL_PATTERN='href=["'"'"'][^"'"'"']*["'"'"']|https?://[^"'"'"' \t\n<>)\\]+'
 
-results=()   # array de objetos JSON
+results=()            # JSON objects, in discovery order
+declare -A seen=()    # "file|link" -> 1, for de-duplication
 
-while IFS= read -r -d '' json_file; do
-  filename=$(realpath "$json_file" | sed 's|.*/data/|data/|')
+while IFS= read -r -d '' src_file; do
+  filename=$(realpath --relative-to="$PWD" "$src_file" 2>/dev/null || echo "$src_file")
 
-  # Extrae todas las coincidencias línea a línea
   while IFS= read -r match; do
-    # Si el match es un href="..." o href='...' extraemos solo la URL
+    # For href="..." / href='...' keep only the URL
     if [[ "$match" == href=* ]]; then
       url=$(echo "$match" | sed -E "s/href=[\"']([^\"']+)[\"']/\1/")
     else
       url="$match"
     fi
 
-    # ✅ Filtrar: solo URLs que empiecen con el prefijo deseado
+    # Strip trailing punctuation that often follows a URL in prose
+    url="${url%%[\'\".,;:]}"
+
+    # Keep only URLs with the desired prefix
     [[ "$url" == "${URL_PREFIX}"* ]] || continue
 
-    # Escapar caracteres especiales para JSON
+    key="${filename}|${url}"
+    [[ -n "${seen[$key]:-}" ]] && continue
+    seen[$key]=1
+
     url_escaped=$(printf '%s' "$url" | sed 's/\\/\\\\/g; s/"/\\"/g')
     file_escaped=$(printf '%s' "$filename" | sed 's/\\/\\\\/g; s/"/\\"/g')
-
     results+=("  {\"file_name\": \"$file_escaped\", \"link\": \"$url_escaped\"}")
-  done < <(grep -oE "$URL_PATTERN" "$json_file" 2>/dev/null || true)
+  done < <(grep -oE "$URL_PATTERN" "$src_file" 2>/dev/null || true)
 
-done < <(find "$DIRECTORY" -maxdepth 5 -type f \( -name "*.json" -o -name "*.jsonl" \) -print0)
+done < <(find "$DIRECTORY" -maxdepth 5 -type f \( -name "*.json" -o -name "*.jsonl" -o -name "*.md" \) \
+  -not -path "*/.git/*" -not -path "*/.cache/*" -not -path "*/node_modules/*" \
+  -not -name "links_output.json" -not -name "links_checked.json" -print0 | sort -z)
 
-# --- Escribir salida ---
+# --- Write output ---
 if [[ ${#results[@]} -eq 0 ]]; then
-  echo "⚠️  No se encontraron links con prefijo '$URL_PREFIX' en '$DIRECTORY'."
+  echo "⚠️  No links with prefix '$URL_PREFIX' found in '$DIRECTORY'."
   echo "[]" > "$OUTPUT_FILE"
 else
   {
@@ -75,7 +84,7 @@ else
     done
     echo "]"
   } > "$OUTPUT_FILE"
-  echo "✅ Se extrajeron ${#results[@]} link(s) con prefijo '$URL_PREFIX'."
+  echo "✅ Extracted ${#results[@]} unique link(s) with prefix '$URL_PREFIX'."
 fi
 
-echo "📄 Resultado guardado en: $OUTPUT_FILE"
+echo "📄 Output saved to: $OUTPUT_FILE"

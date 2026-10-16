@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC09-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC09",
+  "focus_area": "Agent vulnerability scanning and penetration testing",
+  "recommendation": "Implement continuous security validation with automated remediation",
+  "risk": "Medium",
+  "aws_service": "Amazon CloudWatch / AWS CodePipeline",
+  "guidance": "Periodic assessments leave newly deployed agent capabilities exposed for weeks or months. On-demand validation integrated into the development pipeline, paired with automated fix suggestions, compresses the discovery-to-resolution loop from weeks to hours.",
+  "how_to_check": "• You run security validation continually or on-demand as part of the development and deployment pipeline rather than only during periodic assessment windows.\n• Validated findings arrive with ready-to-implement code fixes and configuration recommendations, so development teams remediate issues without waiting for security team intervention.\n• You track remediation progress automatically, and regression testing confirms fixes are effective and don't introduce new vulnerabilities.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp03.html'>AGENTSEC09-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp03.html"
+}

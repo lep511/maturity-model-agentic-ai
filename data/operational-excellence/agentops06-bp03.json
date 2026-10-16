@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS06-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS06",
+  "focus_area": "Testing, evaluation, and validation frameworks",
+  "recommendation": "Establish SME-driven validation and business approval workflows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Heavy approval processes slow routine work and get bypassed in emergencies. On the other hand, a lack of approval processes can produce unforeseen incidents. To keep your teams moving while protecting against the changes that actually warrant scrutiny, implement risk-tiered validation (light for minor changes, thorough for autonomy increases).",
+  "how_to_check": "• Significant agent changes pass through documented validation and approval workflows before reaching production.\n• Validation checkpoints verify that changes meet quality thresholds, maintain behavioral alignment, and comply with operational boundaries.\n• Rollback procedures are defined and tested for every change type.\n• Approval burden scales with change risk, not uniformly across all changes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp03.html'>AGENTOPS06-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp03.html"
+}

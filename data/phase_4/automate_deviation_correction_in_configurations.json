@@ -1,9 +1,0 @@
-{
-  "id": "4.9.4",
-  "phase": "Phase 4: Optimized",
-  "capability": "Incident response",
-  "recommendation": "Automate deviation correction in configurations",
-  "aws_service": "AWS Config",
-  "guidance": "AWS Config Auto Remediation triggers SSM automations to restore misconfigured resources when a Config rule is violated. It complements preventive controls (SCPs/IAM) by correcting deviations introduced before a policy existed and handling privileged users who can bypass SCPs. Start with softer approaches — auto-create a ticket and notify the resource owner via tags — before enabling fully automated correction. Test all remediation automations to avoid unintended disruption.",
-  "how_to_check": "Are Config rules mapped to auto-remediation actions for critical controls (e.g., public S3 buckets, unencrypted EBS, unrestricted security groups)? Are resource owners notified on misconfiguration detection? Are tickets created and tracked to resolution? Have remediation automations been tested to confirm they restore desired state without service disruption?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/security-automations-config/'>documentation</a>."
-}

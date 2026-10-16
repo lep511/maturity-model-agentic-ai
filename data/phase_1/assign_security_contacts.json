@@ -1,9 +1,0 @@
-{
-  "id": "1.1.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Security governance",
-  "recommendation": "Assign Security contacts",
-  "aws_service": "N/A",
-  "guidance": "Keep security contacts up to date with a monitored distribution list (2-3 people) so AWS can alert your team about abuse, exposed credentials, or incidents. Use a secure mail server for the contact address, as it can be used to reset the root password. Manage security contacts centrally via AWS Organizations to avoid updating each account individually.",
-  "how_to_check": "Are security contacts defined for all accounts, using a distribution list rather than an individual? Is the information current? Verify with Security Hub control Account.1.\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/assign-security-contacts/'>documentation</a>."
-}

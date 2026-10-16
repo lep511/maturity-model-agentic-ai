@@ -1,9 +1,0 @@
-{
-  "id": "4.6.2",
-  "phase": "Phase 4: Optimized",
-  "capability": "Infrastructure protection",
-  "recommendation": "Use abstract services",
-  "aws_service": "Lambda / Fargate",
-  "guidance": "Serverless services (AWS Lambda, Fargate) eliminate the need to manage and patch underlying infrastructure — AWS handles OS patching, runtime updates, and hardening automatically. This reduces attack surface (no EC2 instances to harden, no OS vulnerabilities to track) and frees security teams to focus on higher-value work. Prefer abstract services over self-managed EC2 as the default architectural choice.",
-  "how_to_check": "Are new workloads evaluated for serverless suitability before defaulting to EC2? Has the number of self-managed EC2 instances been reduced over time by migrating to abstract services? Is the reduced infrastructure footprint reflected in a smaller patching and vulnerability management workload?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/serverless/'>documentation</a>."
-}

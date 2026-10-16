@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC05-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC05",
+  "focus_area": "Agent observability and non-repudiation",
+  "recommendation": "Implement distributed tracing for agent interactions",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / AWS X-Ray / Amazon CloudWatch",
+  "guidance": "A request that hops across agents, queues, and event buses is only investigable if a single identifier follows it end-to-end. Tracing with both a trace ID for instrumented services and an application-level correlation ID for asynchronous boundaries makes cross-agent incidents reconstructable.",
+  "how_to_check": "• You trace every request that flows through a multi-agent system end-to-end with a single correlation identifier, so security teams can reconstruct the complete chain of agent interactions for traced operations.\n• Service maps give real-time visibility into agent dependencies and communication patterns.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec05-bp02.html'>AGENTSEC05-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec05-bp02.html"
+}

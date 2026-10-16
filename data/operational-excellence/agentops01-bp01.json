@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS01-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS01",
+  "focus_area": "Operational practices for agentic AI systems",
+  "recommendation": "Establish well-defined agent roles, responsibilities, and success criteria",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / AWS Agent Registry / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "An agent without a documented role can be difficult to evaluate and improve. Provide each agent a clear purpose, scope, autonomy level, and success criteria to change ambiguous behavior into something teams can observe, measure, and hold accountable for.",
+  "how_to_check": "• Every agent has a documented job description specifying role, owned business outcomes, autonomy boundaries, and measurable success criteria.\n• Teams can objectively assess whether an agent performs as intended, and stakeholders understand what value each agent delivers.\n• Failure handling and escalation procedures are defined before deployment so out-of-scope requests and edge cases are handled predictably.\n• Success criteria map to business outcomes (task resolution rate, customer satisfaction) alongside technical metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp01.html'>AGENTOPS01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp01.html"
+}

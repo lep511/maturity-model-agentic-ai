@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL02-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL02",
+  "focus_area": "Predictable task execution",
+  "recommendation": "Limit agent permissions to minimum required access",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Identity and Access Management",
+  "guidance": "Broad permissions turn a misinterpreted instruction into a cascading incident. Least-privilege access keeps the scope of impact of unpredictable LLM behavior narrow and makes anomalous activity more visible against a well-defined baseline.",
+  "how_to_check": "• You have each agent granted only the permissions required for its specific function.\n• You apply runtime access boundaries at the gateway, so the LLM's reasoning can't widen the agent's reach.\n• You audit agent policies continually and remove permissions that actual usage doesn't justify.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp02.html'>AGENTREL02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp02.html"
+}

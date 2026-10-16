@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC06-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC06",
+  "focus_area": "Secure multi-agent orchestration",
+  "recommendation": "Establish trust boundaries between agents",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Identity and Access Management / Amazon VPC / Amazon API Gateway / AWS PrivateLink / AWS Config",
+  "guidance": "A flat agent network gives every affected agent a direct path to every other one. Trust zones segmented at the network and IAM layers, with application-layer verification of caller identity, stop one affected agent from escalating across the whole system.",
+  "how_to_check": "• Agents operate within clearly defined trust zones, accepting instructions only from authorized coordinators and rejecting requests from agents outside their trust boundary.\n• Network segmentation enforces trust boundaries at the infrastructure layer and IAM policies enforce them at the API layer.\n• An affected agent in one trust zone can't directly issue instructions to agents in higher-trust zones without passing through authorization controls.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp03.html'>AGENTSEC06-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp03.html"
+}

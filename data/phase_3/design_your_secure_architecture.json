@@ -1,9 +1,0 @@
-{
-  "id": "3.1.1",
-  "phase": "Phase 3: Efficient",
-  "capability": "Security governance",
-  "recommendation": "Design your secure architecture",
-  "aws_service": "N/A",
-  "guidance": "Intentional architecture reduces attack vectors and blast radius. Key principles: replace exposed SSH/RDP with AWS Systems Manager Fleet Manager; restrict Security Groups to minimum required paths (e.g., databases accept traffic only from the app server Security Group); deploy across multiple AZs. Use the AWS Well-Architected Framework and AWS Security Reference Architecture as design guides. Use Workload Discovery on AWS to auto-generate architecture diagrams and detect shadow IT.",
-  "how_to_check": "Have network paths, Security Group rules, and AZ distribution been deliberately planned? Are admin ports eliminated in favor of SSM Fleet Manager? Has the team reviewed the AWS Well-Architected Framework security pillar and Security Reference Architecture? Has Workload Discovery been used to identify undocumented resources?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/architecture/'>documentation</a>."
-}

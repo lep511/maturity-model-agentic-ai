@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL02-BP04",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL02",
+  "focus_area": "Predictable task execution",
+  "recommendation": "Develop clear instruction protocols for agents",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Ad-hoc prompts interpreted slightly differently by each model call produce unpredictable behavior, and the problem multiplies in multi-agent workflows. Standardized instruction templates, versioned prompts, and explicit handoff schemas reduce ambiguity and make regressions traceable to a specific version.",
+  "how_to_check": "• You have a canonical system prompt template that every agent follows, covering role, capabilities, constraints, output format, and escalation behavior.\n• You version prompt templates centrally and log the version used on every invocation.\n• You have explicit handoff schemas for multi-agent delegation so receiving agents get unambiguous instructions.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp04.html'>AGENTREL02-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp04.html"
+}

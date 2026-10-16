@@ -1,9 +1,0 @@
-{
-  "id": "2.7.2",
-  "phase": "Phase 2: Foundational",
-  "capability": "Data protection",
-  "recommendation": "Data Backups",
-  "aws_service": "AWS Backup",
-  "guidance": "Use AWS Backup to centralize and automate backups across AWS services (EBS, EC2, RDS, DynamoDB, EFS) via policy-based schedules and retention rules. Store backups in a separate account to isolate them from a primary environment compromise. For on-premises infrastructure, use cost-optimized storage like S3 Glacier.",
-  "how_to_check": "Are backups taken for all critical applications and stored in a separate account? Is a retention policy defined and aligned with RPO/RTO objectives?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/backups/'>documentation</a>."
-}

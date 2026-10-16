@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC05-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC05",
+  "focus_area": "Agent observability and non-repudiation",
+  "recommendation": "Implement comprehensive logging and decision artifact storage",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS CloudTrail / Amazon CloudWatch / Amazon S3 / Amazon Athena / AWS Glue / AWS Key Management Service",
+  "guidance": "Agent decisions are only auditable if the reasoning behind them is captured, preserved intact, and reachable at the speed investigations actually move. Tamper-evident artifact storage, attribution to the original trigger, and a queryable index turn raw log volume into forensic capability.",
+  "how_to_check": "• You capture every agent decision, action, and reasoning step in tamper-evident, queryable storage, producing a complete and verifiable record of agent behavior.\n• Each logged action includes attribution to the initiating source (a human user session, an upstream event, a schedule, or another agent), so logged actions can typically be traced back to what triggered them.\n• You can reconstruct the full decision-making process for any agent action from stored artifacts, independent of the agent's own account of its reasoning.\n• Cryptographic validation verifies log integrity, the agent's operational IAM role can't modify or delete its own decision history, and sensitive data (PII, secrets, regulated fields) is masked or redacted before logs are written to long-term storage.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec05-bp01.html'>AGENTSEC05-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec05-bp01.html"
+}

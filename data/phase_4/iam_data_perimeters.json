@@ -1,9 +1,0 @@
-{
-  "id": "4.3.1",
-  "phase": "Phase 4: Optimized",
-  "capability": "Identity & access management",
-  "recommendation": "IAM Data Perimeters",
-  "aws_service": "AWS IAM",
-  "guidance": "Data perimeters enforce three organization-wide invariants: only trusted identities can access your resources, only trusted resources (owned by your accounts) are accessed, and access only originates from expected networks. Implemented via SCPs and Resource Control Policies (RCPs) using IAM condition keys, data perimeters complement fine-grained access controls by providing always-on boundaries against credential-based exfiltration. Treat implementation as a risk-based journey: perform a threat analysis, prioritize perimeter types by risk, and iterate. SCPs and RCPs are free.",
-  "how_to_check": "Are RCPs in place to block access from identities outside your AWS organization? Are IAM condition keys (e.g., aws:PrincipalOrgID, aws:SourceVpc) used to enforce trusted identity, resource, and network constraints on critical resources? Are data perimeter controls applied consistently across all accounts via AWS Organizations?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/data-perimeters/'>documentation</a>."
-}

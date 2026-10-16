@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS03-BP04",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS03",
+  "focus_area": "Agent lifecycle and deployment processes",
+  "recommendation": "Implement organizational agent portfolio management and governance at scale",
+  "risk": "High",
+  "aws_service": "AWS Agent Registry / Amazon Bedrock AgentCore / Amazon EventBridge / Amazon Neptune / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "A handful of agents built by one team is a project. Dozens of agents built by multiple teams is a portfolio, and portfolios need different operational mechanisms. Without cross-organizational visibility, teams build redundant agents, break each other's integrations, and lose track of which agents still earn their keep.",
+  "how_to_check": "• A centralized catalog gives the organization a current view of every agent, owner, capabilities, dependencies, lifecycle state, cost profile, and business value.\n• Teams discover existing agents before building new ones, so effort goes to capability gaps rather than duplicates.\n• Cross-team dependencies are tracked and managed through coordinated deprecation processes.\n• Quarterly portfolio reviews reveal underutilized agents for consolidation or retirement, keeping the portfolio aligned with business priorities.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp04.html'>AGENTOPS03-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp04.html"
+}

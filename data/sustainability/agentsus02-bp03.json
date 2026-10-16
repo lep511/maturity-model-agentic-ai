@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS02-BP03",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS02",
+  "focus_area": "Resource right-sizing",
+  "recommendation": "Appropriately scale data, networking, and compute dependencies",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock / AWS PrivateLink",
+  "guidance": "Agent workloads have a shape that general-purpose infrastructure defaults don't fit, with bursty inference, variable-length tool execution, and unpredictable multi-step reasoning. Sizing hosting, network, and storage to the observed pattern rather than a theoretical maximum keeps infrastructure proportional to agentic work.",
+  "how_to_check": "• Agent processes run on serverless infrastructure that scales with demand instead of static provisioning for peak load.\n• Private connectivity is used where security or latency requirements justify it, not by default for every workload.\n• Agent infrastructure is deployed close to the services it depends on, so cross-Region data transfer is minimized.\n• Streaming responses are used for user-facing interactions to reduce memory footprint and improve time-to-first-token.\n• Utilization is monitored continually and provisioning tracks actual workload demand.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp03.html'>AGENTSUS02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp03.html"
+}

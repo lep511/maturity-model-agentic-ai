@@ -1,9 +1,0 @@
-{
-  "id": "2.6.2",
-  "phase": "Phase 2: Foundational",
-  "capability": "Infrastructure protection",
-  "recommendation": "Secure EC2 Instances Management",
-  "aws_service": "AWS Systems Manager",
-  "guidance": "Replace SSH/RDP access with AWS Systems Manager Fleet Manager or Session Manager to manage EC2 instances. This eliminates the need to open ingress ports 22/3389 in Security Groups, supports MFA, and provides command history auditing. Fleet Manager also supports RDP-equivalent access to Windows instances via IAM Identity Center with one-click login. To enable it, attach an IAM Instance Profile with the 'AmazonSSMManagedInstanceCore' policy and provide network access to the SSM endpoint via NAT Gateway or VPC Endpoint. Both Fleet Manager and Session Manager are free.",
-  "how_to_check": "Is the SSM agent deployed across EC2 instances? Are teams using Fleet Manager or Session Manager instead of SSH/RDP? Have admin ports (22/3389) been removed from Security Groups?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/fleet-manager/'>documentation</a>."
-}

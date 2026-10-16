@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS01-BP01",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS01",
+  "focus_area": "Resource reusability",
+  "recommendation": "Design specialized agents with explicit resource boundaries",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions / Amazon CloudWatch",
+  "guidance": "Monolithic agents that over-provision for worst-case inputs waste compute without reliable audit trails to track consumption. To make consumption traceable at every layer, use specialized agents with single atomic capabilities and explicit resource boundaries. Give each agent a timeout, a memory ceiling, and a token budget. Each unit of resource spend then maps back to the task that caused it.",
+  "how_to_check": "• You have decomposed workflows into specialized agents, each responsible for one atomic capability with declared resource limits.\n• Parent agents cascade resource budgets to child agents through the orchestration layer, so delegation has predictable compute and token costs.\n• You track resource consumption for each agent (duration, tokens, and error rates) across delegation chains so over-provisioning is visible.\n• Reusable specialized agents are exposed through a shared tool layer, so one well-bounded agent serves many parent workflows.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp01.html'>AGENTSUS01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp01.html"
+}

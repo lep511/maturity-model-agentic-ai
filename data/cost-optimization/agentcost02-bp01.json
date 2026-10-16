@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST02-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST02",
+  "focus_area": "Model invocation and token cost optimization",
+  "recommendation": "Architect tiered model selection for cost-performance optimization",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "Running every agent task on the largest available model inflates inference cost by an order of magnitude for work that smaller models handle correctly. Match each task to the cheapest model capable of acceptable quality, and escalate only when confidence drops.",
+  "how_to_check": "• You have agent tasks classified into complexity tiers, with a documented routing policy mapping each tier to a specific foundation model.\n• You have cascading patterns that escalate to higher-cost models only when a lower tier's confidence falls below threshold.\n• You track cost-per-correct-response across tiers and refresh routing decisions with the data rather than with intuition.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp01.html'>AGENTCOST02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp01.html"
+}

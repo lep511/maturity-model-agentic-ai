@@ -1,9 +1,0 @@
-{
-  "id": "1.4.4",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Threat detection",
-  "recommendation": "Billing alarms",
-  "aws_service": "CloudWatch",
-  "guidance": "Configure billing alarms focused on compute services (EC2, ECS, EKS, Lambda) or total invoice to detect potential cryptomining or botnet activity — billing spikes are often an early indicator of account compromise. Alerts should reach an actively monitored distribution list via email, SMS, or instant messaging. Alternatively, use AWS Cost Anomaly Detection, which uses machine learning to identify anomalies without fixed thresholds and provides root cause analysis for cost spikes.",
-  "how_to_check": "Are billing alarms configured for the total bill or the bill of compute services? Do alarms reach the security team, or only the FinOps team? Are alarms reaching more than one person on the security team?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/billing-alarm/'>documentation</a>."
-}

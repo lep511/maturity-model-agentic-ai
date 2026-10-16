@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS01-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS01",
+  "focus_area": "Operational practices for agentic AI systems",
+  "recommendation": "Design multi-agent handoff procedures with human-in-the-loop escalation",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Agent Registry / Amazon Bedrock AgentCore Gateway / Amazon CloudWatch",
+  "guidance": "Without a structured context package, the receiving agent re-derives work the previous agent already finished. Lacking a defined escalation path means that high-stakes or low-confidence decisions can slip past human review.",
+  "how_to_check": "• You have documented handoff protocols that transfer tasks between agents with full context and clear accountability.\n• You have escalation paths that route requests to the right agent or human reviewer when an agent reaches its capability limits.\n• You detect deadlocks and timeouts automatically and resolve them through documented recovery procedures.\n• You monitor handoff latency, context transfer completeness, and collaboration success rates as first-class operational metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp02.html'>AGENTOPS01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp02.html"
+}

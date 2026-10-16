@@ -1,161 +1,80 @@
-# 🔗 Link Checker — AWS Maturity Model
+# Content and link checks — Agentic AI Lens Self-Assessment
 
-Scans `.json` / `.jsonl` files inside the `data/` directory, validates their size, extracts all URLs that start with `https://maturitymodel.security.aws.dev`, and verifies whether each link is reachable.
+Scripts that keep the generated content consistent and make sure every link into the
+AWS Well-Architected Agentic AI Lens documentation still resolves. All of them run in
+`.github/workflows/check-links.yml`; they can also be run locally from the repository root.
 
----
+## Requirements
 
-## ⚙️ Requirements
+| Tool | Used by |
+| --- | --- |
+| `python3` (3.9+, standard library only) | `tools/build_lens_content.py`, `tools/validate_content.py` |
+| `bash`, `grep`, `sed`, `find`, `realpath` | `data/count_chars.sh`, `data/extract_link.sh` |
+| `curl` | `data/check_link_action.sh` |
 
-| Tool   | Purpose                       |
-|--------|-------------------------------|
-| `bash` | Script runtime (>= 4.0)       |
-| `grep` | URL pattern matching          |
-| `sed`  | Text extraction and escaping  |
-| `curl` | HTTP requests (check_link)    |
+## 1. `tools/build_lens_content.py` — regenerate the content
 
-Verify they are available:
-
-```bash
-bash --version
-grep --version
-sed --version
-curl --version
-```
-
----
-
-## 🚀 Usage
-
-### Step 1 — Give execution permissions
+Fetches the markdown rendering of every Lens page (`https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/<slug>.md`), parses it and writes `data/`, `data/lens/`, `data/manifest.json` and `guidance/`.
 
 ```bash
-chmod +x data/count_chars.sh
-chmod +x data/extract_link.sh
-chmod +x data/check_link.sh
+python3 -I tools/build_lens_content.py [--sleep 0.5] [--refresh] [--full] [--clean] [--allow-count-drift]
 ```
 
----
+| Option | Effect |
+| --- | --- |
+| `--sleep N` | Seconds between HTTP requests (default 0.5) |
+| `--refresh` | Ignore the on-disk cache in `.cache/lens-docs/` and refetch every page |
+| `--full` | Emit the complete implementation guidance and every resource group in the guidance files |
+| `--clean` | Delete generated files that are no longer produced |
+| `--allow-count-drift` | Continue when the pillar / question / best-practice counts differ from the known release |
 
-### Step 2 — Validate file sizes
+Parsing problems are reported as warnings and leave the affected field empty; the script never fabricates content.
 
-Scans all `.json` and `.jsonl` files and checks whether any exceed **1300 characters**. Files that exceed the threshold are saved to an output JSON and the script exits with an error.
+## 2. `tools/validate_content.py` — offline consistency checks
 
 ```bash
-./data/count_chars.sh data/
+python3 -I tools/validate_content.py [--max-chars 2500]
 ```
 
-| Argument        | Default            | Description                            |
-|-----------------|--------------------|----------------------------------------|
-| `<directory>`   | `.` (current dir)  | Directory containing JSON files        |
-| `[output.json]` | `large_files.json` | File where oversized results are saved |
-| `--threshold N` | `1300`             | Maximum number of characters allowed   |
+Fails (exit code 1) when: a JSON file does not parse; `manifest.json` lists a missing path or a wrong `total`; an item lacks a required field, has a duplicate id or an id that does not match its filename, an unknown pillar or focus area, or an invalid risk level; an item file exceeds the character limit; a focus area has fewer than 5 maturity levels; or an item has no matching `guidance/` file.
 
-**Console output example:**
-```
-🔍 Scanning JSON files in: data/
-📏 Threshold: 1300 characters
-  ✅ data/phase_1/small_file.json → 843 chars (OK)
-  ⚠️  data/phase_3/advanced_ddos.json → 4521 chars (exceeds 1300)
+## 3. `data/count_chars.sh` — item size check
 
-❌ 1 file(s) exceeded the 1300 character threshold.
+```bash
+./data/count_chars.sh <directory> [output.json] [--threshold N]
 ```
 
-**Output example — `large_files.json`:**
+Counts the characters of every `*.json` / `*.jsonl` file below the directory (whole file, including whitespace) and fails when any file exceeds the threshold (default **2500**). `manifest.json` and the metadata files under `data/lens/` are skipped because they are legitimately large. Oversized files are listed in `large_files.json` (gitignored).
+
+## 4. `data/extract_link.sh` — collect Lens links
+
+```bash
+./data/extract_link.sh <directory> [output.json]
+```
+
+Scans `*.json`, `*.jsonl` and `*.md` files (skipping `.git/`, `.cache/` and `node_modules/`), extracts URLs from `href='...'`, markdown links and bare URLs, keeps only those that start with `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens`, de-duplicates `(file, link)` pairs and writes `links_output.json`:
+
 ```json
 [
-  { "file_name": "data/phase_3/advanced_ddos.json", "count": 4521 }
+  {"file_name": "data/operational-excellence/agentops01-bp01.json", "link": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp01.html"}
 ]
 ```
 
----
-
-### Step 3 — Extract links from the `data/` directory
-
-Scans all `.json` and `.jsonl` files recursively and outputs only URLs starting with `https://maturitymodel.security.aws.dev`.
+## 5. `data/check_link_action.sh` — verify the links
 
 ```bash
-./data/extract_link.sh
+./data/check_link_action.sh [--input links_output.json] [--output links_checked.json] [--timeout 10] [--retries 2] [--parallel 3]
 ```
 
-| Argument        | Default             | Description                          |
-|-----------------|---------------------|--------------------------------------|
-| `<directory>`   | `.` (current dir)   | Directory containing JSON files      |
-| `[output.json]` | `links_output.json` | File where extracted links are saved |
+Requests every link with `curl`, follows redirects and writes `links_checked.json` with `http_code`, `status`, `final_url` and `response_time_ms` per link.
 
-**Output example — `links_output.json`:**
-```json
-[
-  { "file_name": "data/phase_1/file1.json", "link": "https://maturitymodel.security.aws.dev/en/1.-quickwins/mfa/" },
-  { "file_name": "data/phase_2/file2.json", "link": "https://maturitymodel.security.aws.dev/en/2.-foundational/backups/" }
-]
-```
+| Status | Meaning | Fails the workflow? |
+| --- | --- | --- |
+| `ok` | 2xx | No |
+| `redirect` | 3xx (after following up to 5 redirects) | No |
+| `client_error` / `server_error` | 4xx / 5xx | **Yes** |
+| `unreachable` | No HTTP response (timeout, DNS) | No |
 
----
+## GitHub Actions
 
-### Step 4 — Verify each link
-
-Reads the `links_output.json` file and sends an HTTP request to each URL, reporting the status code and response time. Exits with an error if any **4xx/5xx** responses are found.
-
-```bash
-./data/check_link.sh
-```
-
-| Argument / Option | Default              | Description                        |
-|-------------------|----------------------|------------------------------------|
-| `<input.json>`    | `links_output.json`  | JSON produced by `extract_link.sh` |
-| `[output.json]`   | `links_checked.json` | File where results are saved       |
-| `--timeout N`     | `10`                 | Seconds before a request times out |
-| `--retries N`     | `2`                  | Retry attempts on network failure  |
-| `--parallel N`    | `5`                  | Number of simultaneous requests    |
-
-**Console output example:**
-```
-✅ [200] ok — https://maturitymodel.security.aws.dev/en/1.-quickwins/mfa/  (219ms)
-❌ [404] client_error — https://maturitymodel.security.aws.dev/en/3.-efficient/broken-link/  (128ms)
-   ↳ data/phase_3/advanced_ddos_mitigation_l7.json
-```
-
-**Output example — `links_checked.json`:**
-```json
-[
-  {
-    "file_name": "data/phase_1/file1.json",
-    "link": "https://maturitymodel.security.aws.dev/en/1.-quickwins/mfa/",
-    "http_code": 200,
-    "status": "ok",
-    "final_url": "https://maturitymodel.security.aws.dev/en/1.-quickwins/mfa/",
-    "response_time_ms": 219,
-    "error": ""
-  }
-]
-```
-
----
-
-## 📊 Status Reference
-
-| Status         | HTTP Code | Icon | Fails workflow |
-|----------------|-----------|------|----------------|
-| `ok`           | 2xx       | ✅   | No             |
-| `redirect`     | 3xx       | ↩️   | No             |
-| `client_error` | 4xx       | ❌   | **Yes**        |
-| `server_error` | 5xx       | 🔥   | **Yes**        |
-| `unreachable`  | —         | 🚫   | No             |
-
----
-
-## 🤖 GitHub Actions
-
-The workflow runs automatically on every `push` or `pull_request` that modifies any file inside `data/`. Steps run in order and stop immediately if any one of them fails.
-
-```
-count_chars.sh → extract_link.sh → check_link.sh
-```
-
-| Step             | Fails workflow if...                        |
-|------------------|---------------------------------------------|
-| `count_chars.sh` | Any file exceeds 1300 characters            |
-| `extract_link.sh`| Script exits with an error                  |
-| `check_link.sh`  | Any link returns a 4xx or 5xx HTTP response |
-
-The `links_checked.json` artifact is always uploaded at the end, even if the workflow fails, so results can be inspected directly from the GitHub Actions UI under **Actions → your run → Artifacts**.
+The workflow triggers on pushes and pull requests that modify `data/**`, `guidance/**`, `tools/**` or the workflow file itself, runs the validator, the size check, the link extraction and the link check, and uploads `links_checked.json` (always) and `large_files.json` (only when oversized files are found) as artifacts.

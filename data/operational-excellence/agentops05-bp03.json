@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS05-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS05",
+  "focus_area": "Observability and monitoring for agentic systems",
+  "recommendation": "Implement structured logging and comprehensive audit trails",
+  "risk": "High",
+  "aws_service": "Amazon CloudWatch / AWS CloudTrail / Amazon S3 / Amazon Bedrock AgentCore",
+  "guidance": "Free-text logs look useful until someone tries to query them at scale. Structured logs, immutable audit trails, and defined retention policies make your logs an active operational tool that provides evidence for compliance.",
+  "how_to_check": "• All agent decisions, actions, and interactions are captured in structured, queryable logs.\n• Audit trails are immutable and tamper-evident, providing a trustworthy record for regulatory and governance purposes.\n• Log retention policies balance operational and compliance needs with storage cost.\n• Authorized teams query log data efficiently through defined interfaces.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp03.html'>AGENTOPS05-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp03.html"
+}

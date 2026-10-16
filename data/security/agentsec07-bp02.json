@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC07-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC07",
+  "focus_area": "Human oversight protection and agent containment",
+  "recommendation": "Clear confidence indicators and manipulation warnings",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / Amazon DynamoDB / Amazon Quick / Amazon CloudWatch",
+  "guidance": "Workload-managed reviewers still make poor decisions when they lack the context to evaluate what the agent is recommending. Surfacing agent confidence, manipulation flags, and historical comparisons lets reviewers calibrate scrutiny to the actual risk of each decision.",
+  "how_to_check": "• Human reviewers see agent confidence scores, uncertainty indicators, and manipulation warning flags alongside each decision, letting them calibrate scrutiny appropriately.\n• Historical context and similar past decisions are surfaced so reviewers can identify when an agent is recommending an action that deviates from established patterns.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp02.html'>AGENTSEC07-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp02.html"
+}

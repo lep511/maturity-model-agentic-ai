@@ -1,9 +1,0 @@
-{
-  "id": "2.7.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Data protection",
-  "recommendation": "Data Encryption at rest",
-  "aws_service": "AWS KMS",
-  "guidance": "Encrypt all sensitive data at rest using customer-managed keys in AWS KMS rather than AWS-managed keys. Customer-managed keys give you control to disable the key, share it across accounts (e.g., for IR team snapshot access), and configure rotation intervals to meet compliance needs. Use AWS Security Hub controls (e.g., EC2.3, RDS.3) to detect unencrypted resources at scale across EBS, RDS, DynamoDB, OpenSearch, EKS, and others. Use KMS over CloudHSM unless a dedicated HSM is specifically required. Avoid importing external key material or using external key stores unless strictly necessary due to security and durability risks.",
-  "how_to_check": "Is sensitive data encrypted at rest using customer-managed KMS keys? Are AWS Security Hub encryption controls enabled to detect unencrypted resources? Are key rotation policies configured per compliance requirements?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/kms/'>documentation</a>."
-}

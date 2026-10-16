@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS03-BP01",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS03",
+  "focus_area": "Agent governance",
+  "recommendation": "Maintain organizational skills and competencies",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "Organizations that automate without deliberately preserving the human expertise behind the automation lose the capacity to train new staff, handle edge cases, and recover when automated systems reach their limits. Keeping a clear distinction between what agents handle autonomously and what stays with human experts sustains organizational capability across the whole lifetime of the deployment.",
+  "how_to_check": "• You have a competency taxonomy that separates human-owned, agent-augmented, and fully automated tasks, with documented criteria for each tier.\n• Routing in the agent layer escalates high-stakes, ambiguous, or edge-case decisions to human experts automatically.\n• Rotation programs and workshops keep subject matter experts proficient with the workflows agents otherwise execute.\n• You monitor escalation rates and expert task distribution to confirm critical competencies stay actively practiced.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp01.html'>AGENTSUS03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp01.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS05-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS05",
+  "focus_area": "Observability and monitoring for agentic systems",
+  "recommendation": "Monitor agent behavior patterns and detect anomalies",
+  "risk": "High",
+  "aws_service": "Amazon CloudWatch / Amazon Bedrock AgentCore",
+  "guidance": "Static threshold alerts catch obvious breakages. Anomaly detection over behavioral baselines extends coverage to gradual shifts like a slowly rising escalation rate, a quietly increasing hallucination frequency, or tool-selection patterns that drift toward less capable options, providing early visibility into behavioral trends.",
+  "how_to_check": "• Baseline behavior profiles are established per agent and updated continually as normal behavior evolves.\n• Anomalies (unusual reasoning patterns, unexpected tool usage, performance degradation, and behavioral drift) are detected automatically and routed to the right response workflow.\n• Teams receive early warning of emerging issues before they impact users.\n• Behavioral changes can be traced to specific configuration updates, model updates, or input distribution shifts.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp02.html'>AGENTOPS05-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp02.html"
+}

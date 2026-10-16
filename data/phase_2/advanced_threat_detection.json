@@ -1,9 +1,0 @@
-{
-  "id": "2.4.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Threat detection",
-  "recommendation": "Advanced Threat Detection",
-  "aws_service": "Amazon GuardDuty",
-  "guidance": "Review all GuardDuty findings — not just critical ones. Investigating medium and low severity findings helps detect early reconnaissance and compromise attempts. Enable GuardDuty Protection Plans as appropriate: Runtime Monitoring for process-level visibility on EC2/ECS/EKS, Malware Protection for agentless EBS volume scanning, S3 Protection for adversarial S3 activity, and RDS Protection for Aurora login attacks.",
-  "how_to_check": "Are findings reviewed across all severity levels, not just critical? Are medium/low findings investigated for reconnaissance or early compromise? Are relevant Protection Plans enabled (Runtime Monitoring, Malware Protection, S3, RDS)?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/guardduty-advanced/'>documentation</a>."
-}

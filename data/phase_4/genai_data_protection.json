@@ -1,9 +1,0 @@
-{
-  "id": "4.7.1",
-  "phase": "Phase 4: Optimized",
-  "capability": "Data protection",
-  "recommendation": "GenAI Data Protection",
-  "aws_service": "Amazon Bedrock",
-  "guidance": "GenAI applications face two key risks: prompt injection attacks and data privacy (model providers using your prompts for training). Amazon Bedrock guarantees your data is never used for model training, enforces encryption in transit and at rest by default, and can be accessed privately via VPC endpoint. Enable Bedrock Guardrails to filter prompt injection, sensitive data disclosure, and off-topic responses. If using third-party model providers directly, review their data usage terms carefully and implement compensating controls.",
-  "how_to_check": "Are GenAI applications built on Bedrock to prevent training data exposure? Are Bedrock Guardrails configured to block prompt injection and sensitive data leakage? Is Bedrock accessed via VPC endpoint? If using third-party providers, are data usage terms reviewed and compensating controls documented?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/gen-ai-security/'>documentation</a>."
-}

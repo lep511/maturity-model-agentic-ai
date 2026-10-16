@@ -1,9 +1,0 @@
-{
-  "id": "1.1.2",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Security governance",
-  "recommendation": "Select the region(s) to use and block the rest",
-  "aws_service": "AWS Organizations - AWS Control Tower",
-  "guidance": "Select the region(s) you want to use and disable the use of other regions in multiple accounts using AWS Organizations through Service Control Policies (SCPs). Alternatively, if you have deployed AWS Control Tower, you can select the regions to use and block the rest in the Landing Zone configuration. Limiting active regions reduces the attack surface and helps ensure compliance by preventing resources from being provisioned in unauthorized geographic locations.",
-  "how_to_check": "Has the organization defined in which regions to operate? Are there workloads in regions prohibited by your policy? Have you blocked the prohibited regions?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/choose-regions/'>documentation</a>."
-}

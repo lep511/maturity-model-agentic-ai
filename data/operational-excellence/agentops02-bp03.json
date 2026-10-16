@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS02-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS02",
+  "focus_area": "Prompt and configuration lifecycle management",
+  "recommendation": "Implement agent behavior versioning and rollback capabilities",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Teams with versioned behavior and tested rollback can recover in minutes when an agent behaves unexpectedly, while teams without spend hours debugging under pressure. Rapid reversibility improves your organization's ability to confidently iterate on an agentic system.",
+  "how_to_check": "• Every agent behavioral configuration (system prompts, reasoning instructions, tool permissions, and decision boundaries) is versioned with a complete change history.\n• You can roll back to any previous behavioral version within minutes when a change produces undesired outcomes.\n• Rollback procedures are automated and tested regularly, not improvised during incidents.\n• Staged rollouts limit the scope of impact of behavioral changes, and A/B testing supports data-driven comparison of variants before full deployment.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp03.html'>AGENTOPS02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp03.html"
+}

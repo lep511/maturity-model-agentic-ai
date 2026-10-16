@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC03-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC03",
+  "focus_area": "Agent identity and permission management",
+  "recommendation": "Implement strong authentication for agent identities",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Private CA / AWS Secrets Manager / Amazon GuardDuty / AWS Security Hub CSPM",
+  "guidance": "Shared API keys and one-way TLS give agents enough network reachability to be useful and enough ambiguity to be impersonated. Cryptographic identity for both sides of every call, with automated lifecycle and immediate revocation, is the control that makes every agent communication auditable and reversible.",
+  "how_to_check": "• You authenticate all agent-to-agent and agent-to-service communications using strong cryptographic mechanisms, with mutual authentication that helps prevent impersonation and interception.\n• You automate certificate lifecycle management so expired certificates don't cause authentication failures or security gaps.\n• You can revoke affected agent identities immediately, cutting off unauthorized access within minutes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp01.html'>AGENTSEC03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp01.html"
+}

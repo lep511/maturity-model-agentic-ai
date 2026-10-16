@@ -1,9 +1,0 @@
-{
-  "id": "3.9.2",
-  "phase": "Phase 3: Efficient",
-  "capability": "Incident response",
-  "recommendation": "Automate Critical Playbooks",
-  "aws_service": "N/A",
-  "guidance": "Automate any playbook step requiring no human judgment to free security staff for higher-value work. Start with the most frequent and critical playbooks. Even Lambda functions that require manual triggering reduce response time and improve consistency. Use the AWS Automated Security Response solution to remediate common findings (e.g., CIS non-compliances) and Security Hub Automations to trigger actions based on finding type or severity.",
-  "how_to_check": "Are the most frequent and critical playbooks automated? Are Lambda or Step Functions workflows ready for common response actions? Is the AWS Automated Security Response solution or Security Hub Automations in use?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/automate-critical-playbooks/'>documentation</a>."
-}

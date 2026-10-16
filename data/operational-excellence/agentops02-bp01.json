@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS02-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS02",
+  "focus_area": "Prompt and configuration lifecycle management",
+  "recommendation": "Evolve agent prompts, tool calls, and configurations to reflect evolving business needs",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / AWS CodePipeline / Amazon S3 / Amazon CloudWatch",
+  "guidance": "A prompt shapes agent behavior more directly than almost any other configuration artifact. Create a prompt lifecycle that applies code-grade discipline, versioning, review, evaluation, and rollback to prompts, which helps avoid unnoticed prompt drift and degraded decisions in agent interactions.",
+  "how_to_check": "• You manage agent prompts through a defined lifecycle: authoring, review, testing, deployment, monitoring, and retirement.\n• Every production prompt has a documented version history, an evaluation record, and a clear owner.\n• You deploy prompt updates independently of application code and roll back to a previous version within minutes.\n• You track the performance impact of each prompt change over time and can attribute quality shifts to specific versions.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp01.html'>AGENTOPS02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp01.html"
+}

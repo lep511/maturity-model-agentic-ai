@@ -1,9 +1,0 @@
-{
-  "id": "4.1.2",
-  "phase": "Phase 4: Optimized",
-  "capability": "Security assurance",
-  "recommendation": "Automate Evidence Gathering",
-  "aws_service": "AWS Audit Manager",
-  "guidance": "AWS Audit Manager automates continuous compliance evidence collection from Security Hub and CloudTrail, mapping it to regulatory frameworks (PCI DSS, HIPAA, SOC 2, ISO 27001, etc.). Evidence that cannot be collected automatically can be manually uploaded to complete the audit package, resulting in a ready-to-present audit report. Use the AWS Audit Manager Mindmap to plan implementation.",
-  "how_to_check": "Is compliance evidence gathered automatically rather than manually at audit time? Is Audit Manager configured with the relevant regulatory frameworks? Are Security Hub findings and CloudTrail logs feeding into audit assessments? Is the process for supplementing with manual evidence documented?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/automate-evidence-gathering/'>documentation</a>."
-}

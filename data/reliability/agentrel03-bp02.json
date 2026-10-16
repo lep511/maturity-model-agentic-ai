@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL03-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL03",
+  "focus_area": "Agent memory and state management",
+  "recommendation": "Architect fault-tolerant memory stores with redundancy and failover",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Fault Injection Service",
+  "guidance": "Memory failures don't need to mean agent failures. With redundancy, fallback paths, and a discipline of testing failover under controlled conditions, an agent keeps serving reduced-capability responses until its primary stores recover instead of becoming completely unavailable.",
+  "how_to_check": "• You have primary memory infrastructure with built-in durability and availability, backed by explicit fallback stores for degraded operation.\n• You have fail-fast logic on memory access that routes to fallback when primary stores are unavailable.\n• You exercise failover regularly in non-production environments to validate degraded-mode behavior.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp02.html'>AGENTREL03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp02.html"
+}

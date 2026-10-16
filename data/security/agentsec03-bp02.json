@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC03-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC03",
+  "focus_area": "Agent identity and permission management",
+  "recommendation": "Separate agent and human user permission",
+  "risk": "High",
+  "aws_service": "AWS Identity and Access Management / AWS IAM Identity Center / AWS CloudTrail / AWS Organizations / Amazon CloudWatch / Amazon Bedrock AgentCore / Amazon Cognito / Amazon Verified Permissions",
+  "guidance": "Identity propagation alone isn't enough when agents act on behalf of users. Distinct agent service identities, with hard trust boundaries helping prevent assumption of human-designated roles, keep audit attribution unambiguous and stop a misconfigured agent from escalating into a human identity space.",
+  "how_to_check": "• Agent actions and human actions are distinguishable in audit logs, with separate identities that help prevent agents from inheriting or assuming human user permissions.\n• Dedicated agent service identities are scoped to only the permissions required for automated operations, and audit logs attribute every action unambiguously to either an agent or a human actor.\n• Trust policies help prevent agents from assuming human-designated identities, with organization-level guardrails providing a secondary boundary in multi-account environments.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp02.html'>AGENTSEC03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp02.html"
+}

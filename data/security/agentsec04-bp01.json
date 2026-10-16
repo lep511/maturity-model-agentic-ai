@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC04-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC04",
+  "focus_area": "Agent goal alignment and manipulation prevention",
+  "recommendation": "Implement guardrails and alignment controls",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / Amazon EventBridge / Amazon CloudWatch / Amazon SNS",
+  "guidance": "Instruction-following alone doesn't provide reliable enforcement. Layered controls (deterministic where possible, probabilistic where necessary) help keep agents inside operational boundaries even when prompts are adversarial and model behavior is unpredictable.",
+  "how_to_check": "• You define agent operational and policy boundaries up front and enforce them through layered controls, with deterministic controls (IAM, schema validation, technical policy checks) handling what is expressible deterministically and probabilistic controls (content filters, behavioral evaluation) handling what isn't.\n• Multiple validation layers at different stages of the agent call chain can reduce the likelihood that a single control failure results in a boundary violation.\n• You log, alert on, and periodically review guardrail interventions, policy violations, and behavioral evaluation results to tune the controls and surface emerging patterns.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04-bp01.html'>AGENTSEC04-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04-bp01.html"
+}

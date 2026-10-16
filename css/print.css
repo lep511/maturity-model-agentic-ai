@@ -354,6 +354,22 @@
 .chip-na  { background: #f0f2f5; color: #888; }
 .chip-none{ background: #f0f2f5; color: #aaa; }
 
+/* Risk level chip (level of risk exposed if the best practice is not established) */
+.print-risk {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+.print-risk-high   { background: #ffe8ea; color: #c0001a; }
+.print-risk-medium { background: #fff6d6; color: #8a6400; }
+.print-risk-low    { background: #e6f9f0; color: #00875a; }
+.print-bw .print-risk { background: #f0f0f0 !important; color: #333 !important; border: 1px solid #bbb; }
+.print-fa-question { display: block; font-size: 9px; font-weight: 400; color: #777; margin-top: 2px; }
+
 /* CARD FORMAT */
 .print-card {
   border: 1px solid #e0e4ea;
@@ -477,9 +493,6 @@
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   body > *:not(#printArea) { display: none !important; }
 
-  /* Hide auth elements from print output */
-  .auth-user-badge,
-  .btn-signout-aws,
   .header-actions::before { display: none !important; }
   body::before { display: none !important; }
   #printArea {

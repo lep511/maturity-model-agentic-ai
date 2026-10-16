@@ -1,0 +1,520 @@
+{
+  "title": "AWS Well-Architected Framework - Agentic AI Lens",
+  "doc_root": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html",
+  "published": "June 10, 2026",
+  "custom_lens_json_url": "https://github.com/aws-samples/sample-well-architected-custom-lens/blob/main/agentic-ai-lens/agentic-ai-lens.json",
+  "abstract": [
+    "Organizations deploying agentic AI are moving from asking \"can we build an agent?\" to \"can we run agents reliably, securely, and cost-effectively at scale?\" The AWS Well-Architected Agentic AI Lens answers this question by extending the AWS Well-Architected Framework with best practices specific to the design, deployment, and operation of agentic AI systems on AWS, providing architectural guidance from agent prototypes to production-grade agent systems.",
+    "This lens covers the full spectrum of agentic AI architecture, from the foundational infrastructure that supports agent compute and memory, to the orchestration patterns that coordinate multi-agent workflows, to the operational practices that help agents remain reliable, secure, and cost-effective in production. Whether agents serve end users through conversational interfaces, automate internal workflows, or operate on production infrastructure alongside human engineers, the architectural principles in this lens apply across the full range of agentic use cases."
+  ],
+  "design_principles": [
+    {
+      "title": "Decompose agentic workloads into specialized, bounded agents",
+      "text": "Single-purpose agents with declared scope, explicit limits, and clear authority are easier to evaluate, secure, scale, evolve, and replace than monolithic ones. Decomposition is the foundation that every pillar's controls depend on."
+    },
+    {
+      "title": "Make every agent action observable and traceable end-to-end",
+      "text": "Reasoning steps, tool calls, memory accesses, and inter-agent handoffs need a single trace fabric so the same telemetry can answer cost, latency, quality, security, and footprint questions. Observability of agentic behavior is qualitatively different from infrastructure monitoring."
+    },
+    {
+      "title": "Treat agent behavior as code",
+      "text": "Prompts, tool catalogs, role definitions, model selections, and policies are versioned artifacts that go through peer review, testing, staged rollout, and rollback alongside the rest of the codebase."
+    },
+    {
+      "title": "Pair autonomy with proportionate human oversight",
+      "text": "Define autonomy levels (observer, assistant, autonomous, orchestrator) and escalation paths up front. Human review depth scales with the consequence of the action, by design rather than by reaction."
+    },
+    {
+      "title": "Ground autonomous behavior in explicit contracts",
+      "text": "Schemas, registries, structured success criteria, and confidence signals replace implicit assumptions about what an agent will do. What used to live inside a prompt becomes an enforceable interface."
+    }
+  ],
+  "pillars": [
+    {
+      "name": "Operational excellence",
+      "slug": "operational-excellence",
+      "prefix": "AGENTOPS",
+      "short": "OpEx",
+      "abbr": "OPS",
+      "intro": "Organizations that operate agents through systematic, evidence-based practices ship improvements faster, recover from issues sooner, and maintain stakeholder confidence as agent portfolios scale. Operational excellence in agentic AI extends traditional DevOps and AIOps with agent-specific capabilities including prompt lifecycle management, behavioral monitoring, multi-faceted evaluation, and human-in-the-loop governance. Through iterative refinement, thorough observability, and evidence-based decision-making, organizations can operate agents reliably at scale while continually improving their performance, cost efficiency, and alignment with business objectives.",
+      "design_principles": [
+        {
+          "title": "Define purpose, autonomy, and success criteria before deployment",
+          "text": "Role descriptions, scope boundaries, and measurable outcomes are prerequisites for shipping. They drive guardrails, monitoring thresholds, and escalation triggers downstream."
+        },
+        {
+          "title": "Promote agents through a lifecycle with explicit gates",
+          "text": "SME-driven validation, CI/CD designed for non-deterministic systems, and staged rollouts prevent prompt, tool, or model changes from regressing production silently."
+        },
+        {
+          "title": "Detect drift and remediate automatically where safe",
+          "text": "Configuration drift, behavioral anomalies, and tool failures get detected, contained, and recovered without human intervention for routine cases. Humans are reserved for exceptions."
+        },
+        {
+          "title": "Operate by KPIs that map to business outcomes",
+          "text": "Resolution rate, escalation rate, customer satisfaction, and task completion sit alongside infrastructure metrics with equal weight in dashboards and reviews."
+        },
+        {
+          "title": "Manage agents as a portfolio",
+          "text": "Registries, catalogs, ownership records, and decommissioning processes treat agents as a population that needs governance, not as one-off projects."
+        },
+        {
+          "title": "Codify and recycle operational knowledge",
+          "text": "Runbooks, decision artifacts, change records, and incident learnings become structured inputs to future agent improvement and human operator training, not tribal knowledge."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/operational-excellence.html",
+      "focus_areas": [
+        "AGENTOPS01",
+        "AGENTOPS02",
+        "AGENTOPS03",
+        "AGENTOPS04",
+        "AGENTOPS05",
+        "AGENTOPS06",
+        "AGENTOPS07"
+      ]
+    },
+    {
+      "name": "Security",
+      "slug": "security",
+      "prefix": "AGENTSEC",
+      "short": "Security",
+      "abbr": "SEC",
+      "intro": "The security portion of this lens provides security best practices and questions for organizations implementing autonomous AI agents and agentic systems on AWS. This focuses on securing AI agents, protecting against prompt injection, maintaining data privacy, and maintaining control over autonomous operations.",
+      "design_principles": [
+        {
+          "title": "Treat every input as untrusted and every output as potentially harmful",
+          "text": "Multi-layer validation, prompt injection defenses, and output filtering apply to user inputs, memory reads, tool I/O, and agent-to-agent messages alike. The agent itself is not a trust boundary."
+        },
+        {
+          "title": "Give each agent its own identity and the minimum privileges to do its job",
+          "text": "Per-agent authentication, dynamic permission boundaries, and scoped credentials per session limit what any single agent or compromised session can reach."
+        },
+        {
+          "title": "Partition memory, tools, and channels along trust boundaries",
+          "text": "Sessions, users, tenants, and agents get separate namespaces, integrity checks on stored state, and authenticated and encrypted communication so contamination cannot move laterally."
+        },
+        {
+          "title": "Layer guardrails between intent and action",
+          "text": "Pre-execution input filters, runtime alignment controls, and post-execution output filters keep agent behavior aligned even when prompts or contexts are adversarial. Critical actions stay gated behind human approval."
+        },
+        {
+          "title": "Continuously test the security posture",
+          "text": "AI-aware vulnerability scanning, multi-agent red-team simulations, and runtime threat detection run as part of the lifecycle, not as one-time exercises."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/security.html",
+      "focus_areas": [
+        "AGENTSEC01",
+        "AGENTSEC02",
+        "AGENTSEC03",
+        "AGENTSEC04",
+        "AGENTSEC05",
+        "AGENTSEC06",
+        "AGENTSEC07",
+        "AGENTSEC08",
+        "AGENTSEC09"
+      ]
+    },
+    {
+      "name": "Reliability",
+      "slug": "reliability",
+      "prefix": "AGENTREL",
+      "short": "Reliability",
+      "abbr": "REL",
+      "intro": "When agents reason, plan, and act through large language models, reliability takes on dimensions that traditional infrastructure patterns don't address. LLM decisions are stochastic, multi-agent coordination introduces new failure modes, and memory integrity becomes a first-class concern. An agent that works perfectly in testing may behave unpredictably in production when context windows fill up, models return unexpected outputs, or downstream agents become unavailable. This pillar provides best practices for building agent systems that execute tasks predictably, recover from failures automatically, and maintain partial functionality even under adverse conditions.",
+      "design_principles": [
+        {
+          "title": "Decouple agents through durable messaging",
+          "text": "Persistence, retry, and dead-letter handling absorb transient failures inside the messaging layer instead of cascading them through synchronous call chains."
+        },
+        {
+          "title": "Constrain blast radius through atomic responsibilities",
+          "text": "Single-task agents with the minimum permissions and clear instructions limit how far any individual failure or misbehavior can propagate."
+        },
+        {
+          "title": "Recover from the last known good state, not the beginning",
+          "text": "Checkpointed workflows, idempotent steps, and graceful degradation let work resume after a fault rather than restart from scratch."
+        },
+        {
+          "title": "Make multi-agent coordination resilient by design",
+          "text": "Arbiter patterns, capability taxonomies, and fallback paths keep collaborative workflows running when individual agents become unavailable or unreliable."
+        },
+        {
+          "title": "Ground reasoning in verifiable evidence",
+          "text": "Retrieval from authoritative sources, explicit citation, and hallucination detection keep agent outputs traceable to real data instead of fabricated content."
+        },
+        {
+          "title": "Exercise failure paths regularly",
+          "text": "Inject faults, run degraded-dependency tests, and rehearse recovery procedures. The first time a failure mode occurs should not be in production."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/reliability.html",
+      "focus_areas": [
+        "AGENTREL01",
+        "AGENTREL02",
+        "AGENTREL03",
+        "AGENTREL04",
+        "AGENTREL05",
+        "AGENTREL06",
+        "AGENTREL07",
+        "AGENTREL08"
+      ]
+    },
+    {
+      "name": "Performance efficiency",
+      "slug": "performance-efficiency",
+      "prefix": "AGENTPERF",
+      "short": "Performance",
+      "abbr": "PERF",
+      "intro": "Agents that respond quickly, scale smoothly, and use resources efficiently earn user trust and drive adoption, slow or unresponsive agents get abandoned regardless of how accurate they are. Performance efficiency in agentic AI systems extends beyond traditional compute and network optimization to encompass the unique characteristics of autonomous, goal-directed agents that reason, plan, and act through large language models. Unlike conventional workloads where performance is primarily a function of infrastructure sizing, agentic AI performance is shaped by cognitive pipeline design, memory and context management, model selection strategies, multi-agent coordination patterns, and tool integration efficiency. This pillar provides best practices for optimizing every layer of the agentic stack, from the inference calls that power agent reasoning to the orchestration patterns that coordinate multi-agent workflows, so that agent systems deliver responsive and scalable performance aligned with business outcomes.",
+      "design_principles": [
+        {
+          "title": "Set targets per agent class, not per platform",
+          "text": "Streaming, task-oriented, and batch agents have different primary KPIs (time-to-first-token, completion time, throughput). Commit to the right ones for each class instead of a single platform-wide SLA."
+        },
+        {
+          "title": "Design and tune the reasoning pipeline against the latency budget",
+          "text": "End-to-end latency is the sum of inference, retrieval, tool calls, and handoffs. Profile where time actually goes, allocate per-phase budgets, and optimize the proven critical path rather than the assumed one."
+        },
+        {
+          "title": "Move work off the synchronous path",
+          "text": "Asynchronous messaging, streaming responses, parallel tool invocation, and event-driven coordination decouple user-perceived latency from total work performed."
+        },
+        {
+          "title": "Tier memory and retrieval to access patterns",
+          "text": "Hot context near the agent, warm in nearby caches, cold in durable stores. Retrieval cost (latency, compute, tokens) should match the recency and frequency of access, not the maximum."
+        },
+        {
+          "title": "Isolate tenants without serializing them",
+          "text": "Multitenant agent platforms need per-tenant throttling, quotas, and capacity reservations so heavy workloads cannot starve neighbors."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/performance-efficiency.html",
+      "focus_areas": [
+        "AGENTPERF01",
+        "AGENTPERF02",
+        "AGENTPERF03",
+        "AGENTPERF04",
+        "AGENTPERF05",
+        "AGENTPERF06",
+        "AGENTPERF07"
+      ]
+    },
+    {
+      "name": "Cost optimization",
+      "slug": "cost-optimization",
+      "prefix": "AGENTCOST",
+      "short": "Cost",
+      "abbr": "COST",
+      "intro": "Organizations that treat cost as a first-class design constraint from the start build agentic systems that scale sustainably and deliver measurable business value per dollar spent. Agentic AI introduces cost dynamics that differ fundamentally from traditional cloud workloads, reasoning cycles consume tokens through iterative plan-execute-verify-reflect loops, multi-agent coordination adds multiplicative overhead, and autonomous tool invocations generate unpredictable cost spikes. Effective cost optimization requires designing with cost awareness from inception, right-sizing model and memory capabilities to task requirements, and implementing full visibility to enable data-driven decisions.",
+      "design_principles": [
+        {
+          "title": "Pay only for the reasoning the task requires",
+          "text": "Match model class, context length, and reasoning depth to task complexity instead of provisioning the largest model and longest context for the worst case."
+        },
+        {
+          "title": "Enforce consumption ceilings at every layer",
+          "text": "Token budgets, iteration limits, time bounds, and concurrency caps live as policy at the gateway, runtime, and orchestration tiers so unbounded execution is rejected at the boundary rather than paid for and discovered later."
+        },
+        {
+          "title": "Reuse before you recompute",
+          "text": "Caching of prompts, tool results, retrievals, and intermediate state turns repeat work into lookups. Inference is the most expensive operation in the system; build the architecture around that fact."
+        },
+        {
+          "title": "Attribute spend to the unit that drives it",
+          "text": "Tag every invocation with agent, tenant, session, and workflow so reporting moves from infrastructure-level to per-decision accounting and over-provisioned components become visible."
+        },
+        {
+          "title": "Close the loop between cost data and architecture",
+          "text": "Cost telemetry feeds back into model selection, prompt design, and orchestration choices on a regular cadence. Optimization is continuous, not a one-time review."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/cost-optimization.html",
+      "focus_areas": [
+        "AGENTCOST01",
+        "AGENTCOST02",
+        "AGENTCOST03",
+        "AGENTCOST04",
+        "AGENTCOST05",
+        "AGENTCOST06",
+        "AGENTCOST07"
+      ]
+    },
+    {
+      "name": "Sustainability",
+      "slug": "sustainability",
+      "prefix": "AGENTSUS",
+      "short": "Sustainability",
+      "abbr": "SUS",
+      "intro": "Organizations that build sustainable agent practices from the start scale their automation investments confidently, preserving institutional expertise, maximizing resource efficiency, and delivering compounding value as agent portfolios grow. Agentic AI systems introduce new sustainability challenges as agents consume compute, memory, and cognitive resources across extended workflows. This pillar addresses how organizations can build agent systems that maximize resource efficiency, minimize waste through reusable architectures, and maintain sustainable adoption patterns that preserve organizational knowledge and meet long-term business needs.",
+      "design_principles": [
+        {
+          "title": "Right-size each agent to its capability",
+          "text": "Resource boundaries (timeout, memory, token budget) match the actual work of a single capability rather than the worst-case input across many. For long-running or exploratory agents, declared success criteria, cost ceilings, and termination conditions keep extended execution a bounded investment instead of open-ended drift."
+        },
+        {
+          "title": "Amortize platform investment across the fleet",
+          "text": "Reusable workflow patterns, shared infrastructure services (connection pools, vector stores, retrieval pipelines, queues), and fleet-wide caching of model calls, tool results, and memory lookups turn what every team would otherwise build, run, and pay for separately into one piece of infrastructure every team uses. The first invocation does the work; subsequent ones reuse it."
+        },
+        {
+          "title": "Scale cognitive and infrastructure intensity to observed demand",
+          "text": "Match model size, retrieval depth, and memory scope to task complexity at the reasoning layer, and size hosting, network, and storage to the bursty, variable shape of real agent traffic instead of a theoretical maximum at the platform layer. Default-large is the most expensive path against any resource — energy, carbon, water, and silicon included."
+        },
+        {
+          "title": "Measure environmental footprint as an engineering signal",
+          "text": "Track energy, carbon, and water impact alongside cost and latency, baseline it per agent and per workflow, and route optimization investment to where the data points. Sustainability claims that aren't measured are aspirations, and optimizations that aren't measured are guesses."
+        },
+        {
+          "title": "Sustain the human capability that automation amplifies",
+          "text": "Maintain the organizational skills, processes, and tacit knowledge behind every automated workflow, and target agent development at work the organization has already mastered rather than processes it hopes to learn through automation. Agents that codify proven work pay back; agents that try to substitute for missing expertise consume resources discovering what could have been documented."
+        },
+        {
+          "title": "Curate the agent portfolio through living specifications and active retirement",
+          "text": "Keep specifications current as the system of record for each agent's purpose, scope, integration points, and decision logic so institutional knowledge survives staff and tooling changes, and decommission agents that no longer earn their infrastructure, security surface, and operational overhead before the portfolio becomes its own sustainability problem."
+        }
+      ],
+      "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/sustainability.html",
+      "focus_areas": [
+        "AGENTSUS01",
+        "AGENTSUS02",
+        "AGENTSUS03"
+      ]
+    }
+  ],
+  "roadmap": [
+    {
+      "id": "first-agent",
+      "label": "Building your first agent",
+      "intro": "Start with the foundational practices that establish agent scope, security boundaries, and predictable behavior",
+      "focus_areas": [
+        {
+          "id": "AGENTOPS01",
+          "summary": "Define agent roles, success criteria, and handoff procedures"
+        },
+        {
+          "id": "AGENTREL02",
+          "summary": "Design for atomic tasks, least-privilege permissions, and clear instruction protocols"
+        },
+        {
+          "id": "AGENTSEC03",
+          "summary": "Establish agent identity, least-privilege access, and strong authentication"
+        },
+        {
+          "id": "AGENTSEC08",
+          "summary": "Validate inputs and filter outputs before going to production"
+        }
+      ]
+    },
+    {
+      "id": "production",
+      "label": "Moving to production",
+      "intro": "Add observability, evaluation, cost controls, and cognitive pipeline optimization",
+      "focus_areas": [
+        {
+          "id": "AGENTOPS05",
+          "summary": "Implement tracing, anomaly detection, and operational dashboards"
+        },
+        {
+          "id": "AGENTOPS06",
+          "summary": "Establish testing and evaluation frameworks with LLM-as-judge"
+        },
+        {
+          "id": "AGENTPERF02",
+          "summary": "Optimize cognitive pipelines, model selection, and execution paths"
+        },
+        {
+          "id": "AGENTCOST01",
+          "summary": "Control reasoning loop costs and multi-agent coordination overhead"
+        },
+        {
+          "id": "AGENTCOST02",
+          "summary": "Right-size model selection and optimize token consumption"
+        }
+      ]
+    },
+    {
+      "id": "multi-agent",
+      "label": "Scaling to multi-agent systems",
+      "intro": "Address orchestration reliability, coordination security, and workflow performance",
+      "focus_areas": [
+        {
+          "id": "AGENTREL04",
+          "summary": "Implement arbiter patterns, capability taxonomies, and fallback mechanisms"
+        },
+        {
+          "id": "AGENTPERF05",
+          "summary": "Optimize orchestration patterns and multi-agent collaboration models"
+        },
+        {
+          "id": "AGENTSEC06",
+          "summary": "Secure inter-agent communication, trust boundaries, and coordination"
+        },
+        {
+          "id": "AGENTCOST05",
+          "summary": "Implement cost attribution across multi-agent workflows"
+        }
+      ]
+    },
+    {
+      "id": "hardening",
+      "label": "Hardening an existing deployment",
+      "intro": "Strengthen security controls, resilience, and human oversight",
+      "focus_areas": [
+        {
+          "id": "AGENTSEC04",
+          "summary": "Implement guardrails and human-in-the-loop for critical decisions"
+        },
+        {
+          "id": "AGENTSEC07",
+          "summary": "Protect human oversight and detect rogue agents"
+        },
+        {
+          "id": "AGENTREL06",
+          "summary": "Integrate with legacy systems reliably with fallbacks and idempotency"
+        }
+      ]
+    }
+  ],
+  "definitions": [
+    {
+      "term": "Agent",
+      "definition": "An autonomous software system that uses a large language model (LLM) as its reasoning engine to perceive context, plan actions, execute tasks, and adapt its behavior in pursuit of a defined goal. Agents differ from conventional AI applications in their ability to take multi-step actions, invoke external tools, maintain state across interactions, and make decisions without explicit human instruction at each step."
+    },
+    {
+      "term": "Agentic AI system",
+      "definition": "A software system composed of one or more agents that collaborate to accomplish complex, multi-step tasks. Agentic AI systems might include single agents with multiple tools, multi-agent architectures where specialized agents collaborate under orchestration, or hybrid systems that combine agentic and conventional software components."
+    },
+    {
+      "term": "Agentic RAG",
+      "definition": "A retrieval-augmented generation pattern where the agent actively controls the retrieval process as part of its reasoning loop, deciding when to retrieve, what to retrieve, which retrieval tool to use, and whether the retrieved context is sufficient before proceeding. Unlike standard RAG where retrieval is a static preprocessing step, agentic RAG treats retrieval as a dynamic reasoning action that the agent invokes iteratively based on its evolving understanding of the task. Agentic RAG patterns include iterative retrieval, query decomposition, retrieval sufficiency evaluation, and tool-augmented retrieval."
+    },
+    {
+      "term": "Agent cognition",
+      "definition": "The reasoning process by which an agent perceives its context, formulates a plan, selects actions, and evaluates outcomes. Agent cognition is powered by LLM inference and encompasses context retrieval, prompt construction, model inference, output parsing, and action selection."
+    },
+    {
+      "term": "Agent memory",
+      "definition": "The mechanisms by which agents store and retrieve information across interactions. Agent memory is typically organized into tiers: • **Short-term (session) memory**: Transient context scoped to the current task or conversation, typically stored in fast in-memory stores with TTL-based expiration. • **Long-term (persistent) memory**: Durable knowledge that persists across sessions, including learned preferences, historical outcomes, and domain knowledge. • **Episodic memory**: Records of specific past interactions that can be retrieved to inform current decisions. • **Semantic memory**: General domain knowledge stored as vector embeddings for semantic retrieval. • **Procedural memory**: Learned patterns for task execution that inform how agents approach recurring task types."
+    },
+    {
+      "term": "Agent orchestration",
+      "definition": "The coordination of multiple agents or agent components to accomplish a complex task. Orchestration might be implemented by a dedicated orchestrator agent, a workflow engine (such as AWS Step Functions), or a combination of both. Orchestration patterns range from static workflows (fully defined at design time) to dynamic graph orchestration (where the agent's reasoning determines the next step at runtime)."
+    },
+    {
+      "term": "Agent portfolio",
+      "definition": "The complete set of agents deployed across an organization, managed as organizational assets with tracked ownership, capabilities, dependencies, lifecycle state, cost profiles, and business value. Agent portfolio management enables organizations to help prevent agent sprawl, identify redundancy, manage cross-team dependencies, and make informed decisions about investment, consolidation, and retirement."
+    },
+    {
+      "term": "Arbiter agent",
+      "definition": "A specialized orchestration agent that resolves conflicts between specialized agents, manages resource contention, and helps keep the collective behavior of a multi-agent system aligned with the overall task objective."
+    },
+    {
+      "term": "Atomic task",
+      "definition": "A discrete, well-defined unit of work that an agent can execute independently with clear inputs, outputs, and success criteria. Atomic tasks are the building blocks of modular agent architectures."
+    },
+    {
+      "term": "Automatic cutoff (fail-fast)",
+      "definition": "A reliability pattern that detects when a downstream component is experiencing elevated error rates or latency and temporarily stops requests to that component, allowing it to recover without being overwhelmed. Automatic cutoffs operate in three modes: normal (requests flow), blocked (requests halted after failure threshold), and probing (periodic test requests to detect recovery). Also known as the circuit breaker pattern."
+    },
+    {
+      "term": "Capability taxonomy",
+      "definition": "A structured classification of agent capabilities that documents each agent's skills, limitations, resource requirements, and operational constraints. Capability taxonomies enable orchestration systems to make informed routing decisions and implement fallback strategies."
+    },
+    {
+      "term": "Context window",
+      "definition": "The maximum amount of text (measured in tokens) that a large language model can process in a single inference call. Context window utilization is a key performance and reliability metric for agent systems, as exceeding the context window causes inference failures."
+    },
+    {
+      "term": "Dead-letter queue (DLQ)",
+      "definition": "A message queue that captures messages that fail repeated processing attempts, helping prevent poison-pill messages from blocking healthy workflow execution. DLQs are a critical component of resilient agent messaging architectures."
+    },
+    {
+      "term": "Graceful degradation",
+      "definition": "The ability of an agent system to maintain partial functionality when components fail or performance degrades, rather than experiencing complete system failure. Graceful degradation involves detecting degraded conditions, activating fallback behaviors, and communicating reduced capabilities to users."
+    },
+    {
+      "term": "Guardrail",
+      "definition": "A control mechanism that constrains agent behavior within defined boundaries. Guardrails might be implemented at the model level (Amazon Bedrock Guardrails), the application level (input/output validation), or the infrastructure level (IAM policies, and network controls)."
+    },
+    {
+      "term": "Hallucination",
+      "definition": "A phenomenon where a large language model generates plausible-sounding but factually incorrect or fabricated information. Hallucination is a key reliability risk in agentic AI systems, particularly when agents make decisions based on model-generated information rather than retrieved facts."
+    },
+    {
+      "term": "Human-in-the-loop (HITL)",
+      "definition": "An operational pattern where human judgment is incorporated into agent workflows at defined decision points. HITL workflows range from notification-only (humans are informed but don't intervene) to approval-required (agents can't proceed without explicit human authorization)."
+    },
+    {
+      "term": "Idempotency",
+      "definition": "The property of an operation that produces the same result when executed multiple times with the same input. Idempotent operations can be safely retried after failures without risk of duplicate side effects."
+    },
+    {
+      "term": "Large language model (LLM)",
+      "definition": "A deep learning model trained on large text corpora that can generate, summarize, translate, and reason about text. LLMs serve as the reasoning engines for AI agents, enabling them to interpret instructions, plan actions, and generate responses."
+    },
+    {
+      "term": "Model Context Protocol (MCP)",
+      "definition": "An open standard protocol for connecting AI agents to external tools, data sources, and services. MCP defines a standardized interface for tool discovery, invocation, and result handling that enables agents to interact with a wide range of tools without custom integration code."
+    },
+    {
+      "term": "Multi-agent system",
+      "definition": "An architecture in which multiple specialized agents collaborate to accomplish tasks that exceed the capabilities of any single agent. Multi-agent systems might use hierarchical orchestration (supervisor-worker), peer-to-peer coordination, swarm-based collaboration, pipeline processing, dynamic graph orchestration, or hybrid patterns that combine multiple models within a single workflow."
+    },
+    {
+      "term": "Orchestrator agent",
+      "definition": "An agent responsible for decomposing complex tasks into subtasks, delegating subtasks to specialized agents, coordinating the flow of information between agents, and synthesizing results into a final output."
+    },
+    {
+      "term": "Prompt injection",
+      "definition": "A class of issue in which content in an agent's input attempts to override the agent's system prompt or cause it to perform actions outside its defined scope. Prompt injection is a key security consideration in agentic AI systems that process untrusted input."
+    },
+    {
+      "term": "Retrieval-augmented generation (RAG)",
+      "definition": "A technique that enhances LLM outputs by retrieving relevant information from external knowledge sources and including it in the model's context. RAG reduces hallucination rates and improves factual accuracy by grounding model reasoning in retrieved real-world information."
+    },
+    {
+      "term": "Saga pattern",
+      "definition": "A distributed transaction pattern that coordinates a sequence of local transactions across multiple services, with compensating transactions defined for each step to enable rollback when downstream steps fail. The saga pattern is commonly used in multi-agent workflows to maintain data consistency across agent boundaries."
+    },
+    {
+      "term": "Specialized agent",
+      "definition": "An agent designed to perform a single, well-defined capability with atomic operations. Specialized agents are the building blocks of multi-agent systems, each responsible for one discrete task within the larger workflow."
+    },
+    {
+      "term": "Stochasticity",
+      "definition": "The inherent randomness in LLM outputs that causes the same input to produce different outputs across invocations. Stochasticity is a fundamental characteristic of LLM-powered agents that must be accounted for in reliability and testing strategies."
+    },
+    {
+      "term": "Swarm",
+      "definition": "A multi-agent collaboration pattern where multiple agents work independently on overlapping aspects of a problem, sharing intermediate findings through a common workspace, without centralized supervision. Swarm patterns are effective for tasks that benefit from parallel exploration of a solution space, diverse perspectives, or emergent problem-solving. Swarm implementations require controls for redundant work prevention, convergence detection, and resource budgets to help prevent unbounded consumption."
+    },
+    {
+      "term": "Time-to-first-token (TTFT)",
+      "definition": "The elapsed time between a user submitting a request and receiving the first output token from the agent. TTFT is the primary perceived-performance metric for interactive agent interactions, as users perceive agents with low TTFT as dramatically faster even when total processing time is identical. TTFT is composed of pre-stream latency (input processing, context retrieval, and prompt construction) and inference TTFT (time from model invocation to first generated token)."
+    },
+    {
+      "term": "Token",
+      "definition": "The basic unit of text processed by large language models. Tokens roughly correspond to word fragments, with approximately 750 words equaling 1,000 tokens. Token consumption is the primary cost driver for LLM-based agent systems."
+    },
+    {
+      "term": "Tool",
+      "definition": "A function or API that an agent can invoke to interact with external systems, retrieve information, or perform actions. Tools extend agent capabilities beyond text generation to include web search, database queries, code execution, API calls, and other operations."
+    },
+    {
+      "term": "Workflow",
+      "definition": "A structured sequence of agent actions, tool invocations, and decision points that accomplishes a complex task. Workflows might be implemented as Step Functions state machines, agent reasoning loops, or combinations of both."
+    }
+  ],
+  "counts": {
+    "pillars": 6,
+    "focus_areas": 41,
+    "best_practices": 150,
+    "risk": {
+      "High": 90,
+      "Medium": 59,
+      "Low": 1
+    }
+  }
+}

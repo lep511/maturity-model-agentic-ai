@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST06-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST06",
+  "focus_area": "Agent discovery and deployment cost optimization",
+  "recommendation": "Design cost-efficient initialization through warm pools and caching",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Cold starts are a significant per-invocation cost in agent infrastructure, where model loading, tool registration, and memory hydration run on every fresh session. You can reduce those per-invocation costs through persistent filesystems, session affinity, and lazy context loading to reuse results while still scaling to zero for agents that are rarely called.",
+  "how_to_check": "• You amortize initialization costs across many invocations by caching artifacts on a persistent filesystem.\n• You have frequently invoked agents reusing warm sessions and infrequent agents scaling to zero without idle charges.\n• You defer non-essential context retrieval to on-demand, keeping initialization under a fixed time budget.\n• You track cold start rates and initialization costs per agent type.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp03.html'>AGENTCOST06-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp03.html"
+}

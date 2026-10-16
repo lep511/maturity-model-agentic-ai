@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC07-BP05",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC07",
+  "focus_area": "Human oversight protection and agent containment",
+  "recommendation": "Regular security assessments and red teaming",
+  "risk": "Medium",
+  "aws_service": "Amazon S3 / Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Untested security controls degrade quietly as techniques evolve and configurations drift. A combination of continuous automated scanning and periodic human-led red team exercises validates that guardrails, detection rules, and response procedures still work against current attacks.",
+  "how_to_check": "• You run automated security scanning continuously against agent deployments (on each deploy and on schedule) and conduct human-led red team exercises on a regular cadence with scenarios targeting agent manipulation, including prompt injection, goal hijacking, and tool misuse.\n• You document findings, track them to remediation, and use them to update security controls and detection rules.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp05.html'>AGENTSEC07-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp05.html"
+}

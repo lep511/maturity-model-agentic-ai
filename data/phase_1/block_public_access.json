@@ -1,9 +1,0 @@
-{
-  "id": "1.7.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Data protection",
-  "recommendation": "Block Public Access",
-  "aws_service": "S3 / EC2",
-  "guidance": "Enable S3 Block Public Access (BPA) at the account level across all organization accounts to prevent accidental public exposure. For accounts requiring a public bucket, apply BPA at the bucket level for all other buckets. Use SCPs to prevent BPA removal where not needed. Also enable BPA for EC2 AMIs and EBS Snapshots. Use Security Hub controls S3.1 and S3.8 to identify gaps.",
-  "how_to_check": "Is S3 BPA enabled at the account level across all accounts? Is BPA enabled for EC2 AMIs and EBS Snapshots? Are SCPs in place to prevent BPA removal? For accounts with public buckets, is BPA applied at the bucket level for all non-public buckets? Verify with Security Hub controls S3.1, S3.2, and EC2.1.\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/block-public-access/'>documentation</a>."
-}

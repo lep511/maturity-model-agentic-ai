@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF05-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF05",
+  "focus_area": "Workflow orchestration and multi-agent collaboration",
+  "recommendation": "Implement optimized multi-agent collaboration models",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Agents / Amazon Bedrock AgentCore / AWS Step Functions / Amazon DynamoDB",
+  "guidance": "Multi-agent systems typically deliver the strongest results when each collaboration pattern is matched to the task it was designed for (for example, supervisor-worker for structured decomposition, swarm for creative exploration, and pipeline for sequential processing). Before picking any multi-agent pattern, decide whether a capability should be a sub-agent or a tool that a single agent invokes. A tool call completes in milliseconds, while a sub-agent delegation is a full LLM reasoning loop that costs time and tokens.",
+  "how_to_check": "• You have multi-agent workflows that use collaboration models matched to their task characteristics.\n• You have each capability implemented at the right abstraction level, tool for deterministic single-step operations, sub-agent for tasks that require independent reasoning.\n• You have coordination overhead minimized through appropriate pattern selection and implementation.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp02.html'>AGENTPERF05-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp02.html"
+}

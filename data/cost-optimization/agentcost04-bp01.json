@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST04-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST04",
+  "focus_area": "Agent tool serving cost optimization",
+  "recommendation": "Design cost effective tool selection to minimize unnecessary invocations",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Often, the most cost-effective tool call is the one an agent decides not to make because the answer is already in context. Context-first reasoning, cost-ranked selection, and duplicate detection tie tool invocation to the value of the information retrieved.",
+  "how_to_check": "• You have agents checking context and managed memory before invoking tools.\n• You have a cost-ranked selection rubric that points agents to cheaper alternatives first.\n• You batch requests where possible and cache results within sessions to avoid duplicate calls.\n• You monitor per-tool invocation frequency and cache hit rates as distinct metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp01.html'>AGENTCOST04-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp01.html"
+}

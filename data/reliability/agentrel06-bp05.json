@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL06-BP05",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL06",
+  "focus_area": "Legacy system integration",
+  "recommendation": "Implement dynamic capability toggling",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Taking an entire agent offline to fix one misbehaving feature is disproportionate. Feature flags at the gateway boundary let operators disable the affected capability immediately, keeping the rest of the agent usable while fixes or investigations proceed.",
+  "how_to_check": "• You have capability toggles that disable specific tools or features without redeploying the agent.\n• You have fallback behaviors defined for each capability so agents continue operating when a feature is disabled.\n• You monitor toggle state and fallback usage so capabilities exhibiting silent degradation surface through elevated fallback rates.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp05.html'>AGENTREL06-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp05.html"
+}

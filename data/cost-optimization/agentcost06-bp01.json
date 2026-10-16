@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST06-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST06",
+  "focus_area": "Agent discovery and deployment cost optimization",
+  "recommendation": "Implement lightweight discovery and registry for cost-effective collaboration",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon DynamoDB / Amazon CloudWatch",
+  "guidance": "Deploying service-mesh infrastructure for agent discovery carries a fixed cost that doesn't scale down when traffic does. You can keep registry cost proportional to fleet size through managed discovery through tool exposure, consumption-based registries, and aggressive metadata caching.",
+  "how_to_check": "• You use consumption-based infrastructure for agent discovery, charging only for actual operations.\n• You serve repeated capability lookups from a metadata cache instead of the database.\n• You keep costs proportional to fleet size through efficient indexing and batched writes.\n• You monitor per-query costs so they don't grow silently as the fleet expands.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp01.html'>AGENTCOST06-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp01.html"
+}

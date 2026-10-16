@@ -1,9 +1,0 @@
-{
-  "id": "2.5.2",
-  "phase": "Phase 2: Foundational",
-  "capability": "Vulnerability management",
-  "recommendation": "Manage application vulnerabilities",
-  "aws_service": "Amazon Inspector",
-  "guidance": "Scan applications at multiple stages using SAST and DAST. Key integration points: Amazon Q Developer in the IDE, Amazon Inspector in the pipeline (SAST, SCA, IaC) and image repository (ECR, Lambda, GitHub/GitLab), and third-party tools (Checkmarx, Veracode) via AWS Marketplace. The open-source Automated Security Helper (ASH) supports Git, Python, JavaScript, CloudFormation, and Terraform. Perform penetration testing on critical applications. A WAF alone is insufficient — scanning is still required.",
-  "how_to_check": "Are applications scanned with SAST and/or DAST across all pipeline stages? Are secrets and credentials in code detected? Are critical vulnerabilities blocking production promotion?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/application-security-testing/'>documentation</a>."
-}

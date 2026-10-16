@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF05-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF05",
+  "focus_area": "Workflow orchestration and multi-agent collaboration",
+  "recommendation": "Design efficient workflow orchestration patterns",
+  "risk": "High",
+  "aws_service": "AWS Step Functions / Amazon Bedrock AgentCore Runtime / Amazon S3 / Amazon DynamoDB / Amazon CloudWatch",
+  "guidance": "Agents that coordinate specialized sub-agents can solve complex tasks faster than any single agent, and the orchestration pattern you choose determines whether that coordination adds milliseconds or seconds. Orchestration patterns range from static workflows (the execution graph is fully defined at design time) to dynamic workflows (the agent's reasoning determines the next step at runtime). Efficient orchestration means decomposing tasks for parallelism, minimizing data passed between steps, and matching the orchestration pattern to the task's dependency structure.",
+  "how_to_check": "• You have multi-agent workflows that execute with minimal orchestration overhead, with independent subtasks running in parallel and dependent tasks executing as soon as prerequisites complete.\n• You have task routing decisions that are fast and accurate.\n• You have end-to-end workflow latency that approaches the theoretical minimum defined by the critical path of dependent operations.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp01.html'>AGENTPERF05-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp01.html"
+}

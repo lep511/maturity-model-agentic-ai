@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS06-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS06",
+  "focus_area": "Testing, evaluation, and validation frameworks",
+  "recommendation": "Design multi-layered testing frameworks",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Traditional software testing, like exact-match assertions and green-or-red unit tests, can miss important failure modes in agentic systems. A testing pyramid that covers unit, integration, end-to-end tests, and shadow layers helps teams catch behavioral regressions before they reach users.",
+  "how_to_check": "• Agent systems are covered by a testing pyramid that includes unit tests, integration tests, end-to-end tests, and shadow tests in production environments.\n• Automated testing pipelines run on every code and configuration change, providing rapid feedback on regressions.\n• Test coverage metrics are tracked and maintained above defined thresholds for all agent capabilities.\n• Tests use semantic quality assessment rather than exact-match comparison, so non-deterministic outputs don't break the suite.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp01.html'>AGENTOPS06-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp01.html"
+}

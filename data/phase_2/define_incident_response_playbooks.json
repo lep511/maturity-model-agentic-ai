@@ -1,9 +1,0 @@
-{
-  "id": "2.9.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Incident response",
-  "recommendation": "Define incident response playbooks",
-  "aws_service": "N/A",
-  "guidance": "Define, document, and test action plans for undesirable security scenarios. For example, when GuardDuty detects bitcoin mining or C2 connections from an EC2 instance, the playbook might define isolating it by replacing its security group to block outbound traffic and restrict inbound to the forensics team's IP only. Documented playbooks ensure consistency and allow junior personnel to respond effectively when senior staff are unavailable. AWS provides a Security Incident Response Guide and sample playbook framework as references.",
-  "how_to_check": "Are incident response playbooks defined and documented for the most likely or highest-impact scenarios? Have playbooks been tested? Can junior personnel execute them without senior staff present?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/playbooks/'>documentation</a>."
-}

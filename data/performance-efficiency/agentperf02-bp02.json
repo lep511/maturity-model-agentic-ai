@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF02-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF02",
+  "focus_area": "Core processing and reasoning pipeline optimization",
+  "recommendation": "Implement task-appropriate model selection strategies",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / AWS AppConfig / Amazon CloudWatch",
+  "guidance": "Agent tasks vary widely in the reasoning they require, but default routing often sends every task to the same large model, paying the latency cost of a heavyweight model even for work a smaller one resolves as well. Matching model capability to task demand is one of the highest-use performance decisions in an agent system, because inference latency and throughput scale directly with model size. Done systematically, model selection reduces per-task latency without sacrificing quality on complex reasoning.",
+  "how_to_check": "• You have agent tasks classified by reasoning complexity, with each class mapped to the smallest model that meets its quality bar.\n• You have routing logic that directs each request to its assigned model at runtime, with a cascading fallback to a more capable model when the assigned model produces low-confidence or failed outputs.\n• You have model assignments validated against benchmarked quality and latency on the workload's own task distribution rather than on generic leaderboard rankings.\n• You have model selection treated as a runtime-configurable parameter so new model releases can be evaluated and rolled out without redeploying the agent.\n• You have inference latency and task quality tracked per task class, so routing decisions are continually validated against both.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp02.html'>AGENTPERF02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp02.html"
+}

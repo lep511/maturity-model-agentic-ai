@@ -33,7 +33,7 @@ INPUT_FILE="${1:-links_output.json}"
 OUTPUT_FILE="${2:-links_checked.json}"
 TIMEOUT=10
 RETRIES=2
-PARALLEL=5
+PARALLEL=3
 
 # --- Parse extra options ---
 shift 2 2>/dev/null || true

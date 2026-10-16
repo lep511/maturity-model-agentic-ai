@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL05-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL05",
+  "focus_area": "Agent cognition",
+  "recommendation": "Ground agent cognition in real information",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore",
+  "guidance": "Training data has a cutoff and an agent reasoning only from model knowledge can hallucinate about the present. Retrieval-augmented generation grounds each answer in current, domain-specific information and reduces hallucination rates as a byproduct.",
+  "how_to_check": "• You have retrieval pipelines that ground agent reasoning in current, domain-specific information.\n• You validate knowledge freshness and flag content that exceeds staleness thresholds.\n• You handle retrieval failures gracefully, letting agents continue with model knowledge while communicating the uncertainty.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp03.html'>AGENTREL05-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp03.html"
+}

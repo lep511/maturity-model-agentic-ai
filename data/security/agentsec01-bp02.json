@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC01-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC01",
+  "focus_area": "Secure agent memory and state",
+  "recommendation": "Validate and sanitize memory inputs",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / AWS WAF / Amazon SQS / Amazon CloudWatch / Amazon API Gateway",
+  "guidance": "Unvalidated writes into agent memory let adversarial content persist and influence every subsequent session that reads the same context. Layered validation at ingestion keeps the memory store free of injection payloads, policy-violating content, and context inconsistent with the current task.",
+  "how_to_check": "• You validate all data entering agent memory for type, format, and content before storage, and reject or quarantine policy-violating inputs before they influence agent behavior.\n• You detect and block injection attempts at the memory ingestion layer and route suspicious inputs to human review.\n• Your memory store contains only schema-conformant, sanitized data that downstream agents can consume safely.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp02.html'>AGENTSEC01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp02.html"
+}

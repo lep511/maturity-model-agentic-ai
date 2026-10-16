@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST06-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST06",
+  "focus_area": "Agent discovery and deployment cost optimization",
+  "recommendation": "Cost optimize versioning and deployment through efficient artifact management",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon ECR / Amazon CloudWatch",
+  "guidance": "Agent runtimes that create an immutable version on every configuration change accumulate hundreds of versions during normal development, each holding references to container images that can't be managed easily. Layered base images, endpoint-based traffic routing, and automated cleanup policies keep deployment cost proportional to real usage rather than to the number of past configurations.",
+  "how_to_check": "• You have container layer deduplication storing shared dependencies once across agent versions.\n• You use endpoint-based traffic routing for blue/green and canary deployments without duplicate running infrastructure.\n• You have automated lifecycle policies that delete unused versions, helping prevent indefinite storage accumulation.\n• You monitor version inventory and catch unused versions before they become a material cost.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp02.html'>AGENTCOST06-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost06-bp02.html"
+}

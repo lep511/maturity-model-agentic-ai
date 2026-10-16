@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF03-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF03",
+  "focus_area": "Memory, context, and RAG optimization",
+  "recommendation": "Optimize context window utilization and prompt management",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore",
+  "guidance": "Every token sent to an LLM competes for the model's attention, consumes input-token cost, and adds inference latency, which makes prompt content a first-order performance lever. Effective context window management budgets tokens across prompt components, assembles only what the current task needs, and compresses or summarizes the rest. Without this discipline, conversation history and tool schemas crowd out reasoning capacity and inflate latency on every iteration.",
+  "how_to_check": "• You have an explicit token budget allocated across prompt components, system instructions, conversation history, retrieved knowledge, and tool schemas, with per-component token usage measured on every request.\n• You have context assembled dynamically per request, including only the tool definitions, retrieved passages, and conversation context relevant to the current task rather than a fixed maximal payload.\n• You have conversation history bounded by summarization, sliding windows, or semantic compression so prompt size doesn't grow linearly with session length.\n• You have prompt templates versioned and evaluated so changes to wording, ordering, or component composition are measured against quality and token-cost baselines before rollout.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp02.html'>AGENTPERF03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp02.html"
+}

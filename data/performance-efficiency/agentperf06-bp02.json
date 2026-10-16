@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF06-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF06",
+  "focus_area": "Tool integration and framework optimization",
+  "recommendation": "Implement efficient tool invocation patterns",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Lambda / Amazon CloudWatch",
+  "guidance": "Well-tuned tool invocation patterns help the agent's responsiveness reflect the tool's actual processing time, not infrastructure overhead. Each tool invocation involves connection establishment, serialization, network transfer, processing, and deserialization, trimming each component compounds across the many tool calls in a typical agent task.",
+  "how_to_check": "• You have individual tool invocations that execute with minimal overhead beyond the tool's inherent processing time.\n• You have connection pooling that removes repeated connection establishment costs.\n• You have timeouts that help prevent slow tools from blocking agent execution.\n• You have automatic cutoffs that detect degraded tools and route to alternatives.\n• You have per-tool invocation metrics that provide visibility into performance characteristics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp02.html'>AGENTPERF06-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp02.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF04-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF04",
+  "focus_area": "Communication and protocol efficiency",
+  "recommendation": "Implement efficient protocol-based agent communications",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon API Gateway",
+  "guidance": "Standardized protocols such as the Model Context Protocol (MCP) and agent-to-agent (A2A) give agents a consistent way to communicate with tools and each other, reducing per-interaction overhead and enabling interoperability. Different protocols have different performance profiles, connection establishment, serialization, streaming, multiplexing, which makes protocol selection a meaningful performance decision for high-frequency agent communication.",
+  "how_to_check": "• You use MCP for tool integration, A2A for agent-to-agent coordination, and streaming protocols for real-time agent-user interactions.\n• You have protocol overhead minimized through connection reuse and efficient serialization.\n• You have documented protocol selection guidelines for the organization.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp02.html'>AGENTPERF04-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp02.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS04-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS04",
+  "focus_area": "Tool integration and management practices",
+  "recommendation": "Establish standardized tool integration protocols (MCP, A2A)",
+  "risk": "High",
+  "aws_service": "AWS Identity and Access Management / Amazon Bedrock AgentCore",
+  "guidance": "Point-to-point integrations between every agent and every tool produce a maintenance burden that grows with the number of integrations. Standardized protocols like MCP and A2A replace this with a shared contract, which defaults to interoperability instead of tools that are custom-made for specific integrations.",
+  "how_to_check": "• Agents integrate with tools through standardized protocols (MCP for tool invocation, A2A for agent-to-agent) that support interoperability, consistent behavior, and portability across providers.\n• Tool invocations run with secure patterns: least-privilege access, consistent error handling, and complete audit logs.\n• Agents invoke tools reliably across varying network conditions and tool availability, with fallback mechanisms that maintain service continuity.\n• Error handling follows a standardized taxonomy so every agent responds to transient, permanent, and authorization failures the same way.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp02.html'>AGENTOPS04-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp02.html"
+}

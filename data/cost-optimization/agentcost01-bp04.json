@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST01-BP04",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST01",
+  "focus_area": "Reasoning and execution cost optimization",
+  "recommendation": "Design agent hierarchies and delegation patterns that reduce coordination overhead",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Supervisor cost in agent hierarchies grows with the verbosity of capability descriptions and the frequency of check-ins. Compact manifests and autonomous workers keep coordination cost proportional to workflow complexity rather than step count.",
+  "how_to_check": "• Your agent hierarchies use the shallowest orchestration structure capable of managing the workflow.\n• You have supervisor agents operating on compressed capability manifests that minimize input tokens per routing decision.\n• Your worker agents complete multi-step sub-tasks autonomously, escalating to supervisors only for task assignment and result validation.\n• You track orchestrator cost as a distinct category with a target supervisor-to-worker cost ratio.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp04.html'>AGENTCOST01-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp04.html"
+}

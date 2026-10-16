@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF02-BP03",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF02",
+  "focus_area": "Core processing and reasoning pipeline optimization",
+  "recommendation": "Optimize agent execution paths for reduced latency",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / AWS Lambda / Amazon RDS Proxy",
+  "guidance": "Most of an agent request's total latency time is spent waiting on model inference, retrieval, tool invocations, and memory lookups rather than on CPU work inside the agent process. Executing independent operations concurrently, reusing warm connections and runtimes, and deduplicating repeated lookups within a single request cut total latency without changing models or prompts.",
+  "how_to_check": "• You have independent operations within an agent request executed concurrently sequential execution is reserved for operations with genuine data dependencies.\n• You have connections to downstream services, model endpoints, tool APIs, memory stores, vector indexes, pooled and reused across requests rather than reestablished per invocation.\n• You have runtime cold starts removed from the critical path or bounded through provisioned capacity, pre-warming, or persistent execution environments.\n• You have repeated lookups within a single request resolved from a request-scoped cache, so duplicate work isn't paid twice inside one invocation.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp03.html'>AGENTPERF02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp03.html"
+}

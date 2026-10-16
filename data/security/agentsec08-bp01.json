@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC08-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC08",
+  "focus_area": "Secure agent inputs and outputs",
+  "recommendation": "Multi-layer input validation and prompt injection defense",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails",
+  "guidance": "Agents take input from many surfaces and only one needs to be unvalidated for adversarial content to reach the agent's reasoning process. A layered validation architecture covers every surface, and in particular catches the indirect prompt injection embedded in retrieved external content.",
+  "how_to_check": "• Every input surface has a validation layer appropriate to its risk profile, and no input reaches the agent's reasoning process without passing through at least one validation control.\n• You specifically address indirect prompt injection through retrieved external content, which is the surface most commonly missed when validation is applied only to direct user inputs.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec08-bp01.html'>AGENTSEC08-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec08-bp01.html"
+}

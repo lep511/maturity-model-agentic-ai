@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL05-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL05",
+  "focus_area": "Agent cognition",
+  "recommendation": "Facilitate reliable adaptation through evaluation-driven improvement cycles",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "Agents degrade quietly when no one is watching, and runtime self-modification based on noisy feedback makes things worse. Structured feedback collection with offline evaluation and validated deployments keeps adaptation reliable because every change is measured before it reaches users.",
+  "how_to_check": "• You collect action-level, task-level, and session-level feedback signals on every agent interaction.\n• You run automated and LLM-as-a-judge evaluations periodically, comparing current behavior against golden-path examples.\n• You validate prompt and configuration changes offline before deploying through gradual rollout.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp02.html'>AGENTREL05-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp02.html"
+}

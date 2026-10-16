@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS01-BP03",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS01",
+  "focus_area": "Resource reusability",
+  "recommendation": "Optimize resource utilization through shared services",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon ElastiCache / Amazon DynamoDB",
+  "guidance": "Every agent that provisions its own connection pool, cache, or processing queue pays the cost of infrastructure nobody else in the fleet benefits from. Shared services turn those duplications into one piece of infrastructure that every agent uses, so infrastructure scales with organizational demand rather than agent count.",
+  "how_to_check": "• You have common infrastructure, connection pools, caches, and processing queues, consolidated into shared service layers that every agent invokes rather than duplicates.\n• Agents consume shared services through a tool abstraction, so implementations can change without coupling to the callers.\n• Shared caching and pooling reduce the total number of redundant calls to external systems.\n• Utilization of shared services is monitored so capacity scales with actual demand rather than theoretical peaks.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp03.html'>AGENTSUS01-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp03.html"
+}

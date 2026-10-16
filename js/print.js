@@ -1,14 +1,21 @@
 // ─── PRINT PREVIEW ────────────────────────────────────────────────────────────
+// Depends on globals from js/app.js: PILLARS, PILLAR_ABBR, PILLAR_COLORS,
+// FOCUS_AREAS, LENS, DATA, scores, comments, sessions, currentSessionId,
+// faShort(), escapeHtml(), renderPillarChrome(), closeModal().
 
 function openPrintPreview() {
-  // Build capability checkboxes
+  // Pillar checkboxes are rendered by renderPillarChrome(); make sure they exist
+  if (!document.querySelector('.phase-chk') && typeof renderPillarChrome === 'function') renderPillarChrome();
+
+  // Build focus-area checkboxes
   const capBox = document.getElementById('capCheckboxes');
   capBox.innerHTML = '';
-  CAPABILITIES.forEach((cap, i) => {
+  FOCUS_AREAS.forEach(fa => {
     const lbl = document.createElement('label');
     lbl.className = 'print-checkbox-row';
-    lbl.innerHTML = `<input type="checkbox" class="cap-chk" value="${i}" checked onchange="refreshPreview()">
-      <span class="print-checkbox-label" style="font-size:11px">${cap}</span>`;
+    lbl.title = `${fa.id}: ${fa.question}`;
+    lbl.innerHTML = `<input type="checkbox" class="cap-chk" value="${escapeHtml(fa.id)}" checked onchange="refreshPreview()">
+      <span class="print-checkbox-label" style="font-size:11px"><span style="font-family:'Roboto Mono',monospace;font-size:9px;color:var(--text-dim)">${faShort(fa.id)}</span> ${escapeHtml(fa.name)}</span>`;
     capBox.appendChild(lbl);
   });
   document.getElementById('printModal').classList.add('open');
@@ -44,21 +51,21 @@ function getPrintOptions() {
   const items    = document.querySelector('input[name="printItems"]:checked').value;
   const color    = document.querySelector('input[name="printColor"]:checked').value;
   const phases   = [...document.querySelectorAll('.phase-chk:checked')].map(c => parseInt(c.value));
-  const caps     = [...document.querySelectorAll('.cap-chk:checked')].map(c => parseInt(c.value));
+  const caps     = [...document.querySelectorAll('.cap-chk:checked')].map(c => c.value);
   const guidance = document.getElementById('tog-guidance').checked;
   const howto    = document.getElementById('tog-howto').checked;
   const cmts     = document.getElementById('tog-comments').checked;
+  const risk     = document.getElementById('tog-risk') ? document.getElementById('tog-risk').checked : true;
   const service  = document.getElementById('tog-service').checked;
   const summary  = document.getElementById('tog-summary').checked;
-  return { format, items, color, phases, caps, guidance, howto, cmts, service, summary };
+  return { format, items, color, phases, caps, guidance, howto, cmts, risk, service, summary };
 }
 
 function getPrintData(opts) {
   return DATA.filter(d => {
-    const phIdx = PHASES.indexOf(d.phase);
-    if (!opts.phases.includes(phIdx)) return false;
-    const capIdx = CAPABILITIES.indexOf(d.capability);
-    if (!opts.caps.includes(capIdx)) return false;
+    const pi = PILLARS.indexOf(d.pillar);
+    if (!opts.phases.includes(pi)) return false;
+    if (!opts.caps.includes(d.focus_area_id)) return false;
     const s = scores[d.id];
     const hasScore = s !== null && s !== undefined && s !== 'na';
     const isExcluded = s === 'na';
@@ -88,22 +95,31 @@ function scoreChipHtml(id, bw) {
   return `<span class="print-score-chip chip-0">0% Aligned</span>`;
 }
 
+function riskChipHtml(risk, bw) {
+  if (!risk) return '';
+  const cls = bw ? 'print-risk' : `print-risk print-risk-${String(risk).toLowerCase()}`;
+  return `<span class="${cls}" title="Level of risk exposed if this best practice is not established">${escapeHtml(risk)} risk</span>`;
+}
+
 function buildSummaryGrid(data, accent) {
+  const isScoredId = id => scores[id] !== null && scores[id] !== undefined && scores[id] !== 'na';
   const total    = data.length;
-  const assessed = data.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na').length;
+  const assessed = data.filter(d => isScoredId(d.id)).length;
   const aligned  = data.filter(d => scores[d.id] === 1).length;
   const partial  = data.filter(d => scores[d.id] > 0 && scores[d.id] < 1).length;
+  const highOpen = data.filter(d => d.risk === 'High' && scores[d.id] !== 'na' && scores[d.id] !== 1).length;
   const avg = assessed > 0
-    ? Math.round(data.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na')
-        .reduce((s,d) => s + (scores[d.id] || 0), 0) / assessed * 100)
+    ? Math.round(data.filter(d => isScoredId(d.id)).reduce((s,d) => s + (scores[d.id] || 0), 0) / assessed * 100)
     : 0;
   const alignColor   = accent === '#111' ? '#111' : '#00875a';
   const partialColor = accent === '#111' ? '#555' : '#b35a00';
+  const riskColor    = accent === '#111' ? '#333' : '#c0001a';
   return `<div class="print-summary-grid">
-    <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${total}</div><div class="psb-label">Total Items</div></div>
+    <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${total}</div><div class="psb-label">Best Practices</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${assessed}</div><div class="psb-label">Assessed</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${alignColor}">${aligned}</div><div class="psb-label">100% Aligned</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${partialColor}">${partial}</div><div class="psb-label">Partial</div></div>
+    <div class="print-summary-box"><div class="psb-val" style="color:${riskColor}">${highOpen}</div><div class="psb-label">High Risk Open</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${avg}%</div><div class="psb-label">Avg Score</div></div>
   </div>`;
 }
@@ -113,26 +129,24 @@ function cleanHowToCheck(text) {
 
   let clean = text;
 
-  // Delte all tags from HTML
+  // Remove HTML tags
   clean = clean.replace(/<[^>]*>/g, '');
 
-  // Delete comun words
+  // Remove the trailing documentation pointer sentences
   clean = clean.replace(/for more information[\s\S]*?$/i, '');
   clean = clean.replace(/see the documentation[\s\S]*?$/i, '');
   clean = clean.replace(/consult the[\s\S]*?$/i, '');
   clean = clean.replace(/refer to[\s\S]*?$/i, '');
 
-  // Delete any url 
+  // Remove any URL
   clean = clean.replace(/\s*https?:\/\/\S+/gi, '');
-  clean = clean.replace(/\s*security\.aws\.dev[^\s'">]*/gi, '');
 
-  // Delete documentation word at the end
+  // Remove a dangling "documentation" word at the end
   clean = clean.replace(/\s*documentation\.?\s*$/i, '');
 
-  // Clean spaces and extra points.
-  clean = clean.replace(/\s+/g, ' ').trim();
-  clean = clean.replace(/([?.!])\s*\1+/g, '$1');   // ?? → ?
-  clean = clean.replace(/\?\s*\.?\s*$/, '?');
+  // Normalize whitespace but keep the line breaks between bullets
+  clean = clean.replace(/[ \t]+/g, ' ').replace(/\n{2,}/g, '\n').trim();
+  clean = clean.replace(/([?.!])\s*\1+/g, '$1');
 
   return clean;
 }
@@ -140,14 +154,12 @@ function cleanHowToCheck(text) {
 function buildPrintDoc(opts, data) {
   const bw = opts.color === 'bw';
   const accent   = bw ? '#111' : '#FF9900';
-  const accentBg = bw ? '#f0f0f0' : '#fff3e0';
-  const phColors = bw
-    ? ['#333','#555','#777','#999']
-    : ['#FF9900','#3ecf8e','#4da6ff','#b47aff'];
-  const phBgs = bw
-    ? ['#f4f4f4','#efefef','#eaeaea','#e5e5e5']
-    : ['#fff4e0','#eafaf4','#e8f3ff','#f4eeff'];
+  const grays    = ['#333', '#555', '#777', '#999', '#666', '#444'];
+  const grayBgs  = ['#f4f4f4', '#efefef', '#eaeaea', '#e5e5e5', '#e9e9e9', '#f1f1f1'];
+  const phColors = PILLARS.map((_, i) => bw ? grays[i % grays.length] : PILLAR_COLORS[i]);
+  const phBgs    = PILLARS.map((_, i) => bw ? grayBgs[i % grayBgs.length] : PILLAR_COLORS[i] + '1f');
   const now = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  const published = (typeof LENS !== 'undefined' && LENS.published) ? LENS.published : 'June 10, 2026';
 
   const wrapOpen  = bw ? '<div class="print-bw">' : '<div>';
   const wrapClose = '</div>';
@@ -159,59 +171,57 @@ function buildPrintDoc(opts, data) {
         <path d="m 2 0 c -0.550781 0 -1 0.449219 -1 1 v 8 c 0 2.5 1.816406 4.246094 3.445312 5.332031 c 1.628907 1.085938 3.238282 1.617188 3.238282 1.617188 c 0.207031 0.070312 0.425781 0.070312 0.632812 0 c 0 0 1.609375 -0.53125 3.238282 -1.617188 c 1.628906 -1.085937 3.445312 -2.832031 3.445312 -5.332031 v -8 c 0 -0.550781 -0.449219 -1 -1 -1 z m 1 2 h 10 v 7 c 0 1.5 -1.183594 2.753906 -2.554688 3.667969 c -1.214843 0.808593 -2.179687 1.128906 -2.445312 1.226562 c -0.265625 -0.097656 -1.230469 -0.417969 -2.445312 -1.226562 c -1.371094 -0.914063 -2.554688 -2.167969 -2.554688 -3.667969 z m 1 1 v 6 c 0 1 0.867188 2.007812 2.109375 2.835938 c 0.933594 0.621093 1.472656 0.785156 1.890625 0.949218 c 0.417969 -0.164062 0.957031 -0.328125 1.890625 -0.949218 c 1.242187 -0.828126 2.109375 -1.835938 2.109375 -2.835938 v -6 z m 0 0" fill="${accent}"/>
       </svg>
       <div>
-        <div class="print-doc-brand">AWS Security <span style="color:${accent}">Maturity Model</span></div>
-        <div class="print-doc-sub">Self-Assessment Report · v2 ${bw ? '· B&amp;W' : '· Color'}</div>
+        <div class="print-doc-brand">AWS Well-Architected <span style="color:${accent}">Agentic AI Lens</span></div>
+        <div class="print-doc-sub">Self-Assessment Report · Lens published ${escapeHtml(published)} ${bw ? '· B&amp;W' : '· Color'}</div>
       </div>
     </div>
     <div class="print-doc-meta">
       <strong>Generated:</strong> ${now}<br>
-      <strong>Session:</strong> ${sessions[currentSessionId]?.name || '—'}<br>
-      <strong>Items:</strong> ${data.length} selected<br>
-      <strong>Phases:</strong> ${opts.phases.map(i => 'P'+(i+1)).join(', ') || '—'}
+      <strong>Session:</strong> ${escapeHtml(sessions[currentSessionId]?.name || '—')}<br>
+      <strong>Best practices:</strong> ${data.length} selected<br>
+      <strong>Pillars:</strong> ${opts.phases.map(i => PILLAR_ABBR[i]).join(', ') || '—'}
     </div>
   </div>`;
 
   if (opts.summary) html += buildSummaryGrid(DATA, accent);
 
-  // Group by phase → capability
+  // Group by pillar → focus area
   const grouped = {};
   data.forEach(item => {
-    const ph = item.phase;
-    const cap = item.capability;
-    if (!grouped[ph]) grouped[ph] = {};
-    if (!grouped[ph][cap]) grouped[ph][cap] = [];
-    grouped[ph][cap].push(item);
+    if (!grouped[item.pillar]) grouped[item.pillar] = {};
+    if (!grouped[item.pillar][item.focus_area_id]) grouped[item.pillar][item.focus_area_id] = [];
+    grouped[item.pillar][item.focus_area_id].push(item);
   });
 
-  PHASES.forEach((phase, pi) => {
-    if (!grouped[phase]) return;
+  PILLARS.forEach((pillar, pi) => {
+    if (!grouped[pillar]) return;
     html += `<div class="print-phase-heading" style="background:${phBgs[pi]};border-left:4px solid ${phColors[pi]}">
-      Phase ${pi+1}: ${PHASE_SHORT[pi]}
-      <span class="ph-badge" style="background:${phColors[pi]}20;color:${phColors[pi]};border:1px solid ${phColors[pi]}40">${Object.values(grouped[phase]).flat().length} items</span>
+      ${escapeHtml(pillar)}
+      <span class="ph-badge" style="background:${phColors[pi]}20;color:${phColors[pi]};border:1px solid ${phColors[pi]}40">${Object.values(grouped[pillar]).flat().length} best practices</span>
     </div>`;
 
-    CAPABILITIES.forEach(cap => {
-      if (!grouped[phase][cap]) return;
-      const items = grouped[phase][cap];
-      html += `<div class="print-cap-heading">${CAP_ICONS[cap] ? `<em style="font-size:8px;font-style:italic;font-weight:700">${CAP_ICONS[cap]}</em> — ` : ''}${cap}</div>`;
-      
+    FOCUS_AREAS.filter(fa => fa.pillar === pillar).forEach(fa => {
+      if (!grouped[pillar][fa.id]) return;
+      const items = grouped[pillar][fa.id];
+      html += `<div class="print-cap-heading"><em style="font-size:8px;font-style:italic;font-weight:700">${faShort(fa.id)}</em> — ${escapeHtml(fa.name)}${fa.question ? `<span class="print-fa-question">${escapeHtml(fa.id)}: ${escapeHtml(fa.question)}</span>` : ''}</div>`;
+
       if (opts.format === 'table') {
-        let thService = opts.service ? '<th>AWS Service</th>' : '';
         html += `<table class="print-table"><thead><tr>
-          <th style="width:40px;border-bottom-color:${accent}">ID</th>
-          <th style="border-bottom-color:${accent}">Recommendation</th>
-          ${thService ? `<th style="border-bottom-color:${accent}">AWS Service</th>` : ''}
+          <th style="width:92px;border-bottom-color:${accent}">ID</th>
+          <th style="border-bottom-color:${accent}">Best practice</th>
+          ${opts.risk ? `<th style="width:64px;border-bottom-color:${accent}">Risk</th>` : ''}
+          ${opts.service ? `<th style="border-bottom-color:${accent}">AWS services</th>` : ''}
           <th style="width:110px;border-bottom-color:${accent}">Alignment</th>
           ${opts.cmts ? `<th style="border-bottom-color:${accent}">Comments</th>` : ''}
         </tr></thead><tbody>`;
         items.forEach(item => {
-          let tdService = opts.service ? `<td>${item.aws_service !== 'N/A' ? item.aws_service : '—'}</td>` : '';
           html += `<tr>
-            <td style="font-family:monospace;color:#888;white-space:nowrap">${item.id}</td>
-            <td>${item.recommendation}</td>
-            ${tdService}
+            <td style="font-family:monospace;color:#888;white-space:nowrap;font-size:9px">${escapeHtml(item.id)}</td>
+            <td>${escapeHtml(item.recommendation)}</td>
+            ${opts.risk ? `<td>${riskChipHtml(item.risk, bw)}</td>` : ''}
+            ${opts.service ? `<td style="font-size:9px">${item.aws_service && item.aws_service !== 'N/A' ? escapeHtml(item.aws_service) : '—'}</td>` : ''}
             <td>${scoreChipHtml(item.id, bw)}</td>
-            ${opts.cmts ? `<td style="color:#555;font-size:9px">${comments[item.id]||''}</td>` : ''}
+            ${opts.cmts ? `<td style="color:#555;font-size:9px">${escapeHtml(comments[item.id]||'')}</td>` : ''}
           </tr>`;
         });
         html += '</tbody></table>';
@@ -220,24 +230,30 @@ function buildPrintDoc(opts, data) {
         const howtoBorder = bw ? '#999' : '#4da6ff';
         items.forEach(item => {
           const svc = opts.service && item.aws_service && item.aws_service !== 'N/A'
-            ? `<span class="print-card-service" style="${bw?'background:#f0f0f0;border-color:#ccc;color:#333':''}">${item.aws_service}</span>` : '';
+            ? `<span class="print-card-service" style="${bw?'background:#f0f0f0;border-color:#ccc;color:#333':''}">${escapeHtml(item.aws_service)}</span>` : '';
           html += `<div class="print-card">
             <div class="print-card-header">
-              <span class="print-card-id">${item.id}</span>
-              <span class="print-card-title">${item.recommendation}</span>
+              <span class="print-card-id">${escapeHtml(item.id)}</span>
+              <span class="print-card-title">${escapeHtml(item.recommendation)}</span>
+              ${opts.risk ? riskChipHtml(item.risk, bw) : ''}
               ${svc}
             </div>
             <div class="print-card-footer">
               ${scoreChipHtml(item.id, bw)}
             </div>
-            ${opts.guidance && item.guidance ? `<div class="print-card-guidance" style="border-left-color:${guidBorder}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':guidBorder}">Guidance</strong>${item.guidance.trim().replace(/\n/g,'<br>')}</div>` : ''}
-            ${opts.howto && item.how_to_check ? `<div class="print-card-guidance" style="border-left-color:${howtoBorder}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':howtoBorder}">How to check</strong>${cleanHowToCheck(item.how_to_check).replace(/\n/g,'<br>')}</div>` : ''}
-            ${opts.cmts && comments[item.id] ? `<div class="print-card-comment" style="${bw?'background:#f5f5f5;border-left-color:#999':''}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':'#666'}">Comments</strong>${comments[item.id]}</div>` : ''}
+            ${opts.guidance && item.guidance ? `<div class="print-card-guidance" style="border-left-color:${guidBorder}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':guidBorder}">Summary</strong>${item.guidance.trim().replace(/\n/g,'<br>')}</div>` : ''}
+            ${opts.howto && item.how_to_check ? `<div class="print-card-guidance" style="border-left-color:${howtoBorder}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':howtoBorder}">Desired outcome</strong>${cleanHowToCheck(item.how_to_check).replace(/\n/g,'<br>')}</div>` : ''}
+            ${opts.cmts && comments[item.id] ? `<div class="print-card-comment" style="${bw?'background:#f5f5f5;border-left-color:#999':''}"><strong style="display:block;margin-bottom:2px;color:${bw?'#333':'#666'}">Comments</strong>${escapeHtml(comments[item.id])}</div>` : ''}
           </div>`;
         });
       }
     });
   });
+
+  html += `<div style="margin-top:14px;font-size:8px;color:#888;border-top:1px solid #ddd;padding-top:6px">
+    Content condensed from the AWS Well-Architected Framework – Agentic AI Lens (AWS documentation, ${escapeHtml(published)}).
+    Unofficial self-assessment aid; refer to https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/ for the authoritative text.
+  </div>`;
 
   html += wrapClose;
   return html;

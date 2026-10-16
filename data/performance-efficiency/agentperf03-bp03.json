@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF03-BP03",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF03",
+  "focus_area": "Memory, context, and RAG optimization",
+  "recommendation": "Optimize RAG retrieval pipelines for latency and precision",
+  "risk": "High",
+  "aws_service": "N/A",
+  "guidance": "Retrieval-augmented generation gives agents access to knowledge beyond the model's training data, but every reasoning iteration that queries a retrieval pipeline pays its latency and inherits the quality of its results. A well-tuned RAG pipeline returns high-relevance passages within a small latency budget. Without this discipline, retrieval either dominates per-iteration latency or returns noisy context that degrades reasoning quality.",
+  "how_to_check": "• You have a chunking strategy matched to the structure and query shape of each source corpus, with chunk size and boundaries tuned against retrieval precision rather than defaulted to a single fixed size.\n• You have retrieval latency tracked per stage (embedding, search, and re-ranking) with explicit budgets so retrieval can't silently consume time allocated to reasoning or tool calls.\n• You have hybrid retrieval and re-ranking used where the corpus and query mix justify their added latency, rather than stacked by default.\n• You have query reformulation ahead of every retrieval, so recall holds when agent phrasing diverges from corpus vocabulary.\n• You have retrieval precision and relevance continually evaluated against a representative query set so quality regressions are caught before they reach production behavior.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp03.html'>AGENTPERF03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp03.html"
+}

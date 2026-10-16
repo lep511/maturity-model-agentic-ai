@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS01-BP05",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS01",
+  "focus_area": "Resource reusability",
+  "recommendation": "Adopt specification-driven tasks for frontier agents and long-running workflows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions",
+  "guidance": "Long-running agents without explicit success criteria and resource budgets drift into exploration that never quite terminates, consuming compute hours on paths that don't deliver value. Specifications that declare acceptable outputs, cost ceilings, and termination conditions up front make extended execution a bounded investment rather than an open-ended one.",
+  "how_to_check": "• You have specifications for each frontier agent declaring maximum execution duration, token budget, memory allocation, and termination triggers before deployment.\n• Long-running workflows pause at defined checkpoints to evaluate progress against the specification, and decisions about continuing, modifying, or terminating are informed by that evaluation.\n• Parent frontier agents cascade remaining budget and time to child agents they spawn, so delegation inherits the parent's ceiling.\n• Specification compliance is monitored in production and feeds back into template refinement for future frontier workflows.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp05.html'>AGENTSUS01-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp05.html"
+}

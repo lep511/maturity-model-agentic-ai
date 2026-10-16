@@ -1,9 +1,0 @@
-{
-  "id": "1.4.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Threat detection",
-  "recommendation": "Detect Common Threats",
-  "aws_service": "Amazon GuardDuty",
-  "guidance": "- Is Amazon GuardDuty enabled in all regions and all accounts across your organization, including the delegated administrator account for centralized visibility?\n- Are GuardDuty findings being reviewed and actioned regularly, with HIGH and CRITICAL severity findings triggering notifications via SNS or being forwarded to your SIEM or ticketing system?\n- Have you enabled the relevant GuardDuty protection plans for your environment (e.g.: S3 Protection, EKS Protection, Lambda Protection, Malware Protection) to extend threat detection beyond the default VPC and CloudTrail sources?",
-  "how_to_check": "Amazon GuardDuty should be enabled | Verify in the GuardDuty console that the service is active in all regions, that a delegated administrator is configured in AWS Organizations, and that findings are being exported to S3 or EventBridge for automated alerting and downstream processing\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/guardduty/'>documentation</a>."
-}

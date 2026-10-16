@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC06-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC06",
+  "focus_area": "Secure multi-agent orchestration",
+  "recommendation": "Encrypt and sign inter-agent messages",
+  "risk": "High",
+  "aws_service": "AWS Key Management Service / Amazon SQS / AWS Systems Manager / AWS PrivateLink / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Transport-level encryption stops protecting the payload the moment a message lands in a queue or event bus. Message-level signing and encryption keyed per trust zone gives receiving agents cryptographic proof of sender identity and content integrity no matter how many hops the message made.",
+  "how_to_check": "• You protect inter-agent messages at the message level with encryption and signing, independent of transport-level security.\n• Receiving agents verify message signatures before acting on instructions from other agents.\n• Messages stored in queues or event buses are encrypted at rest with keys scoped to the appropriate trust zone.\n• Agents can't forge messages that appear to originate from other agents in the coordination workflow.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp01.html'>AGENTSEC06-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp01.html"
+}

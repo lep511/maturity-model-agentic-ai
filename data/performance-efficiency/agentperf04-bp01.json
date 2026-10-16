@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF04-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF04",
+  "focus_area": "Communication and protocol efficiency",
+  "recommendation": "Optimize asynchronous message handling patterns",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore Runtime / Amazon SQS / Amazon SNS / AWS Lambda / Amazon CloudWatch",
+  "guidance": "Asynchronous messaging lets agents operate independently at their optimal pace, with message queues absorbing throughput variations and leveling load across the workflow. Synchronous request-response patterns create tight coupling that makes a slow downstream agent block the entire upstream chain. Async decouples producers from consumers so fast agents are not held up by slow ones.",
+  "how_to_check": "• You have agent-to-agent and agent-to-service communications using asynchronous patterns by default, with synchronous communication reserved for interactions that genuinely require immediate responses.\n• You have compact message payloads that pass references rather than inline data.\n• You have agents processing messages at their own pace without being overwhelmed by upstream producers.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp01.html'>AGENTPERF04-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp01.html"
+}

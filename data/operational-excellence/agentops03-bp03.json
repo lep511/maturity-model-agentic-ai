@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS03-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS03",
+  "focus_area": "Agent lifecycle and deployment processes",
+  "recommendation": "Implement agent-specific scaling policies and capacity planning",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Scaling policies designed for typical web workloads don't fit agents. Model inference latency, tool dependency availability, and downstream service capacity all shape the right response to load, and a policy that ignores them either over-provisions during quiet hours or under-provisions during peaks.",
+  "how_to_check": "• Agent compute scales dynamically in response to demand while respecting cost, performance, and governance constraints.\n• Scaling decisions account for agent-specific factors: model inference latency, tool availability, and downstream service capacity.\n• Per-environment scaling boundaries help prevent runaway scaling in development while preserving capacity headroom in production.\n• Monthly capacity reviews keep deployments right-sized as usage patterns evolve.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp03.html'>AGENTOPS03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp03.html"
+}

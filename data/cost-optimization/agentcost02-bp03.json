@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST02-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST02",
+  "focus_area": "Model invocation and token cost optimization",
+  "recommendation": "Use intelligent caching to reduce redundant model invocations",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon OpenSearch Service / Amazon CloudWatch",
+  "guidance": "Agents repeat work constantly: identical prompts, semantically equivalent requests, the same planning steps across similar tasks. Caching at the prompt, semantic, and plan-template layers changes repetition from a recurring expense into a one-time cost paid on the first invocation.",
+  "how_to_check": "• You have prompt caching enabled for stable system prompts so the cacheable prefix is reused across invocations at reduced rates.\n• You have a semantic cache that serves responses for functionally equivalent requests above a configurable similarity threshold.\n• You have plan templates cached and instantiated for recurring task patterns rather than regenerated each time.\n• You track cache hit rates and cost savings per caching layer.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp03.html'>AGENTCOST02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp03.html"
+}

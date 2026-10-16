@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL01-BP05",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL01",
+  "focus_area": "Predictable agent behavior",
+  "recommendation": "Implement adaptive provisioning",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Static provisioning forces a choice between overpaying for peak and failing under load. Agent workloads shift minute to minute, so capacity, model tier, and quota must respond to task complexity and current demand without operator intervention.",
+  "how_to_check": "• You have agent compute allocation that adjusts for each invocation without manual tuning.\n• You route tasks to model tiers appropriate for their complexity, with fallbacks when quotas tighten.\n• You pre-provision resources ahead of known demand patterns and scale down during quiet periods.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp05.html'>AGENTREL01-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp05.html"
+}

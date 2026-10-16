@@ -1,9 +1,0 @@
-{
-  "id": "3.7.1",
-  "phase": "Phase 3: Efficient",
-  "capability": "Data protection",
-  "recommendation": "Encryption in transit",
-  "aws_service": "AWS Certificate Manager",
-  "guidance": "Encrypt all data in transit, ideally as a blanket practice. Configure load balancer listeners to use HTTPS/TLS and use AWS Certificate Manager (ACM) to automatically provision, renew, and rotate TLS certificates on ALBs — eliminating expired certificate risk. Public ACM certificates are free. For internal applications, deploy ACM Private CA for automated certificate rotation.",
-  "how_to_check": "Is encryption in transit enforced across all services transmitting sensitive data? Are load balancer listeners configured for HTTPS/TLS only? Are TLS certificates managed via ACM with automatic renewal? Are internal applications using ACM Private CA?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/acm/'>documentation</a>."
-}

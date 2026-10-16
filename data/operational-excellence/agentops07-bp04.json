@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS07-BP04",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS07",
+  "focus_area": "Operational recovery and consumption monitoring",
+  "recommendation": "Implement break-glass operational runbooks",
+  "risk": "High",
+  "aws_service": "Amazon S3 / Amazon CloudWatch",
+  "guidance": "Write and test emergency runbooks before they are needed. Rehearsed manual fallback procedures, accessible escalation paths, and current contact information turn a complete agent failure into a brief manual period rather than a prolonged outage.",
+  "how_to_check": "• When agents fail completely or behave unexpectedly, human operators execute well-documented manual procedures that maintain business continuity.\n• Break-glass runbooks are tested regularly, and operators are trained and confident in the manual procedures.\n• Escalation paths and contact information stay current.\n• Emergency response times meet defined objectives because procedures are documented, accessible, and practiced.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp04.html'>AGENTOPS07-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp04.html"
+}

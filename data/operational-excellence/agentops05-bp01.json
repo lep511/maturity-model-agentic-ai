@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS05-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS05",
+  "focus_area": "Observability and monitoring for agentic systems",
+  "recommendation": "Establish end-to-end tracing and telemetry for agent operations",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS X-Ray / Amazon CloudWatch",
+  "guidance": "When an agent produces an unexpected output, the investigation is only as good as the telemetry. Distributed tracing that captures the full execution path (reasoning, tool calls, memory operations, and model invocations) enables precise reconstruction of every decision and action.",
+  "how_to_check": "• Every agent run produces a complete distributed trace covering the flow from request to response across all services and agents.\n• Teams can reconstruct the exact sequence of operations for any run, enabling rapid debugging and targeted optimization.\n• Real-time telemetry dashboards give operational teams continuous visibility into agent health.\n• Trace data is retained on a defined policy for post-operations analysis and compliance.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp01.html'>AGENTOPS05-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp01.html"
+}

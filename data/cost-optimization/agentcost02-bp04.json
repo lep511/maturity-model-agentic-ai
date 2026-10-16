@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST02-BP04",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST02",
+  "focus_area": "Model invocation and token cost optimization",
+  "recommendation": "Implement model customization for long-term cost reduction",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon SageMaker AI AI / Amazon S3",
+  "guidance": "Customizing smaller models for a high-volume recurring task can optimize per-invocation costs into a one-time training expense that amortizes across every future call. The math only works when volume and task stability are high enough to justify the investment, so the decision needs to start with a break-even calculation, not an enthusiasm for fine-tuning.",
+  "how_to_check": "• You have specialized models handling high-volume recurring tasks at materially lower per-invocation cost than general-purpose foundation models.\n• You have a customization pipeline that captures decision patterns from production and refreshes models on a scheduled cadence.\n• You validate decision quality with A/B testing against foundation models before routing production traffic to a customized model.\n• You track inference cost savings and decision quality side by side so positive ROI is provable rather than assumed.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp04.html'>AGENTCOST02-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp04.html"
+}

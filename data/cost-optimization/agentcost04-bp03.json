@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST04-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST04",
+  "focus_area": "Agent tool serving cost optimization",
+  "recommendation": "Implement intelligent caching and failure handling for tool results",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon OpenSearch Service / Amazon CloudWatch",
+  "guidance": "Tool costs can be unpredictable when agents repeat identical or equivalent calls, and they can spike sharply when retries run unbounded through a service outage. Two-layer caching, schema validation, and automatic cutoffs convert those failure modes into predictable, bounded costs.",
+  "how_to_check": "• You have session-scoped and cross-session semantic caches reducing redundant tool invocations.\n• You validate tool inputs against JSON Schema before invocation to help prevent wasted calls on malformed requests.\n• You have automatic cutoffs that halt retries when failure rates exceed thresholds, with automatic fallback to alternative tools.\n• You track cache hit rates and retry costs as distinct metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp03.html'>AGENTCOST04-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp03.html"
+}

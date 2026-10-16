@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST07-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST07",
+  "focus_area": "Agent cost governance and continuous optimization",
+  "recommendation": "Create systematic optimization feedback loops for continuous improvement",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "One-time optimization projects can miss compounding gains, as cost-performance characteristics of agent systems shift as prompts change, tools evolve, and traffic patterns drift. A monthly review cadence, A/B-tested changes, and cost gates in the deployment pipeline turn optimization into a continual practice that can keep pace with the system.",
+  "how_to_check": "• You hold monthly cost optimization reviews following a structured agenda.\n• You A/B test cost-impacting changes through controlled traffic routing before fleet-wide promotion.\n• You calculate cost-quality efficiency ratios to prioritize optimizations by business value.\n• You have cost gates in deployment pipelines helping prevent accidental regressions.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp03.html'>AGENTCOST07-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp03.html"
+}

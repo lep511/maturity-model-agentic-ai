@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS05-BP04",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS05",
+  "focus_area": "Observability and monitoring for agentic systems",
+  "recommendation": "Define and track KPIs for agent workflows",
+  "risk": "Medium",
+  "aws_service": "Amazon CloudWatch / Amazon Quick / Amazon Bedrock AgentCore",
+  "guidance": "Infrastructure metrics like CPU, memory, and invocation count explain whether an agent is running. However, these metrics don't determine whether an agent is actually working. Key performance indicators (KPIs) tied to business outcomes give teams and stakeholders a shared language for discussing and improving agent performance.",
+  "how_to_check": "• Every agent workflow has a defined set of KPIs tracked continually against established baselines.\n• Teams identify performance degradation early and correlate KPI changes with configuration or model updates.\n• Optimization efforts are prioritized based on measurable impact rather than intuition.\n• Business stakeholders have regular visibility into how agent workflows contribute to business outcomes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp04.html'>AGENTOPS05-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp04.html"
+}

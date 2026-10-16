@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC08-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC08",
+  "focus_area": "Secure agent inputs and outputs",
+  "recommendation": "Output filtering for sensitive information",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / Amazon Comprehend / Amazon CloudWatch / AWS Lambda",
+  "guidance": "Filtering user-facing responses leaves internal data paths (inter-agent messages, memory writes, audit logs) as open channels for PII and credentials to escape. Scanning every output path with a data classification policy keeps sensitive content inside the agent's authorized handling scope.",
+  "how_to_check": "• You scan agent outputs for PII, credentials, and other sensitive data before returning them to users or downstream systems, with content masked or blocked based on data classification policies.\n• Agent outputs containing credentials, private keys, or regulated PII are blocked or masked before they reach end users or external systems.\n• You log output filtering decisions for compliance auditing.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec08-bp02.html'>AGENTSEC08-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec08-bp02.html"
+}

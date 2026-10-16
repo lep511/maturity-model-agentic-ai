@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS03-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS03",
+  "focus_area": "Agent lifecycle and deployment processes",
+  "recommendation": "Implement CI/CD pipelines tailored to agentic system deployment (AgentOps)",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / AWS Cloud Development Kit (AWS CDK) / Amazon CloudWatch",
+  "guidance": "Manual agent deployments and informal testing can keep a project stuck in the pilot phase. An agent-aware pipeline, with behavioral evaluation gates, staged rollout, and automated rollback can help your organization realize the goal of daily deployment of behavioral improvements.",
+  "how_to_check": "• Agent deployments run fully through CI/CD with agent-specific validation gates for prompt quality, tool integration correctness, behavioral regression, and security.\n• Deployment strategies (blue/green, canary) limit the scope of impact when a regression does slip through.\n• Automated rollback restores the previous version within minutes if quality thresholds are exceeded.\n• Infrastructure is defined as code so deployments are reproducible and environments stay consistent.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp02.html'>AGENTOPS03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp02.html"
+}

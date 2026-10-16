@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF06-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF06",
+  "focus_area": "Tool integration and framework optimization",
+  "recommendation": "Design optimized tool integration strategies",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon ElastiCache / Amazon CloudWatch",
+  "guidance": "Agents that surface the right tools at the right time respond faster and make better decisions. LLMs make increasingly poor tool selection decisions once the candidate set grows beyond 10-15 tools, so dynamic filtering, parallel execution, and cached results keep the reasoning loop tight even as the tool catalog grows. Tool invocations happen inside the reasoning loop, which means their latency adds directly to response time.",
+  "how_to_check": "• You have tool invocations that add minimal latency to the agent reasoning loop.\n• You have tool selection that is fast and accurate, with agents choosing from a filtered set of 5-10 relevant options rather than evaluating the full catalog.\n• You have independent tool calls executing in parallel.\n• You have tool results cached where appropriate.\n• You have per-tool latency, error rate, and usage metrics providing visibility into tool performance.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp01.html'>AGENTPERF06-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp01.html"
+}

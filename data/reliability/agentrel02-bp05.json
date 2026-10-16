@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL02-BP05",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL02",
+  "focus_area": "Predictable task execution",
+  "recommendation": "Establish tiered human oversight and approval workflows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Uniform oversight either slows every routine action to a crawl or lets a high-consequence decision slip through unchecked. Tiering review to match the risk and reversibility of each action balances throughput with appropriate governance.",
+  "how_to_check": "• You have agent actions classified into tiers (autonomous, notify, and approve) based on impact and reversibility.\n• You have a first-pass automated review layer that filters policy-violating actions before human reviewers see them.\n• You log every oversight decision with reviewer identity, rationale, and timestamp for compliance and governance reporting.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp05.html'>AGENTREL02-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp05.html"
+}

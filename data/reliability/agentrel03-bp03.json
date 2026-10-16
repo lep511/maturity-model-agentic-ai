@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL03-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL03",
+  "focus_area": "Agent memory and state management",
+  "recommendation": "Implement comprehensive state management and checkpoint-based recovery",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions",
+  "guidance": "Long-running workflows without checkpoints pay the full restart cost for every failure, no matter how late it happens. Persisting state at natural boundaries and designing every step to be idempotent lets an agent resume from the last completed checkpoint rather than redo work.",
+  "how_to_check": "• You have workflow state persisted at regular checkpoints, so interruptions resume from the last completed point rather than the beginning.\n• You have idempotent workflow steps that produce the same result when replayed with the same input.\n• You have a checkpoint lifecycle with TTL-based expiration and explicit cleanup after completion.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp03.html'>AGENTREL03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp03.html"
+}

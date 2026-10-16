@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF01-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF01",
+  "focus_area": "Strategic performance planning and measurement",
+  "recommendation": "Define performance-aligned success criteria for agent workloads",
+  "risk": "High",
+  "aws_service": "Amazon CloudWatch / Amazon CloudWatch Application Signals / AWS Distro for OpenTelemetry (ADOT)",
+  "guidance": "Agent workloads are harder to measure than traditional applications because a single user request fans out into multiple inference calls, tool invocations, and memory retrievals, each with its own latency, quality, and cost signature. Without explicit performance targets, teams optimize against a moving reference and can't tell when an agent is ready for production.",
+  "how_to_check": "• You have documented performance success criteria for every agent workload, with specific, measurable targets that are reviewed as business requirements evolve.\n• Your teams objectively assess whether an agent meets performance expectations before deployment and continually validate performance in production.\n• You have performance criteria integrated into CI/CD pipelines as quality gates, helping prevent regressions from reaching production.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf01-bp01.html'>AGENTPERF01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf01-bp01.html"
+}

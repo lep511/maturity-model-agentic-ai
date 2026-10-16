@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS02-BP02",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS02",
+  "focus_area": "Resource right-sizing",
+  "recommendation": "Establish efficient agent caching strategies",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "Every duplicate model call, tool invocation, and memory lookup is work the agent fleet has already done once. Caching at each integration point turns repeated work into a one-time cost amortized across every caller, so resource efficiency improves as usage patterns stabilize rather than scaling linearly with traffic.",
+  "how_to_check": "• You have caching applied at each integration point, prompt prefixes, tool results, memory lookups, and credential validation, with TTLs matched to data volatility.\n• Cache layers are shared across the agent fleet so one agent's cached result benefits every other agent.\n• Cache hit rates are tracked per integration point and improve as usage patterns stabilize.\n• Invalidation policies help prevent stale responses where data volatility demands freshness.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp02.html'>AGENTSUS02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp02.html"
+}

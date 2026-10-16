@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF07-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF07",
+  "focus_area": "Multi-tenancy and resource optimization",
+  "recommendation": "Implement tenant-aware performance isolation and throttling",
+  "risk": "High",
+  "aws_service": "Amazon API Gateway / Amazon Bedrock AgentCore / Amazon CloudWatch / Amazon DynamoDB / Amazon Bedrock",
+  "guidance": "Trust in a shared agent service is built through consistent, predictable performance for every tenant, even during demand spikes. In pooled multitenant deployments, effective isolation requires throttling at multiple layers (API, inference, memory, and tools), monitoring per-tenant resource consumption, and adaptive fairness mechanisms that distribute shared resources equitably based on current load.",
+  "how_to_check": "• You have per-tenant throttling enforced at every shared resource layer.\n• You have tenant resource consumption monitored in real time with alerts for tenants approaching their limits.\n• You have graceful throttling that provides clear feedback to throttled tenants.\n• You have performance isolation validated through regular load testing that simulates noisy neighbor scenarios.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf07-bp02.html'>AGENTPERF07-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf07-bp02.html"
+}

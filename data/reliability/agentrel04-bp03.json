@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL04-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL04",
+  "focus_area": "Multi-agent orchestration",
+  "recommendation": "Implement fallback mechanisms and graceful degradation for collaborative workflows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Fault Injection Service / Amazon CloudWatch",
+  "guidance": "One unavailable agent should not take down an entire workflow. Pre-defined fallback chains let orchestrators swap in alternatives, preserving forward progress with reduced quality rather than a complete stall.",
+  "how_to_check": "• You have fallback chains for each critical agent with ordered alternatives and documented quality trade-offs.\n• You check agent health proactively and skip unavailable agents rather than waiting for timeout.\n• You communicate degradation to downstream systems through structured events so their behavior can adapt.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp03.html'>AGENTREL04-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp03.html"
+}

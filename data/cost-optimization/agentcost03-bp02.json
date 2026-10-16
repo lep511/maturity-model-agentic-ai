@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST03-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST03",
+  "focus_area": "Agent memory and state cost management",
+  "recommendation": "Cost optimize through intelligent compression and pruning of context windows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "In long-running agent sessions, raw conversation history can silently drive costs up, as every turn gets paid for again on every subsequent invocation. Compression, selective retrieval, and pruning keep context proportional to what the agent needs for the current decision rather than growing with session length.",
+  "how_to_check": "• You compress older conversation turns into summaries so historical context doesn't multiply per-invocation token cost.\n• You retrieve only the top-K most relevant memory items per reasoning step.\n• You prune duplicates, superseded reasoning, and irrelevant tool results before each invocation.\n• You monitor context window utilization and alert on sessions approaching overflow.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp02.html'>AGENTCOST03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp02.html"
+}

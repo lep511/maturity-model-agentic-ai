@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF03-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF03",
+  "focus_area": "Memory, context, and RAG optimization",
+  "recommendation": "Implement tiered memory management systems",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon ElastiCache / Amazon OpenSearch Service / Amazon Neptune Analytics",
+  "guidance": "Agents that carry context across turns and sessions deliver more personalized and accurate responses, but only when memory retrieval doesn't become the latency bottleneck on every reasoning iteration. A tiered memory architecture separates fast, transient session state from durable cross-session knowledge so each tier's storage technology, access pattern, and lifecycle can be optimized independently rather than forced through a single store.",
+  "how_to_check": "• You have agent memory separated into a short-term tier for in-session context and a long-term tier for cross-session knowledge, each backed by storage matched to its access pattern.\n• You have automated lifecycle policies that extract durable insights from short-term memory into long-term strategies (semantic, episodic, summary, and user preference) and evict stale short-term state without manual intervention.\n• You have per-tier retrieval latency tracked as a first-class KPI, with budgets that keep memory access from dominating the reasoning loop.\n• You have long-term memory scoped and namespaced per user, session, or tenant so retrievals return only the records relevant to the current actor.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp01.html'>AGENTPERF03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp01.html"
+}

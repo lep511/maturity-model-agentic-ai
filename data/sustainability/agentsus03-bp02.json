@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS03-BP02",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS03",
+  "focus_area": "Agent governance",
+  "recommendation": "Build agents to mirror your organizational skills and competencies",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "Agents built to codify proven workflows deliver immediate value. Agents built to automate processes the organization has not mastered itself usually waste resources learning what could have been documented first. Focusing automation on well-understood work is the difference between agent adoption that pays back quickly and adoption that consumes resources on untested methodology.",
+  "how_to_check": "• You select processes for automation where steps, decision criteria, and success metrics are documented and consistently executed by human experts.\n• Agents mirror the decision trees, validation checkpoints, and escalation paths that experts already use.\n• Institutional knowledge is captured in knowledge bases that ground agent decisions, rather than relying solely on foundation model training data.\n• Readiness criteria, minimum documentation maturity, gate agent development projects before resources are committed.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp02.html'>AGENTSUS03-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp02.html"
+}

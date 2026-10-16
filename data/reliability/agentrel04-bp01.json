@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL04-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL04",
+  "focus_area": "Multi-agent orchestration",
+  "recommendation": "Implement the arbiter agent pattern for coordinated multi-agent systems",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / Amazon EventBridge",
+  "guidance": "Peer-to-peer coordination among agents produces deadlocks and conflicting actions at scale. A dedicated arbiter that activates only for conflict resolution preserves agent autonomy for normal work while providing a single authoritative place to resolve contention over shared resources.",
+  "how_to_check": "• You have an arbiter agent that activates for conflict resolution while leaving routine coordination to the specialized agents involved.\n• You store conflict resolution policies in a configuration store so policy updates don't require arbiter redeployment.\n• You escalate unresolvable conflicts to human review automatically.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp01.html'>AGENTREL04-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp01.html"
+}

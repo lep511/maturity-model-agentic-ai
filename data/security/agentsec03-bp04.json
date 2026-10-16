@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC03-BP04",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC03",
+  "focus_area": "Agent identity and permission management",
+  "recommendation": "Regular permission audits and access reviews",
+  "risk": "Medium",
+  "aws_service": "AWS IAM Access Analyzer / AWS Config / Amazon EventBridge / AWS CloudTrail / AWS Security Hub CSPM / Amazon CloudWatch",
+  "guidance": "Agent roles accumulate permissions over time. Scheduled automated analysis paired with periodic human-led reviews catches drift before it turns into significant over-privilege and produces the documented audit trail that compliance needs.",
+  "how_to_check": "• You continually monitor agent permissions and review them on a cadence matched to the agent's risk profile, identifying and removing unused access regularly.\n• Automated alerts fire immediately when agent permissions are modified, enabling rapid detection of unauthorized policy changes.\n• You document access reviews with timestamped findings and remediation actions for compliance purposes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp04.html'>AGENTSEC03-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp04.html"
+}

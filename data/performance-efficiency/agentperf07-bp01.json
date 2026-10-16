@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF07-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF07",
+  "focus_area": "Multi-tenancy and resource optimization",
+  "recommendation": "Design efficient multitenant agent deployment models",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon API Gateway / Amazon Bedrock / Amazon DynamoDB / Amazon EKS / AWS CDK",
+  "guidance": "Organizations that serve multiple tenants from a shared agent service get better resource efficiency and faster tenant onboarding when the deployment model delivers consistent performance for every tenant. Siloed deployments provide strong isolation at higher cost. Pooled deployments maximize efficiency but need mechanisms to help prevent noisy neighbor effects. Hybrid models combine both, using pooled resources for standard tenants and dedicated resources for premium tenants.",
+  "how_to_check": "• You have multitenant agent deployments that use deployment models matched to tenant requirements.\n• You have deployment models documented with clear performance characteristics and SLA commitments for each tier.\n• You have a deployment model that supports efficient tenant onboarding through configuration rather than infrastructure provisioning.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf07-bp01.html'>AGENTPERF07-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf07-bp01.html"
+}

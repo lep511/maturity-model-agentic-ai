@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF03-BP05",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF03",
+  "focus_area": "Memory, context, and RAG optimization",
+  "recommendation": "Implement agentic retrieval patterns for dynamic, agent-driven knowledge access",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Knowledge Bases / Amazon Bedrock AgentCore Gateway / Amazon OpenSearch Service / Amazon CloudWatch",
+  "guidance": "Complex questions often require information from multiple sources, iterative refinement, or real-time data that a single retrieval pass can't provide. In agentic retrieval the agent actively controls the retrieval process as part of its reasoning loop, deciding when to retrieve, what to retrieve, which retrieval tool to use, and whether the retrieved context is sufficient before proceeding. Each iteration adds embedding generation, vector search, re-ranking, and context injection overhead, so the retrieval loop needs explicit termination conditions.",
+  "how_to_check": "• You have agents retrieving the right information in the minimum number of iterations required.\n• You have simple questions answered with a single retrieval and complex questions handled through structured multi-hop retrieval with explicit termination conditions.\n• You have the agent selecting the most appropriate retrieval tool for each query type.\n• You have retrieval iteration counts, per-iteration latency, and sufficiency rates tracked and optimized.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp05.html'>AGENTPERF03-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp05.html"
+}

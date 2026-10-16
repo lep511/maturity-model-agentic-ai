@@ -1,9 +1,0 @@
-{
-  "id": "3.3.1",
-  "phase": "Phase 3: Efficient",
-  "capability": "Identity & access management",
-  "recommendation": "Least Privilege Review",
-  "aws_service": "IAM Access Analyzer",
-  "guidance": "Periodically review IAM roles to remove unused or excessive permissions, focusing on wildcard actions and resources. Use IAM Access Analyzer to detect unused permissions and generate tighter policies based on actual CloudTrail activity. Recommended workflow: grant broad permissions in dev, run the application, generate a least-privilege policy via Access Analyzer, then validate before promoting to production. Use IAM Access Advisor to identify services never accessed. For advanced CIEM, consider partner solutions like Ermetic or Sonrai.",
-  "how_to_check": "Have IAM roles been reviewed for wildcard actions and resources? Is IAM Access Analyzer used to detect unused permissions and generate least-privilege policies? Is Access Advisor used to remove never-exercised access? Is least privilege enforcement part of the role creation process?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/iam-least-privilege/'>documentation</a>."
-}

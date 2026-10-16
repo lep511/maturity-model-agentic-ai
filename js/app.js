@@ -1,7 +1,7 @@
 // ─── COOKIE MANAGEMENT ────────────────────────────────────────────────────────
 // Cookie-based session persistence with localStorage fallback
 
-const COOKIE_NAME = 'mma_session_id';
+const COOKIE_NAME = 'aal_session_id';
 const COOKIE_EXPIRY_DAYS = 365;
 
 function setCookie(name, value, days) {
@@ -40,48 +40,16 @@ function deleteCookie(name) {
   }
 }
 
-// ─── DATA LOADER ──────────────────────────────────────────────────────────────
-let DATA = [];
-
-async function loadData() {
-  const bust = `?v=${Date.now()}`;
-  try {
-    const res = await fetch('data/manifest.json' + bust);
-    if (!res.ok) throw new Error(`Could not load data/manifest.json (HTTP ${res.status})`);
-    const manifest = await res.json();
-    
-    const promises = manifest.items.map(async path => {
-      try {
-        const r = await fetch(path + bust);
-        if (!r.ok) throw new Error(`Failed to load ${path} (HTTP ${r.status})`);
-        const item = await r.json();
-        item._solutionPath = path.replace(/^data\//, 'solutions/').replace(/([^/]+)\.json$/, 'sol_$1.md');
-        return item;
-      } catch(e) {
-        throw new Error(`Error loading ${path}: ${e.message}`);
-      }
-    });
-
-    DATA = await Promise.all(promises);
-    DATA.sort((a, b) => a.id.localeCompare(b.id, undefined, { numeric: true }));
-
-    const solChecks = DATA.map(async item => {
-      try {
-        const r = await fetch(item._solutionPath + bust, { method: 'HEAD' });
-        item._hasSolution = r.ok;
-      } catch { item._hasSolution = false; }
-    });
-    await Promise.all(solChecks);
-  } catch(e) {
-    throw e;
-  }
-}
-
-const PHASES = ['Phase 1: Quick Wins','Phase 2: Foundational','Phase 3: Efficient','Phase 4: Optimized'];
-const PHASE_SHORT = ['Quick Wins','Foundational','Efficient','Optimized'];
-const CAPABILITIES = ['Security governance','Security assurance','Identity & access management','Threat detection','Vulnerability management','Infrastructure protection','Data protection','Application security','Incident response','Resiliency'];
-const CAP_ICONS = {'Security governance':'SG','Security assurance':'SA','Identity & access management':'IAM','Threat detection':'TD','Vulnerability management':'VM','Infrastructure protection':'IP','Data protection':'DP','Application security':'AS','Incident response':'IR','Resiliency':'R'};
-const CAP_COLORS = {'Security governance':'#FF9900','Security assurance':'#ffb733','Identity & access management':'#3ecf8e','Threat detection':'#4da6ff','Vulnerability management':'#b47aff','Infrastructure protection':'#ff6b6b','Data protection':'#ffd93d','Application security':'#6bcb77','Incident response':'#ff4757','Resiliency':'#00d2d3'};
+// ─── LENS CONSTANTS ───────────────────────────────────────────────────────────
+// The six Well-Architected pillars in Lens order. Names must match the
+// `pillar` field of the generated items and the `pillars[].name` in lens.json.
+const PILLARS       = ['Operational excellence', 'Security', 'Reliability', 'Performance efficiency', 'Cost optimization', 'Sustainability'];
+const PILLAR_SHORT  = ['OpEx', 'Security', 'Reliability', 'Performance', 'Cost', 'Sustainability'];
+const PILLAR_ABBR   = ['OPS', 'SEC', 'REL', 'PERF', 'COST', 'SUS'];
+const PILLAR_PREFIX = ['AGENTOPS', 'AGENTSEC', 'AGENTREL', 'AGENTPERF', 'AGENTCOST', 'AGENTSUS'];
+// Mirrors --r1..--r6 in css/styles.css
+const PILLAR_COLORS = ['#FF9900', '#ff6b6b', '#b47aff', '#4da6ff', '#ffd93d', '#3ecf8e'];
+const RISK_COLORS   = { High: '#ff4757', Medium: '#f5c518', Low: '#3ecf8e' };
 
 const SCORING_OPTIONS = [
   {label:'-- Select an option --',       value: null},
@@ -93,15 +61,85 @@ const SCORING_OPTIONS = [
   {label:'Excluded from analysis',        value: 'na'}
 ];
 
+function pillarIdx(name)  { return PILLARS.indexOf(name); }
+function pillarColor(name){ const i = pillarIdx(name); return i >= 0 ? PILLAR_COLORS[i] : 'var(--aws)'; }
+function faShort(id)      { return String(id || '').replace(/^AGENT/, ''); }
+function faColor(fa)      { return fa ? pillarColor(fa.pillar) : 'var(--aws)'; }
+function pillarClassList(){ return PILLARS.map((_, i) => 'active-p' + i); }
+function roadmapLabel(id) { return (LENS.roadmap || []).find(r => r.id === id)?.label || id; }
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Inline markdown (links, emphasis) -> HTML. Falls back to escaped text.
+function mdInline(s) {
+  try {
+    if (typeof marked !== 'undefined' && typeof marked.parseInline === 'function') return marked.parseInline(String(s || ''));
+  } catch(e) { /* fall through */ }
+  return escapeHtml(s);
+}
+
+// ─── DATA LOADER ──────────────────────────────────────────────────────────────
+let DATA = [];
+let FOCUS_AREAS = [];
+const FA_BY_ID = {};
+let LENS = {};
+
+async function loadData() {
+  const bust = `?v=${Date.now()}`;
+  const fetchJson = async path => {
+    const r = await fetch(path + bust);
+    if (!r.ok) throw new Error(`Failed to load ${path} (HTTP ${r.status})`);
+    return r.json();
+  };
+
+  const res = await fetch('data/manifest.json' + bust);
+  if (!res.ok) throw new Error(`Could not load data/manifest.json (HTTP ${res.status})`);
+  const manifest = await res.json();
+
+  const [lens, focusAreas, ...items] = await Promise.all([
+    fetchJson(manifest.lens || 'data/lens/lens.json'),
+    fetchJson(manifest.focus_areas || 'data/lens/focus_areas.json'),
+    ...manifest.items.map(async path => {
+      const item = await fetchJson(path);
+      item._guidancePath = path.replace(/^data\//, 'guidance/').replace(/\.json$/, '.md');
+      item._hasGuidance = true; // generated 1:1 with the data files
+      return item;
+    })
+  ]);
+
+  LENS = lens || {};
+  FOCUS_AREAS = focusAreas || [];
+  Object.keys(FA_BY_ID).forEach(k => delete FA_BY_ID[k]);
+  FOCUS_AREAS.forEach(fa => { FA_BY_ID[fa.id] = fa; });
+
+  const lensPillars = (LENS.pillars || []).map(p => p.name);
+  if (lensPillars.length && lensPillars.join('|') !== PILLARS.join('|')) {
+    console.warn('lens.json pillar names differ from PILLARS constant:', lensPillars);
+  }
+
+  DATA = items;
+  DATA.sort((a, b) => {
+    const pd = pillarIdx(a.pillar) - pillarIdx(b.pillar);
+    if (pd !== 0) return pd;
+    const fd = String(a.focus_area_id).localeCompare(String(b.focus_area_id), undefined, { numeric: true });
+    if (fd !== 0) return fd;
+    return String(a.id).localeCompare(String(b.id), undefined, { numeric: true });
+  });
+}
+
 // STATE
 const scores = {};
 const comments = {};
-let activePhaseFilter = 'all';
-let activeCapFilter = 'all';
+let activePillarFilter  = 'all';   // 'all' | 'unassessed' | 'excluded' | '0'..'5'
+let activeFaFilter      = 'all';   // 'all' | focus area id
+let activeRoadmapFilter = 'all';   // 'all' | roadmap path id
+const collapsedPillars  = new Set();
 
 // STORAGE
-const STORAGE_KEY = 'mma_sessions_v2';
-const CURRENT_SESSION_KEY = 'mma_current_session_v2';
+const STORAGE_KEY = 'aal_sessions_v1';
+const CURRENT_SESSION_KEY = 'aal_current_session_v1';
 
 let sessions = {};
 let currentSessionId = null;
@@ -122,13 +160,13 @@ function loadSessions() {
     if (raw) {
       sessions = JSON.parse(raw);
     }
-    
+
     // Try to load session ID from cookie first, then fallback to localStorage
     let currentId = getCookie(COOKIE_NAME);
     if (!currentId) {
       currentId = localStorage.getItem(CURRENT_SESSION_KEY);
     }
-    
+
     if (currentId && sessions[currentId]) {
       currentSessionId = currentId;
     } else {
@@ -156,7 +194,7 @@ function saveSessions() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
     localStorage.setItem(CURRENT_SESSION_KEY, currentSessionId);
-    
+
     // Persist current session ID in cookie
     setCookie(COOKIE_NAME, currentSessionId, COOKIE_EXPIRY_DAYS);
   } catch(e) {
@@ -200,12 +238,12 @@ function updateSessionUI() {
 function renderSessionList() {
   const list = document.getElementById('sessionList');
   list.innerHTML = '';
-  
+
   const sortedSessions = Object.values(sessions)
     .sort((a, b) => new Date(b.date) - new Date(a.date));
-  
+
   const visibleSessions = sortedSessions.slice(0, 10);
-  
+
   visibleSessions.forEach(session => {
     const div = document.createElement('div');
     const canDelete = sortedSessions.length > 1 && !session.isDefault;
@@ -213,7 +251,7 @@ function renderSessionList() {
     div.innerHTML = `
       <div class="session-item-icon">📊</div>
         <div class="session-item-info">
-        <div class="session-item-name">${session.name}</div>
+        <div class="session-item-name">${escapeHtml(session.name)}</div>
         <div class="session-item-date">${formatDate(session.date)}</div>
       </div>
       ${canDelete ? `<button class="session-item-delete" onclick="deleteSession('${session.id}', event)">
@@ -280,7 +318,7 @@ function createNewSession() {
     alert('Please enter a session name');
     return;
   }
-  
+
   const newId = generateSessionId();
   sessions[newId] = {
     id: newId,
@@ -289,7 +327,7 @@ function createNewSession() {
     scores: {...scores},
     comments: {...comments}
   };
-  
+
   currentSessionId = newId;
   saveSessions();
   loadCurrentSession();
@@ -297,7 +335,7 @@ function createNewSession() {
   renderCards();
   updateScores();
   closeNewSessionModal();
-  
+
   const toast = document.getElementById('savedToast');
   toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> New session created`;
   toast.classList.add('show');
@@ -379,16 +417,17 @@ document.addEventListener('click', function(e) {
 
 // INIT
 function init() {
-  renderCapNav();
+  renderPillarChrome();
+  renderFaNav();
   renderCards();
   updateScores();
 
-  // ── Set default state: All phases selected and highlighted ────────────
+  // ── Set default state: all pillars selected and highlighted ───────────
   document.querySelectorAll('.phase-stat').forEach(s => s.classList.add('active'));
   const allPill = document.querySelector('.phase-pill[data-p="all"]');
   if (allPill) {
-    document.querySelectorAll('.phase-pill').forEach(p => {
-      p.classList.remove('active-p0','active-p1','active-p2','active-p3','active-unassessed');
+    document.querySelectorAll('.phase-pill[data-p]').forEach(p => {
+      p.classList.remove(...pillarClassList(), 'active-unassessed', 'active-excluded');
     });
     allPill.classList.add('active-p0');
   }
@@ -401,68 +440,168 @@ function init() {
     });
   }
 
-  const solModal = document.getElementById('solutionModal');
+  ['guidanceModal', 'focusAreaModal', 'aboutModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('click', function(e) {
+      if (e.target === this) el.classList.remove('open');
+    });
+  });
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && solModal && solModal.classList.contains('open')) closeSolutionModal();
+    if (e.key !== 'Escape') return;
+    ['guidanceModal', 'focusAreaModal', 'aboutModal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.classList.contains('open')) el.classList.remove('open');
+    });
   });
 }
 
-function renderCapNav() {
-  const nav = document.getElementById('capNav');
+// ─── PILLAR CHROME (stats bar, pills, progress rows, print checkboxes) ───────
+function renderPillarChrome() {
+  const stats = document.getElementById('phaseStats');
+  if (stats) {
+    stats.innerHTML = PILLARS.map((p, i) => `
+      <div class="phase-stat active" data-phase="${i}" style="--pc:${PILLAR_COLORS[i]}" onclick="filterPillarStat(${i})" title="${escapeHtml(p)}">
+        <div class="stat-label">${PILLAR_PREFIX[i]}</div>
+        <div class="stat-name">${escapeHtml(p)}</div>
+        <div class="stat-bar-track"><div class="stat-bar-fill" id="bar-p${i}" style="width:0%"></div></div>
+        <div class="stat-pct" id="pct-p${i}">0%</div>
+        <div class="stat-count" id="cnt-p${i}">0 items</div>
+      </div>`).join('');
+  }
+
+  const pills = document.getElementById('pillarPills');
+  if (pills) {
+    pills.querySelectorAll('.phase-pill.pillar-pill').forEach(p => p.remove());
+    const allPill = pills.querySelector('.phase-pill[data-p="all"]');
+    const frag = document.createDocumentFragment();
+    PILLARS.forEach((p, i) => {
+      const div = document.createElement('div');
+      div.className = 'phase-pill pillar-pill';
+      div.dataset.p = String(i);
+      div.title = p;
+      div.textContent = PILLAR_SHORT[i];
+      div.onclick = () => filterByPillar(String(i), div);
+      frag.appendChild(div);
+    });
+    if (allPill && allPill.nextSibling) pills.insertBefore(frag, allPill.nextSibling);
+    else pills.appendChild(frag);
+  }
+
+  const progress = document.getElementById('pillarProgress');
+  if (progress) {
+    progress.innerHTML = PILLARS.map((p, i) => `
+      <div class="progress-phase-row" title="${escapeHtml(p)}">
+        <span class="progress-phase-label p${i}-color" style="font-size:9px;font-family:'Roboto Mono'">${PILLAR_ABBR[i]}</span>
+        <div class="progress-track"><div class="progress-fill p${i}-fill" id="rbar-p${i}" style="width:0%"></div></div>
+        <span class="progress-pct p${i}-color" id="rpct-p${i}">0%</span>
+      </div>`).join('');
+  }
+
+  const roadmap = document.getElementById('roadmapPills');
+  if (roadmap) {
+    const paths = LENS.roadmap || [];
+    roadmap.innerHTML = `<div class="phase-pill roadmap-pill active-roadmap" data-r="all" onclick="filterByRoadmap('all', this)">All paths</div>` +
+      paths.map(r => `<div class="phase-pill roadmap-pill" data-r="${escapeHtml(r.id)}" title="${escapeHtml(r.intro)}" onclick="filterByRoadmap('${escapeHtml(r.id)}', this)">${escapeHtml(r.label)}</div>`).join('');
+  }
+
+  const printBox = document.getElementById('pillarCheckboxes');
+  if (printBox) {
+    printBox.innerHTML = PILLARS.map((p, i) => `
+      <label class="print-checkbox-row"><input type="checkbox" class="phase-chk" name="phase-chk-${i}" value="${i}" checked onchange="refreshPreview()"><span class="print-checkbox-label">${PILLAR_PREFIX[i]} · ${escapeHtml(p)}</span></label>`).join('');
+  }
+}
+
+// ─── SIDEBAR: FOCUS AREAS GROUPED BY PILLAR ──────────────────────────────────
+function renderFaNav() {
+  const nav = document.getElementById('faNav');
+  if (!nav) return;
   nav.innerHTML = '';
-  CAPABILITIES.forEach(cap => {
-    const count = DATA.filter(d => d.capability === cap).length;
-    const div = document.createElement('div');
-    div.className = 'cap-nav-item' + (activeCapFilter === cap ? ' active' : '');
-    div.onclick = () => filterByCap(cap);
-    div.innerHTML = `
-      <span class="cap-nav-icon" style="color:${CAP_COLORS[cap]};border-color:${CAP_COLORS[cap]}30;">${CAP_ICONS[cap]||'?'}</span>
-      <span class="cap-nav-label" title="${cap}">${cap}</span>
-      <span class="cap-nav-count">${count}</span>
-    `;
-    nav.appendChild(div);
-  });
-  // All
+
   const allDiv = document.createElement('div');
-  allDiv.className = 'cap-nav-item' + (activeCapFilter === 'all' ? ' active' : '');
-  allDiv.onclick = () => filterByCap('all');
-  allDiv.innerHTML = `<span class="cap-nav-icon" style="color:var(--aws);border-color:var(--aws-dim);">★</span><span class="cap-nav-label">All Capabilities</span><span class="cap-nav-count">${DATA.length}</span>`;
-  nav.insertBefore(allDiv, nav.firstChild);
+  allDiv.className = 'cap-nav-item' + (activeFaFilter === 'all' ? ' active' : '');
+  allDiv.onclick = () => filterByFocusArea('all');
+  allDiv.innerHTML = `<span class="cap-nav-icon" style="color:var(--aws);border-color:var(--aws-dim);">★</span><span class="cap-nav-label">All focus areas</span><span class="cap-nav-count">${DATA.length}</span>`;
+  nav.appendChild(allDiv);
+
+  const pillarFilterIdx = /^\d+$/.test(activePillarFilter) ? parseInt(activePillarFilter) : -1;
+
+  PILLARS.forEach((p, i) => {
+    if (pillarFilterIdx >= 0 && pillarFilterIdx !== i) return;
+    const fas = FOCUS_AREAS.filter(fa => fa.pillar === p);
+    if (!fas.length) return;
+    const color = PILLAR_COLORS[i];
+    const pillarCount = DATA.filter(d => d.pillar === p).length;
+    const collapsed = collapsedPillars.has(p) && pillarFilterIdx < 0;
+
+    const header = document.createElement('div');
+    header.className = 'fa-nav-pillar' + (collapsed ? ' collapsed' : '');
+    header.innerHTML = `
+      <span class="fa-nav-dot" style="background:${color}"></span>
+      <span class="fa-nav-pillar-name" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
+      <span class="cap-nav-count">${pillarCount}</span>
+      <svg class="fa-nav-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    header.onclick = () => {
+      if (collapsedPillars.has(p)) collapsedPillars.delete(p); else collapsedPillars.add(p);
+      renderFaNav();
+    };
+    nav.appendChild(header);
+
+    const children = document.createElement('div');
+    children.className = 'fa-nav-children' + (collapsed ? ' collapsed' : '');
+    fas.forEach(fa => {
+      const count = DATA.filter(d => d.focus_area_id === fa.id).length;
+      const div = document.createElement('div');
+      div.className = 'cap-nav-item' + (activeFaFilter === fa.id ? ' active' : '');
+      div.onclick = () => filterByFocusArea(fa.id);
+      div.innerHTML = `
+        <span class="cap-nav-icon" style="color:${color};border-color:${color}30;">${faShort(fa.id)}</span>
+        <span class="cap-nav-label" title="${escapeHtml(fa.id + ': ' + fa.question)}">${escapeHtml(fa.name)}</span>
+        <span class="cap-nav-count">${count}</span>
+      `;
+      children.appendChild(div);
+    });
+    nav.appendChild(children);
+  });
 }
 
 function getFilteredData() {
   let filtered = DATA;
-  if (activePhaseFilter === 'unassessed') {
+  if (activePillarFilter === 'unassessed') {
     filtered = filtered.filter(d => scores[d.id] === null || scores[d.id] === undefined);
-  } else if (activePhaseFilter === 'excluded') {
+  } else if (activePillarFilter === 'excluded') {
     filtered = filtered.filter(d => scores[d.id] === 'na');
-  } else if (activePhaseFilter !== 'all') {
-    filtered = filtered.filter(d => d.phase === PHASES[parseInt(activePhaseFilter)]);
+  } else if (activePillarFilter !== 'all') {
+    filtered = filtered.filter(d => d.pillar === PILLARS[parseInt(activePillarFilter)]);
   }
-  if (activeCapFilter !== 'all') {
-    filtered = filtered.filter(d => d.capability === activeCapFilter);
+  if (activeFaFilter !== 'all') {
+    filtered = filtered.filter(d => d.focus_area_id === activeFaFilter);
+  }
+  if (activeRoadmapFilter !== 'all') {
+    filtered = filtered.filter(d => (FA_BY_ID[d.focus_area_id]?.roadmap || []).includes(activeRoadmapFilter));
   }
   const search = document.getElementById('searchInput').value.toLowerCase().trim();
   if (search) {
-    filtered = filtered.filter(d =>
-      d.recommendation.toLowerCase().includes(search) ||
-      d.capability.toLowerCase().includes(search) ||
-      d.aws_service.toLowerCase().includes(search) ||
-      d.id.includes(search)
-    );
+    filtered = filtered.filter(d => {
+      const fa = FA_BY_ID[d.focus_area_id];
+      return (d.recommendation || '').toLowerCase().includes(search) ||
+        (d.focus_area || '').toLowerCase().includes(search) ||
+        (d.focus_area_id || '').toLowerCase().includes(search) ||
+        (d.pillar || '').toLowerCase().includes(search) ||
+        (d.aws_service || '').toLowerCase().includes(search) ||
+        (d.risk || '').toLowerCase().includes(search) ||
+        (d.id || '').toLowerCase().includes(search) ||
+        (fa?.question || '').toLowerCase().includes(search);
+    });
   }
   return filtered;
-}
-
-function getPhaseIndex(phase) {
-  return PHASES.indexOf(phase);
 }
 
 function renderCards() {
   const container = document.getElementById('cardsContainer');
   const noRes = document.getElementById('noResults');
   const filtered = getFilteredData();
-  const isFiltered = activePhaseFilter !== 'all' || activeCapFilter !== 'all' || document.getElementById('searchInput').value.trim() !== '';
+  const isFiltered = activePillarFilter !== 'all' || activeFaFilter !== 'all' || activeRoadmapFilter !== 'all' || document.getElementById('searchInput').value.trim() !== '';
   document.getElementById('itemCountBadge').textContent = `${filtered.length} items`;
   const existingTag = document.getElementById('filteredTag');
   if (isFiltered) {
@@ -484,47 +623,35 @@ function renderCards() {
   }
   noRes.style.display = 'none';
 
-  // Group by capability then phase
+  // Group by focus area (each focus area belongs to exactly one pillar)
   const groups = {};
   filtered.forEach(item => {
-    const key = item.capability + '|||' + item.phase;
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(item);
+    if (!groups[item.focus_area_id]) groups[item.focus_area_id] = [];
+    groups[item.focus_area_id].push(item);
   });
-
-  // Sort by phase then capability
-  const sortedKeys = Object.keys(groups).sort((a, b) => {
-    const [capA, phA] = a.split('|||');
-    const [capB, phB] = b.split('|||');
-    if (activeCapFilter !== 'all') {
-      // Filter for capability: order for phase
-      return PHASES.indexOf(phA) - PHASES.indexOf(phB);
-    }
-    if (activePhaseFilter !== 'all') {
-      // Filter for phase: order for capability
-      return CAPABILITIES.indexOf(capA) - CAPABILITIES.indexOf(capB);
-    }
-    // Default: phase first, later capability
-    const phDiff = PHASES.indexOf(phA) - PHASES.indexOf(phB);
-    if (phDiff !== 0) return phDiff;
-    return CAPABILITIES.indexOf(capA) - CAPABILITIES.indexOf(capB);
-  });
+  const faOrder = FOCUS_AREAS.map(fa => fa.id);
+  const sortedKeys = Object.keys(groups).sort((a, b) => faOrder.indexOf(a) - faOrder.indexOf(b));
 
   container.innerHTML = '';
   const fragment = document.createDocumentFragment();
 
-  sortedKeys.forEach(key => {
-    const [cap, phase] = key.split('|||');
-    const phIdx = getPhaseIndex(phase);
-    const items = groups[key];
+  sortedKeys.forEach(faId => {
+    const items = groups[faId];
+    const fa = FA_BY_ID[faId] || { id: faId, name: items[0].focus_area, question: '', pillar: items[0].pillar, roadmap: [] };
+    const pi = pillarIdx(fa.pillar);
+    const color = PILLAR_COLORS[pi] || '#FF9900';
 
     // Group header
     const header = document.createElement('div');
-    header.className = 'cap-group-header';
+    header.className = 'cap-group-header fa-group-header';
     header.innerHTML = `
-      <div class="cap-icon" style="background:${CAP_COLORS[cap]}20; color:${CAP_COLORS[cap]}; border: 1px solid ${CAP_COLORS[cap]}40;">${CAP_ICONS[cap]||''}</div>
-      <span class="cap-group-name">${cap}</span>
-      <span class="cap-group-phase-badge phase-tag-${phIdx}">${PHASE_SHORT[phIdx]}</span>
+      <div class="cap-icon" style="background:${color}20; color:${color}; border: 1px solid ${color}40;">${faShort(fa.id)}</div>
+      <div class="fa-group-text">
+        <span class="cap-group-name">${escapeHtml(fa.name)}</span>
+        ${fa.question ? `<div class="fa-group-question">${escapeHtml(fa.id)}: ${escapeHtml(fa.question)}</div>` : ''}
+      </div>
+      <span class="cap-group-phase-badge phase-tag-${pi}">${PILLAR_SHORT[pi] || escapeHtml(fa.pillar)}</span>
+      ${FA_BY_ID[faId] ? `<button class="fa-info-btn" onclick="openFocusAreaModal('${escapeHtml(fa.id)}')" title="Capability intent, maturity levels and common issues">Maturity levels</button>` : ''}
     `;
     fragment.appendChild(header);
 
@@ -545,14 +672,18 @@ function renderCards() {
       ).join('');
       const currentScore = scores[item.id];
       const selectClass = getSelectClass(currentScore);
+      const risk = item.risk || '';
+      const roadmapTags = (fa.roadmap || []).map(r => `<span class="roadmap-tag" title="Lens roadmap reading path">${escapeHtml(roadmapLabel(r))}</span>`).join('');
 
       card.innerHTML = `
         <div class="rec-header" onclick="handleHeaderClick(event, '${item.id}')">
-          <span class="rec-id">${item.id}</span>
+          <span class="rec-id">${escapeHtml(item.id)}</span>
           <div class="rec-info">
-            <div class="rec-title">${item.recommendation}</div>
+            <div class="rec-title">${escapeHtml(item.recommendation)}</div>
             <div class="rec-meta">
-              ${item.aws_service && item.aws_service !== 'N/A' ? `<span class="rec-service">⚙ ${item.aws_service}</span>` : ''}
+              ${risk ? `<span class="rec-risk risk-${risk.toLowerCase()}" title="Level of risk exposed if this best practice is not established">${escapeHtml(risk)} risk</span>` : ''}
+              ${item.aws_service && item.aws_service !== 'N/A' ? `<span class="rec-service">⚙ ${escapeHtml(item.aws_service)}</span>` : ''}
+              ${roadmapTags}
             </div>
           </div>
           <div class="rec-select-wrapper" onclick="event.stopPropagation()">
@@ -564,17 +695,19 @@ function renderCards() {
         </div>
         <div class="rec-detail" id="detail-${item.id}">
           <div class="rec-detail-inner">
-            ${item.guidance ? `<div class="rec-detail-block"><div class="detail-label">Assessment Guidance</div><div class="detail-text">${item.guidance.trim()}</div></div>` : ''}
-            ${item.how_to_check ? `<div class="rec-detail-block"><div class="detail-label">How to Check</div><div class="detail-text">${item.how_to_check.trim()}</div></div>` : ''}
+            ${item.guidance ? `<div class="rec-detail-block"><div class="detail-label">Summary</div><div class="detail-text">${item.guidance.trim()}</div></div>` : ''}
+            ${item.how_to_check ? `<div class="rec-detail-block"><div class="detail-label">Desired outcome</div><div class="detail-text">${item.how_to_check.trim()}</div></div>` : ''}
           </div>
-          <textarea class="comments-input" id="cmt-${item.id}" placeholder="Add comments, owner, or notes..." oninput="setComment('${item.id}', this.value)">${comments[item.id]||''}</textarea>
-          ${item._hasSolution ? `<button class="btn-solution" onclick="openSolutionModal('${item.id}')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Possible solution</button>` : ''}
+          <textarea class="comments-input" id="cmt-${item.id}" placeholder="Add comments, owner, evidence, or notes..." oninput="setComment('${item.id}', this.value)">${escapeHtml(comments[item.id] || '')}</textarea>
+          <div class="rec-actions">
+            ${item._hasGuidance ? `<button class="btn-solution" onclick="openGuidanceModal('${item.id}')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Implementation guidance</button>` : ''}
+            ${item.doc_url ? `<a class="rec-doc-link" href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">View in AWS documentation ↗</a>` : ''}
+          </div>
         </div>
       `;
-      
+
       // Restore select value
       if (currentScore !== undefined) {
-        // Use getElementById because querySelector('#sel-...') fails when id contains dots
         const sel = card.querySelector('#' + CSS.escape('sel-' + item.id));
         if (sel) sel.value = currentScore === 'na' ? 'na' : (currentScore ?? '');
       }
@@ -615,9 +748,9 @@ function toggleDetail(id) {
   const detail = document.getElementById(`detail-${id}`);
   const btn = document.getElementById(`btn-${id}`);
   const card = document.getElementById(`card-${id}`);
-  
+
   const isOpen = detail.classList.contains('open');
-  
+
   if (isOpen) {
     detail.classList.remove('open');
     if (btn) btn.classList.remove('open');
@@ -630,11 +763,19 @@ function toggleDetail(id) {
 }
 
 function handleHeaderClick(e, id) {
-  // Evitar toggle si se hizo clic en el select o sus elementos
+  // Do not toggle when the click landed on the score select or its wrapper
   if (e.target.closest('.rec-select-wrapper') || e.target.closest('.rec-select')) {
     return;
   }
   toggleDetail(id);
+}
+
+function scrollToCard(id) {
+  const card = document.getElementById(`card-${id}`);
+  if (!card) return;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  card.classList.add('highlight');
+  setTimeout(() => card.classList.remove('highlight'), 1600);
 }
 
 function setScore(id, sel) {
@@ -660,7 +801,7 @@ function setScore(id, sel) {
 
   updateScores();
   // If filtering by unassessed, re-render so scored item is removed
-  if (activePhaseFilter === 'unassessed') renderCards();
+  if (activePillarFilter === 'unassessed') renderCards();
   showSavedToast();
 }
 
@@ -671,61 +812,68 @@ function setComment(id, val) {
   commentSaveTimer = setTimeout(() => { saveSession(); showSavedToast(); }, 800);
 }
 
+function isScored(id) {
+  const s = scores[id];
+  return s !== null && s !== undefined && s !== 'na';
+}
+
+function avgPct(items) {
+  const scored = items.filter(d => isScored(d.id));
+  if (scored.length === 0) return null;
+  return (scored.reduce((sum, d) => sum + (scores[d.id] || 0), 0) / scored.length) * 100;
+}
+
 function updateScores() {
-  // Per phase
-  const phasePcts = PHASES.map((ph, pi) => {
-    const items = DATA.filter(d => d.phase === ph);
-    const scored = items.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na');
-    if (scored.length === 0) return 0;
-    const total = scored.reduce((sum, d) => sum + (scores[d.id] || 0), 0);
-    return (total / scored.length) * 100;
-  });
-
-  const phaseCounts = PHASES.map(ph => DATA.filter(d => d.phase === ph).length);
-
-  phasePcts.forEach((pct, i) => {
-    const p = Math.round(pct);
-    document.getElementById(`bar-p${i}`).style.width = p + '%';
-    document.getElementById(`pct-p${i}`).textContent = p + '%';
-    document.getElementById(`cnt-p${i}`).textContent = phaseCounts[i] + ' items';
-    document.getElementById(`rbar-p${i}`).style.width = p + '%';
-    document.getElementById(`rpct-p${i}`).textContent = p + '%';
+  // Per pillar
+  PILLARS.forEach((p, i) => {
+    const items = DATA.filter(d => d.pillar === p);
+    const pct = Math.round(avgPct(items) ?? 0);
+    const bar = document.getElementById(`bar-p${i}`);
+    if (bar) bar.style.width = pct + '%';
+    const pctEl = document.getElementById(`pct-p${i}`);
+    if (pctEl) pctEl.textContent = pct + '%';
+    const cnt = document.getElementById(`cnt-p${i}`);
+    if (cnt) cnt.textContent = items.length + ' items';
+    const rbar = document.getElementById(`rbar-p${i}`);
+    if (rbar) rbar.style.width = pct + '%';
+    const rpct = document.getElementById(`rpct-p${i}`);
+    if (rpct) rpct.textContent = pct + '%';
   });
 
   // Overall
-  const allScored = DATA.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na');
-  let overallPct = 0;
-  if (allScored.length > 0) {
-    overallPct = (allScored.reduce((s, d) => s + (scores[d.id] || 0), 0) / allScored.length) * 100;
-  }
-  const op = Math.round(overallPct);
+  const allScored = DATA.filter(d => isScored(d.id));
+  const op = Math.round(avgPct(DATA) ?? 0);
   const circumference = 314.2;
   const offset = circumference - (circumference * op / 100);
   document.getElementById('scoreRing').style.strokeDashoffset = offset;
   document.getElementById('scoreRingText').textContent = op + '%';
   document.getElementById('scoreLabel').textContent = allScored.length === 0
     ? 'No assessments yet'
-    : `${allScored.length} of ${DATA.length} items assessed`;
+    : `${allScored.length} of ${DATA.length} best practices assessed`;
 
-  // By capability
-  renderCapScores();
+  renderFaScores();
   renderRadar();
 }
 
-function renderCapScores() {
-  const list = document.getElementById('capScoresList');
+function renderFaScores() {
+  const list = document.getElementById('faScoresList');
+  if (!list) return;
   list.innerHTML = '';
-  CAPABILITIES.forEach(cap => {
-    const items = DATA.filter(d => d.capability === cap);
-    const scored = items.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na');
-    let pct = 0;
-    if (scored.length > 0) pct = Math.round((scored.reduce((s, d) => s + (scores[d.id] || 0), 0) / scored.length) * 100);
+  const pillarFilterIdx = /^\d+$/.test(activePillarFilter) ? parseInt(activePillarFilter) : -1;
+  FOCUS_AREAS.forEach(fa => {
+    const pi = pillarIdx(fa.pillar);
+    if (pillarFilterIdx >= 0 && pi !== pillarFilterIdx) return;
+    const items = DATA.filter(d => d.focus_area_id === fa.id);
+    const pct = Math.round(avgPct(items) ?? 0);
+    const color = PILLAR_COLORS[pi] || '#FF9900';
     const row = document.createElement('div');
     row.className = 'cap-score-row';
+    row.title = `${fa.id}: ${fa.name}`;
+    row.onclick = () => filterByFocusArea(fa.id);
     row.innerHTML = `
-      <span class="cap-score-label" title="${cap}">${cap}</span>
-      <div class="cap-score-bar-track"><div class="cap-score-bar-fill" style="width:${pct}%; background: linear-gradient(90deg, ${CAP_COLORS[cap]}, ${CAP_COLORS[cap]}cc);"></div></div>
-      <span class="cap-score-val" style="color:${CAP_COLORS[cap]}">${pct}%</span>
+      <span class="cap-score-label fa-score-label" style="color:${color}">${faShort(fa.id)}</span>
+      <div class="cap-score-bar-track"><div class="cap-score-bar-fill" style="width:${pct}%; background: linear-gradient(90deg, ${color}, ${color}cc);"></div></div>
+      <span class="cap-score-val" style="color:${color}">${pct}%</span>
     `;
     list.appendChild(row);
   });
@@ -734,25 +882,24 @@ function renderCapScores() {
 function renderRadar() {
   const svg = document.getElementById('radarSvg');
   const cx = 132, cy = 132, r = 90;
-  const n = CAPABILITIES.length;
+  const n = PILLARS.length;
+  const NS = 'http://www.w3.org/2000/svg';
 
-  // Bug fix #1: track which capabilities have no scored items
-  const capScores = CAPABILITIES.map(cap => {
-    const items = DATA.filter(d => d.capability === cap);
-    const scored = items.filter(d => scores[d.id] !== null && scores[d.id] !== undefined && scores[d.id] !== 'na');
-    if (scored.length === 0) return null; // null = no data, distinct from 0% scored
-    return scored.reduce((s, d) => s + (scores[d.id] || 0), 0) / scored.length;
+  // null = no scored items in that pillar (distinct from 0%)
+  const pillarScores = PILLARS.map(p => {
+    const pct = avgPct(DATA.filter(d => d.pillar === p));
+    return pct === null ? null : pct / 100;
   });
 
   svg.innerHTML = '';
 
   // Grid rings
   [0.25, 0.5, 0.75, 1].forEach(level => {
-    const pts = CAPABILITIES.map((_, i) => {
+    const pts = PILLARS.map((_, i) => {
       const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
       return [cx + Math.cos(angle) * r * level, cy + Math.sin(angle) * r * level];
     });
-    const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    const polygon = document.createElementNS(NS, 'polygon');
     polygon.setAttribute('points', pts.map(p => p.join(',')).join(' '));
     polygon.setAttribute('fill', 'none');
     polygon.setAttribute('stroke', '#1e3050');
@@ -761,9 +908,9 @@ function renderRadar() {
   });
 
   // Axis lines
-  CAPABILITIES.forEach((_, i) => {
+  PILLARS.forEach((_, i) => {
     const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    const line = document.createElementNS(NS, 'line');
     line.setAttribute('x1', cx);
     line.setAttribute('y1', cy);
     line.setAttribute('x2', cx + Math.cos(angle) * r);
@@ -773,42 +920,40 @@ function renderRadar() {
     svg.appendChild(line);
   });
 
-  // Bug fix #3: only render polygon and dots if at least one capability has data
-  const hasAnyData = capScores.some(s => s !== null);
+  const hasAnyData = pillarScores.some(s => s !== null);
   if (hasAnyData) {
-    // Use 0 for unscored capabilities so the shape is still valid
-    const dataPoints = capScores.map((score, i) => {
+    const dataPoints = pillarScores.map((score, i) => {
       const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
       const val = score !== null ? score : 0;
       return [cx + Math.cos(angle) * r * val, cy + Math.sin(angle) * r * val];
     });
 
-    const dataPoly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    const dataPoly = document.createElementNS(NS, 'polygon');
     dataPoly.setAttribute('points', dataPoints.map(p => p.join(',')).join(' '));
     dataPoly.setAttribute('fill', 'rgba(255,153,0,0.15)');
     dataPoly.setAttribute('stroke', '#FF9900');
     dataPoly.setAttribute('stroke-width', '1.5');
     svg.appendChild(dataPoly);
 
-    // Dots: scored = colored, unscored = dimmed hollow circle
     dataPoints.forEach((pt, i) => {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const circle = document.createElementNS(NS, 'circle');
       circle.setAttribute('cx', pt[0]);
       circle.setAttribute('cy', pt[1]);
       circle.setAttribute('r', '3');
-      if (capScores[i] !== null) {
-        circle.setAttribute('fill', CAP_COLORS[CAPABILITIES[i]]);
+      if (pillarScores[i] !== null) {
+        circle.setAttribute('fill', PILLAR_COLORS[i]);
       } else {
-        // Bug fix #1 visual: unscored dot rendered as hollow/dimmed at center
         circle.setAttribute('fill', 'none');
         circle.setAttribute('stroke', '#3d5a7e');
         circle.setAttribute('stroke-width', '1');
       }
+      const title = document.createElementNS(NS, 'title');
+      title.textContent = `${PILLARS[i]}: ${pillarScores[i] === null ? 'not assessed' : Math.round(pillarScores[i] * 100) + '%'}`;
+      circle.appendChild(title);
       svg.appendChild(circle);
     });
   } else {
-    // Bug fix #3: no data state — show a centered placeholder message
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    const text = document.createElementNS(NS, 'text');
     text.setAttribute('x', cx);
     text.setAttribute('y', cy);
     text.setAttribute('text-anchor', 'middle');
@@ -820,13 +965,13 @@ function renderRadar() {
     svg.appendChild(text);
   }
 
-  // Bug fix #2: use CAP_ICONS instead of hardcoded shortNames array
-  CAPABILITIES.forEach((cap, i) => {
+  // Axis labels (pillar abbreviations; full names would clip the viewBox)
+  PILLARS.forEach((p, i) => {
     const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
     const labelR = r + 19;
     const x = cx + Math.cos(angle) * labelR;
     const y = cy + Math.sin(angle) * labelR;
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    const text = document.createElementNS(NS, 'text');
     text.setAttribute('x', x);
     text.setAttribute('y', y);
     text.setAttribute('text-anchor', 'middle');
@@ -834,79 +979,87 @@ function renderRadar() {
     text.setAttribute('font-size', '12');
     text.setAttribute('font-family', 'Arial, sans-serif');
     text.setAttribute('fill', '#9db1c9ff');
-    text.textContent = CAP_ICONS[cap] || cap.substring(0, 5); // Bug fix #2
+    text.textContent = PILLAR_ABBR[i];
+    const title = document.createElementNS(NS, 'title');
+    title.textContent = p;
+    text.appendChild(title);
     svg.appendChild(text);
   });
 }
 
-function filterByPhase(phase, el) {
-  activePhaseFilter = phase;
-  if (phase !== 'all') {
-    activeCapFilter = 'all';
+// ─── FILTERS ──────────────────────────────────────────────────────────────────
+function clearPillarPillClasses() {
+  document.querySelectorAll('.phase-pill[data-p]').forEach(p => {
+    p.classList.remove(...pillarClassList(), 'active-unassessed', 'active-excluded');
+  });
+}
+
+function filterByPillar(value, el) {
+  activePillarFilter = value;
+  if (value !== 'all') {
+    activeFaFilter = 'all';
   }
 
   // ── Update sidebar pills ──────────────────────────────────────────────
-  document.querySelectorAll('.phase-pill').forEach(p => {
-    p.classList.remove('active-p0','active-p1','active-p2','active-p3','active-unassessed','active-excluded');
-  });
-  if (phase === 'all') {
-    el.classList.add('active-p0');
-  } else if (phase === 'unassessed') {
-    el.classList.add('active-unassessed');
-  } else if (phase === 'excluded') {
-    el.classList.add('active-excluded');
-  } else {
-    el.classList.add(`active-p${phase}`);
+  clearPillarPillClasses();
+  if (!el) el = document.querySelector(`.phase-pill[data-p="${value}"]`);
+  if (el) {
+    if (value === 'all') el.classList.add('active-p0');
+    else if (value === 'unassessed') el.classList.add('active-unassessed');
+    else if (value === 'excluded') el.classList.add('active-excluded');
+    else el.classList.add(`active-p${value}`);
   }
 
-  // ── Update top phase stats bar ────────────────────────────────────────
+  // ── Update top pillar stats bar ───────────────────────────────────────
   document.querySelectorAll('.phase-stat').forEach(s => s.classList.remove('active'));
-  if (phase === 'all') {
-    // Highlight all phases
+  if (value === 'all' || value === 'unassessed' || value === 'excluded') {
     document.querySelectorAll('.phase-stat').forEach(s => s.classList.add('active'));
-  } else if (phase !== 'unassessed') {
-    const statEl = document.querySelector(`.phase-stat[data-phase="${phase}"]`);
+  } else {
+    const statEl = document.querySelector(`.phase-stat[data-phase="${value}"]`);
     if (statEl) statEl.classList.add('active');
   }
 
-  renderCapNav();
+  renderFaNav();
   renderCards();
+  renderFaScores();
 }
 
-function filterPhase(phaseIdx) {
-  // ── Update top phase stats bar ────────────────────────────────────────
-  document.querySelectorAll('.phase-stat').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.phase-stat')[phaseIdx].classList.add('active');
-
-  activePhaseFilter = String(phaseIdx);
-
-  // ── Update sidebar pills ──────────────────────────────────────────────
-  document.querySelectorAll('.phase-pill').forEach(p => {
-    p.classList.remove('active-p0','active-p1','active-p2','active-p3','active-unassessed');
-    if (p.dataset.p === String(phaseIdx)) p.classList.add(`active-p${phaseIdx}`);
-  });
-
-  renderCards();
+function filterPillarStat(idx) {
+  // Clicking an already-selected single pillar in the stats bar returns to "all"
+  if (activePillarFilter === String(idx)) {
+    filterByPillar('all');
+    return;
+  }
+  filterByPillar(String(idx));
 }
 
-function filterByCap(cap) {
-  activeCapFilter = cap;
-  if (cap !== 'all') {
-    activePhaseFilter = 'all';
-    // Reset sidebar phase pills → ALL active
-    document.querySelectorAll('.phase-pill').forEach(p => {
-      p.classList.remove('active-p0','active-p1','active-p2','active-p3','active-unassessed');
-    });
+function filterByFocusArea(faId) {
+  activeFaFilter = faId;
+  if (faId !== 'all') {
+    activePillarFilter = 'all';
+    clearPillarPillClasses();
     const allPill = document.querySelector('.phase-pill[data-p="all"]');
     if (allPill) allPill.classList.add('active-p0');
-    // Reset top phase stats bar → ALL active
     document.querySelectorAll('.phase-stat').forEach(s => s.classList.add('active'));
   }
-  renderCapNav();
+  renderFaNav();
+  renderCards();
+  renderFaScores();
+  if (faId !== 'all') {
+    const main = document.getElementById('mainContent');
+    if (main && window.innerWidth <= 1024) main.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function filterByRoadmap(pathId, el) {
+  activeRoadmapFilter = pathId;
+  document.querySelectorAll('.roadmap-pill').forEach(p => p.classList.remove('active-roadmap'));
+  if (!el) el = document.querySelector(`.roadmap-pill[data-r="${pathId}"]`);
+  if (el) el.classList.add('active-roadmap');
   renderCards();
 }
 
-// ── Debounce for the input of search ──
+// ── Debounce for the search input ──
 let renderDebounceTimer = null;
 function applyFilters() {
   clearTimeout(renderDebounceTimer);
@@ -925,38 +1078,180 @@ function closeModal() {
   document.getElementById('confirmModal').classList.remove('open');
 }
 
-// ─── SOLUTION MODAL ──────────────────────────────────────────────────────────
+// ─── IMPLEMENTATION GUIDANCE MODAL ───────────────────────────────────────────
 
-const solutionCache = {};
+const guidanceCache = {};
 
-async function openSolutionModal(itemId) {
+async function openGuidanceModal(itemId) {
   const item = DATA.find(d => d.id === itemId);
-  if (!item || !item._hasSolution) return;
+  if (!item || !item._hasGuidance) return;
 
-  const modal = document.getElementById('solutionModal');
-  const body = document.getElementById('solutionModalBody');
+  const modal = document.getElementById('guidanceModal');
+  const body = document.getElementById('guidanceModalBody');
+  const link = document.getElementById('guidanceDocLink');
+  if (link) {
+    if (item.doc_url) { link.href = item.doc_url; link.style.display = ''; }
+    else link.style.display = 'none';
+  }
 
   body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)">Loading...</div>';
   modal.classList.add('open');
 
-  if (!solutionCache[itemId]) {
+  if (!guidanceCache[itemId]) {
     try {
-      const resp = await fetch(item._solutionPath + `?v=${Date.now()}`);
+      const resp = await fetch(item._guidancePath + `?v=${Date.now()}`);
       if (!resp.ok) throw new Error();
-      solutionCache[itemId] = await resp.text();
+      guidanceCache[itemId] = await resp.text();
     } catch {
-      body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--red)">Could not load solution.</div>';
+      body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red)">Could not load the implementation guidance.${item.doc_url ? ` <a href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">Open the official page</a>.` : ''}</div>`;
       return;
     }
   }
 
-  body.innerHTML = marked.parse(solutionCache[itemId]);
+  body.innerHTML = marked.parse(guidanceCache[itemId]);
   body.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
   body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+  body.scrollTop = 0;
 }
 
-function closeSolutionModal() {
-  document.getElementById('solutionModal').classList.remove('open');
+function closeGuidanceModal() {
+  document.getElementById('guidanceModal').classList.remove('open');
+}
+
+// ─── FOCUS AREA MODAL (question, intent, maturity levels, common issues) ─────
+
+function openFocusAreaModal(faId) {
+  const fa = FA_BY_ID[faId];
+  if (!fa) return;
+  const modal = document.getElementById('focusAreaModal');
+  const body = document.getElementById('focusAreaModalBody');
+  const titleEl = document.getElementById('focusAreaModalTitle');
+  const link = document.getElementById('focusAreaDocLink');
+  const pi = pillarIdx(fa.pillar);
+  const color = PILLAR_COLORS[pi] || '#FF9900';
+
+  if (titleEl) titleEl.textContent = `${fa.id} · ${fa.name}`;
+  if (link) link.href = fa.doc_url || '#';
+
+  const list = (arr) => arr && arr.length ? `<ul>${arr.map(x => `<li>${mdInline(x)}</li>`).join('')}</ul>` : '<p class="fa-modal-empty">Not available.</p>';
+  const bps = (fa.best_practices || []).map(id => {
+    const item = DATA.find(d => d.id === id);
+    const s = scores[id];
+    const scoreTxt = s === undefined || s === null ? 'Not assessed' : (s === 'na' ? 'Excluded' : Math.round(s * 100) + '%');
+    return `<li><a href="#" onclick="closeFocusAreaModal(); scrollToCard('${escapeHtml(id)}'); return false;"><strong>${escapeHtml(id)}</strong> ${escapeHtml(item ? item.recommendation : '')}</a>${item ? ` <span class="rec-risk risk-${item.risk.toLowerCase()}">${escapeHtml(item.risk)}</span>` : ''} <span class="fa-bp-score">${scoreTxt}</span></li>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="fa-modal-meta"><span class="cap-group-phase-badge phase-tag-${pi}">${escapeHtml(fa.pillar)}</span>${(fa.roadmap || []).map(r => `<span class="roadmap-tag">${escapeHtml(roadmapLabel(r))}</span>`).join('')}</div>
+    <h2 class="fa-modal-question" style="border-left-color:${color}">${escapeHtml(fa.question)}</h2>
+    ${fa.intro ? `<p>${mdInline(fa.intro)}</p>` : ''}
+    <h3>Capability intent</h3>
+    ${list(fa.capability_intent)}
+    <h3>Maturity levels</h3>
+    <p class="fa-modal-hint">These levels summarize what each stage of maturity looks like for this focus area as a whole. Use them as a reference when scoring the best practices below.</p>
+    <table class="maturity-table">
+      <thead><tr><th>Level</th><th>Name</th><th>What it looks like</th></tr></thead>
+      <tbody>${(fa.maturity_levels || []).map(l => `<tr><td class="ml-level">${l.level}</td><td class="ml-name">${escapeHtml(l.name)}</td><td>${mdInline(l.description)}</td></tr>`).join('')}</tbody>
+    </table>
+    <h3>Common issues to watch for</h3>
+    ${list(fa.common_issues)}
+    <h3>Best practices in this focus area</h3>
+    <ul class="fa-bp-list">${bps}</ul>
+    <p class="about-source">Source: <a href="${escapeHtml(fa.doc_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(fa.id)} in the AWS Well-Architected Agentic AI Lens</a> (${escapeHtml(LENS.published || '')}). Condensed for this self-assessment aid.</p>
+  `;
+  body.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+  modal.classList.add('open');
+  body.scrollTop = 0;
+}
+
+function closeFocusAreaModal() {
+  document.getElementById('focusAreaModal').classList.remove('open');
+}
+
+// ─── ABOUT THE LENS MODAL ────────────────────────────────────────────────────
+
+function openAboutModal() {
+  const modal = document.getElementById('aboutModal');
+  const body = document.getElementById('aboutModalBody');
+  if (!modal || !body) return;
+  const L = LENS || {};
+  const counts = L.counts || {};
+
+  const principles = (L.design_principles || []).map(p =>
+    `<li><strong>${escapeHtml(p.title)}:</strong> ${mdInline(p.text)}</li>`).join('');
+
+  const pillars = (L.pillars || []).map(p => {
+    const i = pillarIdx(p.name);
+    const color = PILLAR_COLORS[i] || '#FF9900';
+    const fas = (p.focus_areas || []).map(id => {
+      const fa = FA_BY_ID[id];
+      return `<li><a href="#" onclick="closeAboutModal(); filterByFocusArea('${escapeHtml(id)}'); return false;">${escapeHtml(id)}</a> ${escapeHtml(fa ? fa.name : '')}</li>`;
+    }).join('');
+    const pr = (p.design_principles || []).map(d => `<li><strong>${escapeHtml(d.title)}:</strong> ${mdInline(d.text)}</li>`).join('');
+    return `
+      <details class="about-pillar">
+        <summary><span class="fa-nav-dot" style="background:${color}"></span>${escapeHtml(p.name)} <span class="about-count">${(p.focus_areas || []).length} focus areas · ${DATA.filter(d => d.pillar === p.name).length} best practices</span></summary>
+        <p>${mdInline(p.intro)}</p>
+        ${pr ? `<h4>Design principles</h4><ul>${pr}</ul>` : ''}
+        <h4>Focus areas</h4><ul class="about-fa-list">${fas}</ul>
+      </details>`;
+  }).join('');
+
+  const roadmap = (L.roadmap || []).map(r => `
+    <div class="about-roadmap-path">
+      <button class="fa-info-btn" onclick="closeAboutModal(); filterByRoadmap('${escapeHtml(r.id)}'); document.getElementById('mainContent').scrollIntoView({behavior:'smooth'});">${escapeHtml(r.label)}</button>
+      <p>${escapeHtml(r.intro)}</p>
+      <ul>${(r.focus_areas || []).map(f => `<li><a href="#" onclick="closeAboutModal(); filterByFocusArea('${escapeHtml(f.id)}'); return false;">${escapeHtml(f.id)}</a>: ${escapeHtml(f.summary)}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  const definitions = (L.definitions || []).map(d => `<dt>${escapeHtml(d.term)}</dt><dd>${mdInline(d.definition)}</dd>`).join('');
+
+  body.innerHTML = `
+    <section class="about-section">
+      <p class="about-lead">${(L.abstract || []).map(p => mdInline(p)).join('</p><p class="about-lead">')}</p>
+      <p class="about-counts">${counts.pillars || PILLARS.length} pillars · ${counts.focus_areas || FOCUS_AREAS.length} focus areas · ${counts.best_practices || DATA.length} best practices · published ${escapeHtml(L.published || '')}</p>
+      <p>
+        <a href="${escapeHtml(L.doc_url || '')}" target="_blank" rel="noopener noreferrer">Read the official Lens ↗</a> ·
+        <a href="${escapeHtml(L.custom_lens_json_url || '')}" target="_blank" rel="noopener noreferrer">Import the custom lens into AWS Well-Architected Tool ↗</a>
+      </p>
+    </section>
+    <section class="about-section">
+      <h3>How to use this self-assessment</h3>
+      <ol>
+        <li>Pick a pillar, a focus area, or a Lens roadmap reading path from the sidebar.</li>
+        <li>Open <em>Maturity levels</em> on a focus area to see what each stage looks like, then score each best practice from 0% (not aligned) to 100% (fully covered), or exclude it if it does not apply.</li>
+        <li>Open <em>Implementation guidance</em> for the condensed desired outcome, anti-patterns, steps and resources. Follow the link to the official page for the complete text.</li>
+        <li>Track progress per pillar and focus area in the right panel, export a CSV or print a report when you are done.</li>
+      </ol>
+      <p class="about-note">Scores are stored only in this browser (sessions). This tool is an unofficial study aid and is not affiliated with AWS.</p>
+    </section>
+    <section class="about-section">
+      <h3>Design principles</h3>
+      <ul>${principles}</ul>
+    </section>
+    <section class="about-section">
+      <h3>Lens roadmap: reading paths</h3>
+      ${roadmap}
+    </section>
+    <section class="about-section">
+      <h3>Pillars</h3>
+      ${pillars}
+    </section>
+    <section class="about-section">
+      <details class="about-definitions">
+        <summary>Definitions (${(L.definitions || []).length} terms)</summary>
+        <dl class="about-dl">${definitions}</dl>
+      </details>
+    </section>
+    <p class="about-source">Content condensed from the <a href="${escapeHtml(L.doc_url || '')}" target="_blank" rel="noopener noreferrer">${escapeHtml(L.title || 'AWS Well-Architected Agentic AI Lens')}</a>, AWS documentation, ${escapeHtml(L.published || '')}. Always refer to the official documentation for the authoritative text.</p>
+  `;
+  body.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
+  modal.classList.add('open');
+  body.scrollTop = 0;
+}
+
+function closeAboutModal() {
+  document.getElementById('aboutModal').classList.remove('open');
 }
 
 function confirmReset() {
@@ -996,7 +1291,7 @@ function confirmReset() {
 }
 
 function exportCSV() {
-  const rows = [['ID','Phase','Capability','Recommendation','AWS Service','Alignment','Score','Comments']];
+  const rows = [['ID','Pillar','Focus Area','Best Practice','Risk','AWS Services','Alignment','Score','Comments']];
   DATA.forEach(item => {
     const s = scores[item.id];
     // Skip items with no score assigned
@@ -1004,7 +1299,7 @@ function exportCSV() {
     const alignOption = SCORING_OPTIONS.find(o => o.value === s);
     const alignLabel = alignOption ? alignOption.label : '--';
     const scoreVal = s === 'na' ? 'N/A' : (s * 100) + '%';
-    rows.push([item.id, item.phase, item.capability, item.recommendation, item.aws_service, alignLabel, scoreVal, comments[item.id]||'']);
+    rows.push([item.id, item.pillar, `${item.focus_area_id} ${item.focus_area}`, item.recommendation, item.risk || '', item.aws_service || '', alignLabel, scoreVal, comments[item.id]||'']);
   });
   if (rows.length === 1) {
     // No scored items — show error toast
@@ -1081,7 +1376,8 @@ function loadCSV(event) {
   reader.onload = function(e) {
     try {
       const lines = e.target.result.split('\n').filter(l => l.trim());
-      // Expected header: ID,Phase,Capability,Recommendation,AWS Service,Alignment,Score,Comments
+      // Expected header: ID,Pillar,Focus Area,Best Practice,Risk,AWS Services,Alignment,Score,Comments
+      // Only ID, Score and Comments are read, so older exports still import.
       const headers     = parseCSVLine(lines[0]);
       const idxId       = headers.indexOf('ID');
       const idxScore    = headers.indexOf('Score');
@@ -1138,7 +1434,7 @@ function loadCSV(event) {
 
       // Show success toast
       const toast = document.getElementById('savedToast');
-      toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV loaded as "${sessionName}"`;
+      toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV loaded as "${escapeHtml(sessionName)}"`;
       toast.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => {
@@ -1208,8 +1504,8 @@ loadData().then(() => {
           <circle cx="24" cy="24" r="22" stroke="#ff4757" stroke-width="2" fill="rgba(255,71,87,0.1)"/>
           <path d="M24 14v14M24 32v2" stroke="#ff4757" stroke-width="3" stroke-linecap="round"/>
         </svg>
-        <p style="font-size:18px;font-weight:700;margin-bottom:12px;color:#ff4757">Failed to load assessment data</p>
-        <p style="font-size:13px;color:#7a9cc4;margin-bottom:16px;line-height:1.6">${err.message}</p>
+        <p style="font-size:18px;font-weight:700;margin-bottom:12px;color:#ff4757">Failed to load the Lens data</p>
+        <p style="font-size:13px;color:#7a9cc4;margin-bottom:16px;line-height:1.6">${escapeHtml(err.message)}</p>
         <p style="font-size:11px;color:#3d5a7e;line-height:1.6">
           Make sure you're running via a local server:<br>
           <code style="background:rgba(255,153,0,0.1);padding:2px 6px;border-radius:3px;font-family:monospace;color:#FF9900">npx serve .</code>
@@ -1340,6 +1636,21 @@ loadData().then(() => {
     bottomSection.appendChild(exportBtn);
     sidebar.appendChild(bottomSection);
 
+    // ── About the Lens button ────────────────────────────────────────────────
+    const aboutBtn = document.createElement('button');
+    aboutBtn.className = 'sidebar-action-btn';
+    aboutBtn.innerHTML = `
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M6.5 6v3.5M6.5 4v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      About the Lens`;
+    aboutBtn.addEventListener('click', function () {
+      closeSidebar();
+      if (typeof openAboutModal === 'function') openAboutModal();
+    });
+    bottomSection.appendChild(aboutBtn);
+
     // ── Reset All button (separated by a divider) ─────────────────────────────
     const resetBtn = document.createElement('button');
     resetBtn.className = 'sidebar-reset-btn';
@@ -1382,6 +1693,8 @@ loadData().then(() => {
   // ── Mobile Score Strip ───────────────────────────────────────────────────────
   // Moves Overall Score and Radar Chart below the hero on mobile,
   // and returns them to the right-panel on desktop resize.
+  // The right panel must keep exactly four sections in this order:
+  // 1 overall score, 2 pillar progress, 3 focus-area scores, 4 radar.
   function initMobileScoreStrip() {
     const rightPanel   = document.querySelector('.right-panel');
     const scoreSection = rightPanel ? rightPanel.querySelector('.panel-section:nth-child(1)') : null;

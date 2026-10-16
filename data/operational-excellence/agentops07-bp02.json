@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS07-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS07",
+  "focus_area": "Operational recovery and consumption monitoring",
+  "recommendation": "Establish operational knowledge management systems",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock / Amazon S3",
+  "guidance": "Teams that capture what they learn from incidents build institutional memory that survives personnel changes. Teams that don't lose the insight the moment the person who had it leaves, and pay the same lesson twice.",
+  "how_to_check": "• Operational knowledge about agent behavior, failure modes, and resolution procedures is captured systematically and accessible to all team members.\n• Post-incident reviews consistently produce practical insights incorporated into runbooks and operational procedures.\n• Institutional knowledge survives personnel changes, enabling new team members to become effective quickly.\n• Knowledge about successful interventions is captured alongside failure modes, so what works is remembered as reliably as what failed.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp02.html'>AGENTOPS07-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp02.html"
+}

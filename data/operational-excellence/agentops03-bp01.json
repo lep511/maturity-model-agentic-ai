@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS03-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS03",
+  "focus_area": "Agent lifecycle and deployment processes",
+  "recommendation": "Define an agent lifecycle with clear SME ownership, testing, and governance",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "An agent portfolio without lifecycle discipline becomes a graveyard of undocumented services with forgotten owners. Explicit lifecycle stages, named SME ownership, and clean decommissioning keep the portfolio tractable as it grows from a handful of agents to dozens or hundreds.",
+  "how_to_check": "• Every agent has a documented lifecycle state (development, pilot, production, deprecated, and decommissioned) with defined transition criteria.\n• Onboarding follows a standardized provisioning process that configures required resources, permissions, and monitoring before an agent handles production traffic.\n• Decommissioning cleanly removes retired agents, no orphaned resources, dangling permissions, or undocumented dependencies left behind.\n• Each agent has a named SME owner accountable for its behavior, performance, and eventual retirement.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp01.html'>AGENTOPS03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp01.html"
+}

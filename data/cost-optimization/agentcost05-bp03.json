@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST05-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST05",
+  "focus_area": "Agent cost visibility and attribution",
+  "recommendation": "Design tenant-aware cost allocation for AaaS pricing models",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Cost Explorer",
+  "guidance": "Agent as a service (AaaS) offerings without per-tenant cost attribution can bill only by capacity estimates, can't detect noisy neighbors until infrastructure has already scaled, and can't decide when a tenant should move to dedicated infrastructure. Propagating tenant context through every operation and tracking cost at the tenant level fixes all three problems at once.",
+  "how_to_check": "• You propagate tenant identifiers through all agent operations: model invocations, tool executions, memory operations, and data storage.\n• You have flexible cost allocation models supporting per-decision, per-task, and per-agent-hour pricing.\n• You detect noisy neighbors before they drive infrastructure scaling that affects all customers.\n• You enforce tenant-level budget controls that cap per-tenant spending.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp03.html'>AGENTCOST05-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp03.html"
+}

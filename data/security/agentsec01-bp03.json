@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC01-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC01",
+  "focus_area": "Secure agent memory and state",
+  "recommendation": "Monitor for hallucination propagation",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / Amazon CloudWatch / Amazon EventBridge",
+  "guidance": "A single hallucinated fact stored as memory becomes ground truth for every agent that reads it next. Continuous grounding checks and confidence scoring keep fabricated content from entering memory or cascading across a multi-agent workflow.",
+  "how_to_check": "• You detect false information before it propagates through agent memory or cascades across multi-agent workflows.\n• You use confidence scoring to surface low-certainty outputs for validation, and fact-checking to help prevent hallucinated data from being stored as ground truth.\n• When hallucination propagation is detected, affected memory entries are flagged or quarantined, and downstream agents are notified to discard potentially corrupted context.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp03.html'>AGENTSEC01-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp03.html"
+}

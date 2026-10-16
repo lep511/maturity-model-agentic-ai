@@ -1,9 +1,0 @@
-{
-  "id": "3.9.1",
-  "phase": "Phase 3: Efficient",
-  "capability": "Incident response",
-  "recommendation": "Run TableTop Exercises - Simulations",
-  "aws_service": "N/A",
-  "guidance": "Tabletop exercises validate blue team readiness before a real incident. Before running exercises, ensure the team knows basic IR procedures, has defined priorities, and has tooling ready. A good exercise walks through a facilitator-narrated scenario in a war room, has responders demonstrate actions, and closes with a debrief. Include unexpected elements like evasion or anti-forensics. For hands-on practice, use AWS Jams (gamified blue team challenges) or AWS CloudSaga (CLI tool simulating real CIRT-documented events in a sandbox).",
-  "how_to_check": "Has at least one tabletop exercise or simulation been run in the past year? Do exercises cover realistic scenarios (compromised credentials, ransomware, data exfiltration)? Are lessons learned tracked and used to improve playbooks? Have AWS Jams or CloudSaga been used for hands-on training?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/tabletop-exercises/'>documentation</a>."
-}

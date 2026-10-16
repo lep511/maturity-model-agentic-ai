@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST02-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST02",
+  "focus_area": "Model invocation and token cost optimization",
+  "recommendation": "Cost optimize token consumption through efficient prompt engineering",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Cost Explorer",
+  "guidance": "Every token in a system prompt is paid for on every invocation, so prompt bloat compounds linearly with traffic. Compressing system prompts, tool descriptions, and output formats makes the fixed cost of each agent call proportional to the decision it has to make, not the verbosity of its instructions.",
+  "how_to_check": "• You have agent system prompts compressed to the minimum tokens needed for accurate task completion.\n• You have tool descriptions presented dynamically based on the current task rather than transmitted in full on every call.\n• You constrain output length explicitly so verbose responses don't compound across multi-turn reasoning.\n• You version prompts and track cost-per-task per version so efficiency changes are measurable over time.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp02.html'>AGENTCOST02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost02-bp02.html"
+}

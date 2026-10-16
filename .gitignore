@@ -90,3 +90,7 @@ desktop.ini
 # =======================
 *.pem
 .yarn/install-state.gz
+# Generated CI artifacts
+large_files.json
+links_output.json
+links_checked.json

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC09-BP04",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC09",
+  "focus_area": "Agent vulnerability scanning and penetration testing",
+  "recommendation": "Establish scoped and controlled testing environments for agent security assessments",
+  "risk": "Medium",
+  "aws_service": "AWS Security Agent / AWS Secrets Manager / AWS Lambda / Amazon CloudWatch / AWS Identity and Access Management",
+  "guidance": "Penetration testing that runs real exploit attempts against production agents can trigger tool calls, corrupt memory, or expose sensitive data. Scoped test environments with dedicated credentials and isolated agent state let teams run thorough assessments without risking production impact.",
+  "how_to_check": "• You conduct security assessments for agentic AI systems in controlled environments with clearly defined scope, dedicated credentials, and isolation from production systems.\n• You manage test credentials through secure vaulting services with automatic rotation, and testing activities are logged in your account for full auditability.\n• The testing environment replicates production agent behavior closely enough to produce valid findings while containing the scope of exploit attempts.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp04.html'>AGENTSEC09-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp04.html"
+}

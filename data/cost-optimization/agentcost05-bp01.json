@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST05-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST05",
+  "focus_area": "Agent cost visibility and attribution",
+  "recommendation": "Establish agent-level reasoning cost tracking and attribution",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Cost Explorer / AWS Budgets",
+  "guidance": "Account-level billing shows what an agent fleet costs, but it doesn't show where the specific costs come from. Granular tracking by agent, workflow, and reasoning phase provides trackable detail about your spending, which makes opaque costs into the input for targeted optimization.",
+  "how_to_check": "• You have a standard tag taxonomy applied consistently across all agent invocations.\n• You track per-phase token consumption (planning, execution, reflection, and verification) separately.\n• You monitor tool invocation costs separately from model inference costs.\n• You calculate cost-per-decision, cost-per-reasoning-cycle, and cost-per-task-completion as primary agent metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp01.html'>AGENTCOST05-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp01.html"
+}

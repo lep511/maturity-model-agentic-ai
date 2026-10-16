@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST05-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST05",
+  "focus_area": "Agent cost visibility and attribution",
+  "recommendation": "Implement distributed cost tracing for multi-agent workflows",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "In multi-agent workflows, aggregate cost tells you how much you spent but not where those specific costs came from. Tracing with workflow IDs propagating across agent boundaries makes workflow costs more clear, as it is broken down into worker execution, tool invocations, and memory operations, which helps you make data-driven architectural optimization decisions.",
+  "how_to_check": "• You propagate workflow trace IDs through every agent invocation, tool call, and memory operation.\n• You calculate true cost-per-workflow-completion, with orchestration overhead tracked separately from execution cost.\n• You compare efficiency across different collaboration patterns using real cost data.\n• You visualize workflow cost by pattern, agent role, and business outcome.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp02.html'>AGENTCOST05-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp02.html"
+}

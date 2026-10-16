@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL08-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL08",
+  "focus_area": "Graceful degradation and configuration management",
+  "recommendation": "Architect agent systems with resource isolation and contention mitigation",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock / Amazon CloudWatch",
+  "guidance": "Shared resource pools let one noisy agent starve the rest. Priority tiers with dedicated resource allocations and contention detection keep user-facing agents responsive even when background workloads spike.",
+  "how_to_check": "• You have separate runtime infrastructure for different agent priority tiers so high-priority agents have dedicated resources.\n• You track token consumption for each agent and enforce per-agent access to shared model capacity.\n• You detect contention early through composite signals and activate automated mitigation before failures occur.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp03.html'>AGENTREL08-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp03.html"
+}

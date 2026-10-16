@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF02-BP01",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF02",
+  "focus_area": "Core processing and reasoning pipeline optimization",
+  "recommendation": "Design efficient reasoning pipelines",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon CloudWatch",
+  "guidance": "Each iteration of the perceive-reason-act loop typically involves an LLM inference call, so the number of iterations an agent takes multiplies both latency and cost. An efficient pipeline reaches accurate decisions in the fewest iterations the task requires, uses bounded iteration limits and confidence-based early termination to help prevent runaway loops, and handles retries within explicit performance budgets rather than silently eroding them.",
+  "how_to_check": "• You have per-task iteration limits and confidence-based early termination configured, so reasoning loops can't run without bounds.\n• You have pipeline shapes that scale reasoning depth to task complexity, with simple tasks resolving in one or two iterations and complex tasks receiving the iterations they need.\n• You have retry strategies bounded by explicit latency budgets, with semantic re-prompting or graceful degradation engaged before the end-to-end SLO is exceeded.\n• You have average reasoning iterations per task tracked as a first-class KPI, visible alongside latency and token metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp01.html'>AGENTPERF02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp01.html"
+}

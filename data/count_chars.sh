@@ -2,8 +2,10 @@
 # ============================================================
 # count_chars.sh
 # Counts characters (including spaces) in each JSON/JSONL file
-# inside a directory. If a file exceeds 1300 characters, it is
+# inside a directory. If a file exceeds 2500 characters, it is
 # saved to an output JSON with "file_name" and "count" fields.
+# The lens metadata files under data/lens/ are legitimately
+# large and are skipped.
 #
 # Usage: ./count_chars.sh <directory> [output.json] [--threshold N]
 # ============================================================
@@ -13,10 +15,10 @@ set -euo pipefail
 # --- Arguments ---
 DIRECTORY="${1:-.}"
 OUTPUT_FILE="${2:-large_files.json}"
-THRESHOLD=1300
+THRESHOLD=2500
 
 # --- Extra options ---
-shift 2 2>/dev/null || true
+shift $(( $# >= 2 ? 2 : $# ))
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --threshold) THRESHOLD="$2"; shift 2 ;;
@@ -57,7 +59,8 @@ while IFS= read -r -d '' json_file; do
   fi
 
 done < <(find "$DIRECTORY" -maxdepth 5 -type f \( -name "*.json" -o -name "*.jsonl" \) \
-  -not -name "manifest.json" -print0)
+  -not -name "manifest.json" -not -path "*data/lens/*" -not -path "*/.cache/*" \
+  -not -path "*/.git/*" -not -path "*/node_modules/*" -print0)
 
 # --- Write output ---
 if [[ ${#results[@]} -eq 0 ]]; then

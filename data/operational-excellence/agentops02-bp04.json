@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS02-BP04",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS02",
+  "focus_area": "Prompt and configuration lifecycle management",
+  "recommendation": "Maintain feedback control loops for continuous improvement",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock / Amazon CloudWatch / Amazon Bedrock AgentCore / Amazon EventBridge / Amazon DynamoDB",
+  "guidance": "Agents that improve in step with real-world usage outperform agents frozen at deployment. A working feedback loop connects quality signals, user feedback, behavioral cues, and business outcomes to prioritized improvement actions.",
+  "how_to_check": "• You collect and correlate agent performance data, user feedback, and business outcome metrics systematically, not through ad-hoc surveys.\n• Feedback loops operate continually, detecting quality trends in near real time rather than through quarterly reviews.\n• Improvement actions are tracked from identification through implementation and validation.\n• Feedback signals are attributable to specific agent versions, so teams know which improvements are responding to which problems.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp04.html'>AGENTOPS02-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp04.html"
+}

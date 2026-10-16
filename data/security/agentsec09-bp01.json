@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC09-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC09",
+  "focus_area": "Agent vulnerability scanning and penetration testing",
+  "recommendation": "Integrate AI-powered vulnerability scanning across the development lifecycle",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon CodeGuru Security",
+  "guidance": "Pattern-matching scanners find common bugs but miss context-dependent flaws in agent orchestration, tool interactions, and authorization chains. AI-powered scanning that reasons about code and design documents the way a human security researcher does catches these issues at the phase when remediation is cheapest.",
+  "how_to_check": "• Vulnerability scanning is embedded at every phase of the agentic AI development lifecycle, covering design documents, pull requests, and deployed applications.\n• You review design documents for security risks before code is written, analyze pull requests for common and agent-specific vulnerabilities during development, and continually scan deployed applications for emerging threats.\n• Findings carry severity ratings, confidence scores, and practical remediation guidance so teams can prioritize and fix issues efficiently.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp01.html'>AGENTSEC09-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp01.html"
+}

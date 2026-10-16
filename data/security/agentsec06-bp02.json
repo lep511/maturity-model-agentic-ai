@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC06-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC06",
+  "focus_area": "Secure multi-agent orchestration",
+  "recommendation": "Implement workflow orchestration security controls",
+  "risk": "High",
+  "aws_service": "AWS Step Functions / AWS Identity and Access Management / Amazon CloudWatch / Amazon EventBridge / AWS CloudFormation / Amazon Bedrock AgentCore",
+  "guidance": "The orchestration layer is where a single weak check cascades into a system-wide failure. Access controls on state machines, input validation on transitions, and circuit breakers on agent tasks keep multi-agent workflows on approved execution paths instead of unexpected ones.",
+  "how_to_check": "• The workflow orchestration layer enforces strict access controls that help prevent unauthorized modification of workflow definitions or execution state.\n• State machine validation helps keep workflows on expected execution patterns, and circuit breakers are designed to stop failures in one agent from cascading through the entire workflow.\n• You log all workflow executions with enough detail to reconstruct the execution path for security investigations.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp02.html'>AGENTSEC06-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec06-bp02.html"
+}

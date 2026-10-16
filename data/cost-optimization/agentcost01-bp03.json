@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST01-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST01",
+  "focus_area": "Reasoning and execution cost optimization",
+  "recommendation": "Implement cost-effective patterns like hybrid supervisor for multi-agent coordination",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Many multi-agent workflows pay for AI reasoning at the coordination layer for decisions that rules could make at no additional charge. Matching each orchestration decision to the cheapest mechanism capable of handling it removes that hidden cost.",
+  "how_to_check": "• You select orchestration patterns from workflow determinism analysis rather than defaulting to AI supervision.\n• You have deterministic routing running without model invocations, and AI supervisors reserved for genuinely ambiguous cases that need natural language understanding.\n• You track orchestration cost separately from worker cost and maintain documented pattern-selection criteria.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp03.html'>AGENTCOST01-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp03.html"
+}

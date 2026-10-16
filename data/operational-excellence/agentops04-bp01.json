@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS04-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS04",
+  "focus_area": "Tool integration and management practices",
+  "recommendation": "Implement tool registry and catalog management",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Agents that can't discover tools end up with hardcoded integrations, inconsistent documentation, and a maintenance tax that grows with every new capability. A centralized registry makes the tool catalog queryable, versioned, and governable.",
+  "how_to_check": "• A centralized tool registry provides a single authoritative source for tool capabilities, current versions, and operational status.\n• Tool documentation is standardized and complete so agents can select and invoke tools without guesswork.\n• Tool versioning and compatibility tracking help prevent agents from invoking deprecated or incompatible versions.\n• Tool deprecation procedures remove sunset tools cleanly without disrupting dependent agents.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp01.html'>AGENTOPS04-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp01.html"
+}

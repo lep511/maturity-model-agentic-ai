@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL06-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL06",
+  "focus_area": "Legacy system integration",
+  "recommendation": "Develop agent-based integrations with existing or legacy systems",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Legacy systems expose interfaces built for synchronous, deterministic callers, while agents are asynchronous and probabilistic. Adapter layers translate between the two worlds so agents can use existing capabilities without the legacy side needing to change.",
+  "how_to_check": "• You have integration adapters that expose MCP tool interfaces designed for agent consumption and translate to legacy protocols internally.\n• You enforce canonical error handling that maps legacy error codes into types agents can interpret uniformly.\n• You rate-limit at the adapter layer so agent-driven invocation speeds don't overwhelm legacy systems.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp01.html'>AGENTREL06-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp01.html"
+}

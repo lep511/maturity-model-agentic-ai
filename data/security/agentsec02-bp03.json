@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC02-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC02",
+  "focus_area": "Secure agent tool usage",
+  "recommendation": "Maintain approved tool registry with security assessments",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Systems Manager / AWS Config / Amazon EventBridge / AWS AppConfig / Amazon ECS / Amazon DynamoDB",
+  "guidance": "Every tool an agent can reach is part of its effective privilege surface. A version-controlled registry with documented security boundaries, enforced at invocation time, keeps unvetted or deprecated tools off the agent's call path.",
+  "how_to_check": "• You maintain a centralized, version-controlled registry of approved tools, each with documented security boundaries, required permissions, data classification levels, and a current vulnerability assessment.\n• Agents can access only tools present in the registry, and unapproved tools are blocked by default.\n• You continually validate the registry for compliance, and deprecated tools are removed from agent access automatically.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp03.html'>AGENTSEC02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp03.html"
+}

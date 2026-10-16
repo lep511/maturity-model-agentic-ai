@@ -1,9 +1,0 @@
-{
-  "id": "1.2.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Security assurance",
-  "recommendation": "Evaluate Cloud Security Posture",
-  "aws_service": "AWS Security Hub",
-  "guidance": "AWS Security Hub automates cloud security posture evaluation through Security Standards, identifying gaps against best practices (e.g., CIS AWS Foundations) and providing remediation instructions. Enable it across all accounts and assign someone to act on critical/high findings. It costs $0.001 per check with a 30-day free trial.",
-  "how_to_check": "Is AWS Security Hub or another CSPM enabled across all accounts with central configuration? Is someone actively remediating findings? Is the security score tracked as a KPI and trending positively over time?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/security-hub/'>documentation</a>."
-}

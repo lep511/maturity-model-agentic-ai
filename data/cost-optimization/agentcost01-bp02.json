@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST01-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST01",
+  "focus_area": "Reasoning and execution cost optimization",
+  "recommendation": "Optimize multi-agent collaboration cost through efficient handoff patterns",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "In multi-agent systems, the largest hidden cost is redundant context that travels with every handoff. Structured handoff messages and shared memory keep coordination cost proportional to task complexity rather than conversation length.",
+  "how_to_check": "• You have handoff messages carrying only the task specification, relevant facts, and constraints, not full conversation transcripts.\n• You have collaborating agents sharing common context through a managed memory layer instead of re-transmitting it on every handoff.\n• You track per-handoff and per-workflow coordination costs as distinct metrics.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp02.html'>AGENTCOST01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp02.html"
+}

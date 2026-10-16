@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS04-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS04",
+  "focus_area": "Tool integration and management practices",
+  "recommendation": "Develop fallback behavior and error handling for tool invocations",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Tools failing is a reality in modern architectures. The question is whether the agent degrades gracefully to an alternative, falls back to a manual process, or returns an error and halts. Well-designed fallback chains and automatic cutoffs keep tool failures from becoming agent failures.",
+  "how_to_check": "• When tools fail or become unavailable, agents degrade gracefully to alternative tools, degraded-mode operations, or manual process escalation.\n• Automatic cutoffs help prevent cascading failures from propagating through the agent environment.\n• Retry strategies with exponential backoff handle transient errors transparently without amplifying load on degraded systems.\n• Per-tool success rates, latency, and error patterns are monitored in real time so degradation is detected before it impacts users.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp03.html'>AGENTOPS04-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops04-bp03.html"
+}

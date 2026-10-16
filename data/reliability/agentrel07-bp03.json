@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL07-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL07",
+  "focus_area": "Agent monitoring, management and recovery",
+  "recommendation": "Implement distributed tracing to track system dependencies and facilitate recovery",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Correlating logs across services by hand is slow, and during an incident slow is worse than expensive. Distributed tracing across all components with agent-specific annotations gives operators the full request path in one view and turns broad restarts into targeted recovery actions.",
+  "how_to_check": "• You have distributed tracing across every agent component with agent-specific annotations.\n• You propagate trace context through synchronous and asynchronous communication boundaries.\n• You correlate traces, metrics, and logs in a unified view that surfaces root causes quickly.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp03.html'>AGENTREL07-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp03.html"
+}

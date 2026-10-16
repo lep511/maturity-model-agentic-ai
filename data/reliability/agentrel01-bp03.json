@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL01-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL01",
+  "focus_area": "Predictable agent behavior",
+  "recommendation": "Design specialized agents following actor model principles",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Multi-purpose agents concentrate risk. A single failure in one function affects every other function in the same process. Specialized agents that encapsulate one atomic capability, own their state, and communicate through messages keep the impact proportional to the scope of the failing component.",
+  "how_to_check": "• You have each agent scoped to a single atomic function with explicit input and output schemas.\n• Your agents maintain their own state and exchange information through explicit message passing, not shared memory.\n• You can scale, replace, or upgrade any one agent without disturbing the others.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp03.html'>AGENTREL01-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp03.html"
+}

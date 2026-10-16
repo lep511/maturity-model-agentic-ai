@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL02-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL02",
+  "focus_area": "Predictable task execution",
+  "recommendation": "Implement behavioral anomaly detection and monitoring",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Generic logs miss what matters most for agents: decision points, tool invocations, and LLM interactions. Structured telemetry with behavioral baselines exposes anomalies early and gives operators the audit trail they need to reconstruct why an agent did what it did.",
+  "how_to_check": "• You capture decision points, tool invocations, and LLM interactions for every agent invocation.\n• You have behavioral baselines per agent and automated alarms that fire when metrics drift outside expected ranges.\n• You detect behavioral drift through periodic evaluation, not only through infrastructure errors.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp03.html'>AGENTREL02-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp03.html"
+}

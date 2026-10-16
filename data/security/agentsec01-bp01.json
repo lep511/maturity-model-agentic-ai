@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC01-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC01",
+  "focus_area": "Secure agent memory and state",
+  "recommendation": "Implement memory isolation and integrity controls",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Key Management Service / AWS Identity and Access Management / Amazon DynamoDB / Amazon CloudWatch",
+  "guidance": "Shared agent memory is the shortest path for a single affected session to contaminate every other one. Partitioning memory along the boundaries that matter for the workload, and verifying what comes back out, contains the scope of memory poisoning to the partition it touched.",
+  "how_to_check": "• You partition agent memory along the isolation axes that match the workload (session, user, tenant, agent, or group), with no cross-contamination between contexts.\n• You detect unauthorized modifications to stored memories through integrity checks and keep a tamper-evident history of state changes.\n• You scope memory access per agent through least-privilege IAM policies, so each agent can read or write only the namespaces it is authorized for.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp01.html'>AGENTSEC01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec01-bp01.html"
+}

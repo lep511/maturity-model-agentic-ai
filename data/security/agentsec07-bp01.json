@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC07-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC07",
+  "focus_area": "Human oversight protection and agent containment",
+  "recommendation": "Implement cognitive load management",
+  "risk": "Medium",
+  "aws_service": "Amazon SQS / Amazon DynamoDB / AWS Lambda / Amazon CloudWatch / Amazon SNS",
+  "guidance": "A human reviewer is only as effective as the workload lets them be. Prioritization, queue management, and maximum review rates keep human oversight grounded in genuine judgment rather than fatigue-driven rubber-stamping.",
+  "how_to_check": "• Human reviewers receive a manageable volume of well-prioritized decisions, with sufficient context and time to make informed judgments.\n• You monitor review queues for backlog accumulation, with automatic escalation or load balancing helping prevent any single reviewer from being overwhelmed.\n• Review quality metrics detect signs of rubber-stamping that indicate cognitive overload.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp01.html'>AGENTSEC07-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp01.html"
+}

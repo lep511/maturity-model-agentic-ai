@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC07-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC07",
+  "focus_area": "Human oversight protection and agent containment",
+  "recommendation": "Multiple reviewers for critical operations",
+  "risk": "Medium",
+  "aws_service": "AWS Step Functions / Amazon SNS / Amazon S3 / AWS Lambda / AWS IAM Identity Center",
+  "guidance": "A single reviewer is a single point of failure, both for honest errors and for social engineering. Independent, blind reviews for high-risk decisions are the defense-in-depth pattern, well known as the four-eyes principle, that keeps unilateral approval off the path.",
+  "how_to_check": "• High-risk agent decisions receive independent review from multiple qualified reviewers, with blind review processes helping prevent anchoring bias.\n• You resolve disagreements through escalation rather than defaulting to approval.\n• You log all review decisions with reviewer identities and timestamps for audit purposes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp03.html'>AGENTSEC07-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp03.html"
+}

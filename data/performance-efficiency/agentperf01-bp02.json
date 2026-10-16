@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF01-BP02",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF01",
+  "focus_area": "Strategic performance planning and measurement",
+  "recommendation": "Implement comprehensive performance telemetry",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / Amazon CloudWatch Application Signals / AWS Distro for OpenTelemetry (ADOT)",
+  "guidance": "A single agent request fans out into chains of inference calls, parallel tool invocations, memory lookups, and inter-agent communications. Infrastructure-only monitoring can't determine by itself which of those contributes to a slow or expensive response. Agent-aware telemetry decomposes execution into observable, attributable operations so that performance decisions are grounded in measured behavior.",
+  "how_to_check": "• You have a complete distributed trace for every agent execution that decomposes total latency into its constituent operations.\n• You have real-time dashboards that provide visibility into agent performance trends, with the resulting metrics feeding the alerting layer.\n• You have historical telemetry data that supports capacity planning, model selection decisions, and architecture optimization through data-driven analysis.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf01-bp02.html'>AGENTPERF01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf01-bp02.html"
+}

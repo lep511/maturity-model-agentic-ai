@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS06-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS06",
+  "focus_area": "Testing, evaluation, and validation frameworks",
+  "recommendation": "Evaluate and track ongoing agent performance",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Pre-deployment evaluation validates that an agent is ready to ship. Post-deployment evaluation validates that it still works. Without continuous assessment, gradual quality degradation from data drift, model updates, and shifting user patterns goes unnoticed until it is expensive to fix.",
+  "how_to_check": "• Agent performance is continually evaluated against defined quality benchmarks.\n• Automated pipelines detect degradation in output quality, reasoning accuracy, and business outcome alignment.\n• Teams have clear visibility into performance trends over time and can correlate quality changes with specific configuration, model, or data updates.\n• Evaluation results drive prioritized improvement actions and provide objective evidence for stakeholder reporting.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp02.html'>AGENTOPS06-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp02.html"
+}

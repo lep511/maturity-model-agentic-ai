@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST05-BP04",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST05",
+  "focus_area": "Agent cost visibility and attribution",
+  "recommendation": "Create chargeback and ROI reporting",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Quick / AWS Cost and Usage Reports / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "Raw token counts and execution durations are the wrong unit of measure for business stakeholders deciding whether to fund agent capabilities. Translating technical cost into business metrics like cost-per-customer-interaction and comparing against the manual processes agents replace turns agent economics into something non-technical leaders can evaluate against familiar frameworks.",
+  "how_to_check": "• You translate technical agent costs into business metrics through automated chargeback reports.\n• You demonstrate agent ROI by comparing agent costs against the manual processes they replace.\n• You allocate cost by business unit to create accountability.\n• You provide self-service cost dashboards so business teams can act without engineering bottlenecks.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp04.html'>AGENTCOST05-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost05-bp04.html"
+}

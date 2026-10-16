@@ -1,9 +1,0 @@
-{
-  "id": "4.3.2",
-  "phase": "Phase 4: Optimized",
-  "capability": "Identity & access management",
-  "recommendation": "IAM Policy Generation Pipeline",
-  "aws_service": "IAM Access Analyzer",
-  "guidance": "At scale, IAM governance requires an automated pipeline rather than ad-hoc policy creation. Treat IAM as code: teams define policies in version-controlled CloudFormation templates. Use AWS CodePipeline with a Lambda validation step to automatically reject wildcards in Action or Resource fields before requiring security approval. Integrate IAM Access Analyzer to validate least privilege. Approvals can be manual or automatic depending on environment and risk level.",
-  "how_to_check": "Are IAM policies defined as code in version-controlled templates rather than created manually? Is an automated pipeline in place to validate policies against least-privilege rules before deployment? Are wildcard actions and resources automatically flagged and blocked? Is IAM Access Analyzer integrated to detect overly permissive policies pre-deployment?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/iam-pipelines/'>documentation</a>."
-}

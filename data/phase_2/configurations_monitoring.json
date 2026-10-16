@@ -1,9 +1,0 @@
-{
-  "id": "2.2.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Security assurance",
-  "recommendation": "Configurations monitoring",
-  "aws_service": "AWS Config",
-  "guidance": "Maintain an asset inventory (applications per account, business processes, expected resource types) and track configuration changes to enforce security best practices. AWS Config monitors configuration changes, flags non-compliant resources via Config Rules (e.g., SSH/RDP open to the world), and remediates deviations using AWS Systems Manager Automation Documents. AWS Security Hub and AWS Firewall Manager both require AWS Config to be enabled. If using AWS Control Tower, AWS Config is enabled automatically. Without an inventory, it is harder to apply controls and detect rogue assets created by adversaries.",
-  "how_to_check": "Is there an asset inventory covering criticality, business processes, and account mapping? Is AWS Config enabled across the organization? Can the team use AWS Config to detect what changed and when for incident response purposes?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/configurations-monitoring-config/'>documentation</a>."
-}

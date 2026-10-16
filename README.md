@@ -1,155 +1,138 @@
-# AWS Security Maturity Model Assessment Tool
+# AWS Well-Architected Agentic AI Lens — Self-Assessment
 
-A web-based security self-assessment tool for evaluating your AWS cloud security posture across 4 maturity phases and 10 capability areas (76 items total).
+A static web app for self-assessing an agentic AI workload against the **AWS Well-Architected Agentic AI Lens**: 150 best practices organized into 41 focus areas across the 6 Well-Architected pillars. Score each best practice, review the official maturity levels for every focus area, follow the Lens roadmap reading paths, and track progress per pillar with a radar chart, CSV export and printable reports.
 
-## Project Structure
+> **Unofficial study aid.** The content in `data/` and `guidance/` is condensed from the
+> [AWS Well-Architected Framework – Agentic AI Lens](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html)
+> (AWS documentation, published June 10, 2026). Every item links back to its official page; always refer to the
+> AWS documentation for the authoritative text. This project is not affiliated with or endorsed by AWS.
+> To run a formal review, import the official custom lens into the AWS Well-Architected Tool from the
+> [custom lens repository](https://github.com/aws-samples/sample-well-architected-custom-lens/blob/main/agentic-ai-lens/agentic-ai-lens.json).
+
+## What you get
+
+| Lens structure | In the app |
+| --- | --- |
+| 6 pillars (Operational excellence, Security, Reliability, Performance efficiency, Cost optimization, Sustainability) | Top stats bar, pillar filter pills, pillar progress bars, radar axes |
+| 41 focus areas (`AGENTOPS01` ... `AGENTSUS03`), each with a guiding question, capability intent, 5 maturity levels and common issues | Sidebar navigation grouped by pillar, card group headers, **Maturity levels** modal |
+| 150 best practices with a High / Medium / Low risk level | One card each: summary, desired outcome, risk badge, related AWS services, **Implementation guidance** modal, link to the official page |
+| Lens roadmap reading paths (Building your first agent, Moving to production, Scaling to multi-agent systems, Hardening an existing deployment) | Roadmap filter pills and tags on cards |
+| Design principles, definitions, pillar introductions | **About the Lens** modal |
+
+Scoring uses a 6-point coverage scale per best practice: 0%, 25%, 50%, 75%, 100% or *Excluded from analysis*.
+
+## Project structure
 
 ```
-maturity-model/
-├── index.html              # Main application shell
-├── vercel.json             # Vercel deployment config
+.
+├── index.html                 # App shell (layout, modals, sidebar, header)
+├── vercel.json                # Vercel deployment config (cache headers for data/ and guidance/)
 ├── css/
-│   ├── styles.css          # Main styles
-│   ├── responsive.css      # Mobile breakpoints
-│   ├── auth.css            # Authentication UI
-│   ├── cognito.css         # Cognito hosted UI overrides
-│   └── print.css           # Print media styles
+│   ├── styles.css             # Main styles (pillar colors --r1..--r6, Lens components)
+│   ├── responsive.css         # Mobile breakpoints
+│   └── print.css              # Print media styles
 ├── js/
-│   ├── app.js              # Core logic (data loading, scoring, rendering, sessions)
-│   ├── auth.js             # Cognito PKCE authentication (web + Android)
-│   ├── cognito-config.js   # Cognito domain/client config
-│   └── print.js            # Print preview modal
-└── data/
-    ├── manifest.json        # Index of all data files
-    ├── phase_1/             # Phase 1: Quick Wins (18 items)
-    ├── phase_2/             # Phase 2: Foundational (20 items)
-    ├── phase_3/             # Phase 3: Efficient (20 items)
-    ├── phase_4/             # Phase 4: Optimized (18 items)
-    ├── count_chars.sh       # CI: validate JSON file sizes (max 1300 chars)
-    ├── extract_link.sh      # CI: extract links from JSON data
-    ├── check_link.sh        # CI: verify extracted links
-    └── check_link_action.sh # CI: GitHub Actions wrapper
+│   ├── app.js                 # Core logic: data loading, filters, scoring, radar, sessions, CSV, modals
+│   └── print.js               # Print preview modal
+├── data/
+│   ├── manifest.json          # Index of all generated files (lens, focus_areas, items, total)
+│   ├── lens/
+│   │   ├── lens.json          # Lens metadata: abstract, design principles, pillars, roadmap, definitions
+│   │   └── focus_areas.json   # 41 focus areas: question, capability intent, maturity levels, common issues
+│   ├── operational-excellence/ agentops01-bp01.json ...   (26 items)
+│   ├── security/               agentsec01-bp01.json ...   (30 items)
+│   ├── reliability/            agentrel01-bp01.json ...   (33 items)
+│   ├── performance-efficiency/ agentperf01-bp01.json ...  (24 items)
+│   ├── cost-optimization/      agentcost01-bp01.json ...  (24 items)
+│   ├── sustainability/         agentsus01-bp01.json ...   (13 items)
+│   ├── count_chars.sh         # CI: fail if any item JSON exceeds 2500 characters
+│   ├── extract_link.sh        # CI: extract Lens documentation links from data/ and guidance/
+│   ├── check_link_action.sh   # CI: verify extracted links respond with 2xx/3xx
+│   └── ToolsInfo.md           # Script documentation
+├── guidance/<pillar>/<bp-id>.md   # 150 condensed implementation guidance pages (rendered in a modal)
+└── tools/
+    ├── build_lens_content.py  # Generates data/ and guidance/ from the AWS docs (stdlib only)
+    └── validate_content.py    # Offline consistency checks (used by CI)
 ```
 
-Each JSON file in `data/phase_*/` follows this schema:
+### Item schema
+
+Each file in `data/<pillar-slug>/` describes one best practice:
 
 ```json
 {
-  "id": "1.7.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Data protection",
-  "recommendation": "Block Public Access",
-  "aws_service": "S3 / EC2",
-  "guidance": "Assessment guidance text...",
-  "how_to_check": "How to verify..."
+  "id": "AGENTOPS01-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS01",
+  "focus_area": "Operational practices for agentic AI systems",
+  "recommendation": "Establish well-defined agent roles, responsibilities, and success criteria",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / AWS Agent Registry / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Short summary of the best practice ...",
+  "how_to_check": "• Desired outcome 1\n• Desired outcome 2\n\nFor more information, see the <a href='...'>AGENTOPS01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp01.html"
 }
 ```
 
-> **Note:** Individual JSON files must stay under 1300 characters to pass CI checks.
+`pillar` must be one of the six names in `PILLARS` (`js/app.js`), `focus_area_id` must exist in `data/lens/focus_areas.json`, and each item must have a matching `guidance/<pillar-slug>/<bp-id>.md` file. Item files must stay under 2500 characters to pass CI.
 
-## Run Locally
+## Regenerating the content
+
+`data/` and `guidance/` are **generated**: do not hand-edit them. The generator fetches the markdown rendering of every Lens page (the docs serve each page as `<slug>.md`), parses it, and writes the item JSON, the focus-area and lens metadata, the manifest and the condensed guidance files. Raw pages are cached under `.cache/lens-docs/` (gitignored).
 
 ```bash
-# Option 1: npx serve
-npx serve .
+# Fetch (or reuse the cache), parse and write everything; ~200 requests on a cold run
+python3 -I tools/build_lens_content.py            # options: --refresh --full --clean --sleep 0.5 --allow-count-drift
 
-# Option 2: Python
-python3 -m http.server 3000
-
-# Option 3: VS Code Live Server extension
+# Offline consistency checks (also run by CI)
+python3 -I tools/validate_content.py
 ```
 
-> ⚠️ You must use a local server — opening `index.html` directly via `file://` will block the JSON fetches due to CORS restrictions.
+The generator asserts the counts of the known release (6 pillars, 41 questions, 150 best practices, 90 High / 59 Medium / 1 Low). When AWS publishes a revision, run with `--refresh --clean --allow-count-drift`, review the warnings, and update the counts in the script and in `tools/validate_content.py`.
+
+## Run locally
+
+A local HTTP server is required: opening `index.html` directly via `file://` blocks the JSON fetches.
+
+```bash
+npx serve .
+# or
+python3 -m http.server 3000
+```
 
 ## Deploy to Vercel
 
 ```bash
-# 1. Install Vercel CLI
 npm i -g vercel
-
-# 2. Deploy preview
-vercel
-
-# 3. Deploy production
-vercel --prod
+vercel          # preview
+vercel --prod   # production
 ```
 
 Production: https://aws-maturity-model.vercel.app
 
-## Adding / Editing Assessment Items
+## CI
 
-Edit any JSON file under `data/phase_*/` or add a new one. Make sure to add the new file path to `data/manifest.json`:
+`.github/workflows/check-links.yml` runs on every push or pull request that touches `data/`, `guidance/` or `tools/`:
 
-```json
-{
-  "items": [
-    "data/phase_1/your_new_item.json",
-    ...
-  ],
-  "total": 76
-}
-```
+1. `tools/validate_content.py` — manifest, schema, counts, risk values, guidance files
+2. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
+3. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
+4. `data/check_link_action.sh` — fails on any 4xx/5xx response
 
-Keep the `total` field in sync with the number of entries in `items`.
-
-## CI — Link & Size Checks
-
-A GitHub Actions workflow (`.github/workflows/check-links.yml`) runs on every push/PR that modifies files in `data/`:
-
-1. **`count_chars.sh`** — fails if any JSON item exceeds 1300 characters
-2. **`extract_link.sh`** — extracts `https://maturitymodel.security.aws.dev` URLs from data files
-3. **`check_link_action.sh`** — verifies each link responds with 2xx/3xx
-
-See [`data/ToolsInfo.md`](data/ToolsInfo.md) for detailed usage of each script.
-
-## Authentication (Cognito)
-
-The app supports optional authentication via Amazon Cognito using the Authorization Code flow with PKCE. Configuration lives in `js/cognito-config.js`:
-
-```javascript
-const COGNITO_CONFIG = {
-  domain:      'https://<your-domain>.auth.<region>.amazoncognito.com',
-  clientId:    '<your-app-client-id>',
-  redirectUri: '<your-redirect-uri>',
-  scopes:      'phone openid email',
-};
-```
-
-### Cognito App Client Setup
-
-1. Create a User Pool in the AWS Console
-2. Create an App Client (public client, no secret)
-3. Configure the Hosted UI with the following:
-   * **Allowed Callback URLs:**
-     - `https://your-production-domain.com` (web)
-     - `com.yourcompany.maturitymodel://callback` (Android/Capacitor)
-   * **Allowed Sign-out URLs:**
-     - `https://your-production-domain.com` (HTTPS only — Cognito rejects custom URI schemes for logout)
-   * **OAuth 2.0 Grant Types:** Authorization code grant
-   * **OpenID Connect scopes:** `phone`, `openid`, `email`
-
-### Platform Detection
-
-The config automatically detects whether the app is running as a native Capacitor app or in a browser and selects the appropriate `redirectUri`:
-
-```javascript
-const IS_NATIVE = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
-```
-
-* **Web:** redirects via `window.location.href`
-* **Android (Capacitor):** opens an in-app WebView via `@capacitor/browser` and listens for the deep-link callback via `@capacitor/app`
-
-### Disabling Authentication
-
-To run without authentication, remove the `<script>` tags for `js/cognito-config.js` and `js/auth.js` from `index.html`. The app will function normally without them — the `AUTH` global simply won't exist and sign-out buttons won't render.
+See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 
 ## Features
 
-* Live scoring with 6-point alignment scale (0%, 25%, 50%, 75%, 100%, Excluded)
-* Multi-session management with localStorage persistence
-* Print preview with Color / B&W output options
-* Export / Import CSV
-* Filter by phase, capability, unassessed, or excluded items
-* Radar chart and per-capability scoring
-* Optional Cognito authentication (PKCE)
-* Responsive design + Android support (Capacitor)
+* 150 best practices scored on a 6-point coverage scale (0%, 25%, 50%, 75%, 100%, Excluded)
+* Filters by pillar, focus area, Lens roadmap reading path, unassessed and excluded items, plus full-text search
+* Official 5-level maturity table, capability intent and common issues for every focus area
+* Condensed implementation guidance (desired outcome, anti-patterns, benefits, steps, resources) with links to the official pages
+* Pillar progress, per-focus-area progress and a 6-axis radar chart
+* Multi-session management persisted in the browser (localStorage + cookie)
+* CSV export / import (imports read the `ID`, `Score` and `Comments` columns)
+* Print preview with cards or table layout, color or black & white, risk and AWS services columns
+* Responsive layout for tablets and phones
+
+## License
+
+The application code is released under the license in [`LICENSE`](LICENSE). The Lens content remains the property of Amazon Web Services, Inc. or its affiliates and is reproduced here in condensed form, with attribution and links, for educational self-assessment purposes.

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL01-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL01",
+  "focus_area": "Predictable agent behavior",
+  "recommendation": "Implement a resilient messaging layer",
+  "risk": "High",
+  "aws_service": "Amazon EventBridge / Amazon SQS / Amazon SNS / AWS Step Functions / Amazon Bedrock AgentCore",
+  "guidance": "Direct agent-to-agent calls couple failure modes. When one agent fails, everything downstream fails with it. A messaging layer with persistence, retry, and dead-letter handling absorbs transient faults and lets workflows resume from where they stopped.",
+  "how_to_check": "• Your agents communicate through an intermediary messaging layer with persistence, retry, and dead-letter handling rather than direct synchronous calls.\n• You have durable workflow state that survives the restart or loss of any single component.\n• You can trace every agent message across synchronous and asynchronous boundaries.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp01.html'>AGENTREL01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp01.html"
+}

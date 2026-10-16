@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS07-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS07",
+  "focus_area": "Operational recovery and consumption monitoring",
+  "recommendation": "Augment change management to accommodate technical improvements and business requirements",
+  "risk": "Medium",
+  "aws_service": "Amazon CloudWatch / AWS Step Functions",
+  "guidance": "A change management process built only for technical changes doesn't account for how agents actually evolve. Prompt tweaks, tool additions, and model upgrades all carry business implications that pure technical review doesn't catch. A process that engages both technical and business stakeholders, proportional to change scope, keeps agents aligned with the objectives they exist to serve.",
+  "how_to_check": "• Every agent change, technical improvement or business requirement follows a documented change management process.\n• Technical and business stakeholders are engaged appropriately based on change scope and impact.\n• The business justification for each change is documented and traceable, so agent evolution is purposeful.\n• Agents evolve in sync with organizational changes rather than drifting out of alignment.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp03.html'>AGENTOPS07-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp03.html"
+}

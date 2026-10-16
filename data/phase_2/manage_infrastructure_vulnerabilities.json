@@ -1,9 +1,0 @@
-{
-  "id": "2.5.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Vulnerability management",
-  "recommendation": "Manage infrastructure vulnerabilities",
-  "aws_service": "Amazon Inspector",
-  "guidance": "Use Amazon Inspector for continuous, agent-based vulnerability scanning on EC2 instances, identifying CVEs and CIS OS hardening deviations. Agent-based scanning is preferred over network sweeps, which are impractical for short-lived cloud resources. Inspector also supports agentless EBS volume scans for instances where the SSM Agent cannot be installed. Use AWS Systems Manager Patch Manager (free) or a third-party tool to remediate findings. Perform penetration testing on critical infrastructure.",
-  "how_to_check": "Is Amazon Inspector or equivalent deployed on infrastructure? Is patching being performed and open vulnerabilities trending down? Is penetration testing conducted by internal or external teams?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/vulnerability-analysis-and-pentesting/'>documentation</a>."
-}

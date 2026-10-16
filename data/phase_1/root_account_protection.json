@@ -1,9 +1,0 @@
-{
-  "id": "1.3.2",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Identity & access management",
-  "recommendation": "Root Account Protection",
-  "aws_service": "N/A",
-  "guidance": "Avoid using the root user except when strictly necessary. Remove any Access Keys from root, create CloudTrail/SNS alerts for root usage, and protect the management account with MFA — ideally with two-person controls (one person holds the password, another holds the MFA device). In multi-account environments, centralize or disable root actions on member accounts using AWS Control Tower or SCPs. For day-to-day access, use a centralized identity provider with temporary credentials to eliminate the need for durable IAM user credentials.",
-  "how_to_check": "Have you centralized root & removed the root accounts for member accounts? Are you regularly using root? Are there any access keys configured for the root users? Are you using any kind of vault for storing root credentials? Are all permissions on root accounts blocked with AWS Control Tower or SCPs? You can also check AWS Security Hub controls IAM.4, IAM.9, IAM.6, and CloudWatch.1.\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/root-protection/'>documentation</a>."
-}

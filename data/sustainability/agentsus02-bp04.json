@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS02-BP04",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS02",
+  "focus_area": "Resource right-sizing",
+  "recommendation": "Measure and optimize the environmental footprint of agent workloads",
+  "risk": "Medium",
+  "aws_service": "AWS Sustainability / Amazon Bedrock AgentCore / Amazon Bedrock / Amazon CloudWatch",
+  "guidance": "Without measurement, sustainability claims are aspirational and optimizations are not tracked against real-world data. Tracking the environmental footprint of agent workloads makes sustainability an engineering metric. Baselines show where effort is worth investing, and trends show whether changes are actually working.",
+  "how_to_check": "• You have carbon emissions baselines for agent infrastructure established across a defined observation period.\n• Resource efficiency metrics for each task (tokens per successful completion, compute hours per workflow, and cache hit rates) are tracked alongside business outcomes.\n• Deferrable workloads are scheduled during off-peak periods or routed to Regions with favorable energy profiles.\n• Operational and sustainability metrics are combined in dashboards that inform periodic optimization reviews.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp04.html'>AGENTSUS02-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp04.html"
+}

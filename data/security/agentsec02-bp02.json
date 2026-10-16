@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC02-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC02",
+  "focus_area": "Secure agent tool usage",
+  "recommendation": "Validate tool inputs and outputs",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock Guardrails / Amazon Bedrock AgentCore / AWS Lambda / AWS WAF / Amazon CloudWatch / Amazon API Gateway",
+  "guidance": "Agents generate tool parameters from model output, which means malformed or adversarial inputs can reach tools through ordinary reasoning, not just through unauthorized callers. Schema-driven validation on inputs and sanitization on outputs keep tools operating inside their intended parameter space and help prevent error messages from disclosing internal system details.",
+  "how_to_check": "• You validate every parameter passed to tools against a defined schema before execution, and sanitize tool outputs before returning them to the agent.\n• Injection through tool parameters is blocked, oversized inputs are prevented from exhausting resources, and error messages are sanitized to avoid leaking sensitive system information.\n• Tool invocations operate predictably within defined boundaries, and validation failures are logged for security analysis.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp02.html'>AGENTSEC02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp02.html"
+}

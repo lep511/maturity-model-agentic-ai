@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL03-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL03",
+  "focus_area": "Agent memory and state management",
+  "recommendation": "Design an information classification model to identify short-term and long-term memories",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "A single undifferentiated memory store blurs conversation context with durable knowledge and pulls stale or irrelevant data into active tasks. Classifying memory at ingestion time and routing each item to the right tier keeps retrieval predictable and storage costs aligned with how long each type actually needs to live.",
+  "how_to_check": "• You have an explicit memory taxonomy distinguishing short-term session context from long-term persistent knowledge.\n• Your agents classify information at ingestion time and route it to the appropriate tier with metadata tags.\n• You retain each memory type according to a policy matched to its persistence requirement.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp01.html'>AGENTREL03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp01.html"
+}

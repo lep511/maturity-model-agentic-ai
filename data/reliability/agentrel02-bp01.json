@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL02-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL02",
+  "focus_area": "Predictable task execution",
+  "recommendation": "Design agents for specific and atomic tasks",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "LLM outputs are stochastic, so the scope of an agent's responsibility is also the scope of that stochasticity. Narrow, atomic agents with explicit input contracts and structured output schemas make the unpredictable parts of the model more observable, testable, and containable.",
+  "how_to_check": "• You have each agent scoped to one atomic function with explicit input validation and a structured output schema.\n• Your agents are tested with deterministic, representative inputs before deployment.\n• You track per-agent quality metrics (schema compliance rate and task completion rate) so regressions appear before users see them.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp01.html'>AGENTREL02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel02-bp01.html"
+}

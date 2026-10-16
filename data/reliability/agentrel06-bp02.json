@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL06-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL06",
+  "focus_area": "Legacy system integration",
+  "recommendation": "Establish fallback mechanisms for legacy system degradation",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Legacy systems carry lower availability SLAs than cloud-based services, and their failure modes are often unpredictable. Health-aware fallback paths, caches for reference data, queues for transactions, graceful degradation for real-time, keep agent workflows running through legacy outages.",
+  "how_to_check": "• You have health monitoring on every legacy integration with alarms that trigger fallback activation.\n• You have cache-based fallbacks for reference data and queue-based fallbacks for transactional operations.\n• You recover automatically when legacy systems return, with periodic probes deactivating the cutoff.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp02.html'>AGENTREL06-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp02.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL03-BP04",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL03",
+  "focus_area": "Agent memory and state management",
+  "recommendation": "Implement graceful degradation for memory and state operations",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Treating every memory failure as fatal turns recoverable issues into total outages. An explicit degradation hierarchy with documented modes and automatic recovery keeps agents partially useful and transparent about their reduced state.",
+  "how_to_check": "• You have a memory degradation hierarchy with distinct operational modes and documented behaviors for each.\n• You transition modes automatically based on memory health signals, and recover to full mode when stores return.\n• You communicate degradation state to users and orchestration systems so they know what to expect.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp04.html'>AGENTREL03-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel03-bp04.html"
+}

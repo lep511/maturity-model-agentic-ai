@@ -1,9 +1,0 @@
-{
-  "id": "3.1.3",
-  "phase": "Phase 3: Efficient",
-  "capability": "Security governance",
-  "recommendation": "Tagging strategy",
-  "aws_service": "N/A",
-  "guidance": "Tags enable security-critical capabilities: ABAC to restrict access by environment or team, resource ownership identification, and incident response controls (e.g., tagging a compromised instance to trigger a Deny policy). Define a standardized schema covering purpose, owner, environment, and data classification. Avoid PII in tag values. Enforce required tags via AWS Config rules or SCPs, and manage programmatically via the AWS Resource Groups Tagging API.",
-  "how_to_check": "Is there an organization-wide tagging standard covering owner, environment, and data classification? Are tags used for ABAC in IAM policies? Are required tags enforced via Config rules or SCPs? Are resources audited for missing or non-compliant tags?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/tags-strategy/'>documentation</a>."
-}

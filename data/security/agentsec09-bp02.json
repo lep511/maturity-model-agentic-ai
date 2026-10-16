@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC09-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC09",
+  "focus_area": "Agent vulnerability scanning and penetration testing",
+  "recommendation": "Conduct context-aware penetration testing with multi-agent attack simulation",
+  "risk": "High",
+  "aws_service": "AWS Security Agent / AWS Secrets Manager / Amazon CloudWatch",
+  "guidance": "Generic scanners miss vulnerabilities that only surface in agent orchestration, tool parameter construction, and inter-agent delegation. Context-aware testing driven by specialized attacker agents that adapt to what the application reveals finds the chained exploits that static scripts can't reach.",
+  "how_to_check": "• You use context-aware, multi-agent attack simulation for penetration testing that adapts to the specific application under test.\n• The testing system develops deep understanding of the application's architecture, data flows, and agent interactions, then executes sophisticated attack chains combining multiple vulnerability types.\n• Findings are validated through actual exploitation, prioritized by real-world exploitability, and documented with reproducible attack paths and ready-to-implement fixes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp02.html'>AGENTSEC09-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp02.html"
+}

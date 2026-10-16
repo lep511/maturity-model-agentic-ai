@@ -1,9 +1,0 @@
-{
-  "id": "4.3.3",
-  "phase": "Phase 4: Optimized",
-  "capability": "Identity & access management",
-  "recommendation": "Temporary elevated access",
-  "aws_service": "N/A",
-  "guidance": "Perpetual privileged access is a major risk — a compromised admin credential with standing permissions is far more damaging than one with just-in-time access. Implement a request-and-approve workflow where elevated access is granted temporarily, audited in CloudTrail, and automatically revoked on expiry. Use AWS TEAM (Temporary Elevated Access Management), an open-source solution built on IAM Identity Center, or a PAM solution (CyberArk, Okta) that issues temporary credentials rather than durable access keys.",
-  "how_to_check": "Is temporary elevated access in place for privileged actions instead of perpetual permissions? Does the solution integrate with IAM Identity Center and issue temporary credentials? Is every privileged session subject to an approval workflow and audited in CloudTrail? Are sessions automatically revoked on expiry and manually revocable if needed?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/iam-temporary-elevated-access/'>documentation</a>."
-}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL07-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL07",
+  "focus_area": "Agent monitoring, management and recovery",
+  "recommendation": "Design workflows in stages with incremental recovery",
+  "risk": "High",
+  "aws_service": "AWS Step Functions / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Monolithic workflows lose everything on a single failure. Explicit stage boundaries with persisted outputs contain failures to the affected stage and let recovery start from the last completed checkpoint rather than the beginning.",
+  "how_to_check": "• You have workflows decomposed into discrete stages at natural checkpoints where completed work has independent value.\n• You persist stage outputs durably so recovery resumes from the last completed stage.\n• You validate stage outputs before advancing so errors don't propagate silently through subsequent stages.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp01.html'>AGENTREL07-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp01.html"
+}

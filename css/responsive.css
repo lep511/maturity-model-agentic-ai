@@ -1,19 +1,18 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   RESPONSIVE.CSS — AWS Security Maturity Model Assessment Tool
+   RESPONSIVE.CSS — AWS Well-Architected Agentic AI Lens Self-Assessment
    All layout and component overrides for different screen sizes.
    Base (non-breakpoint) styles live in styles.css.
 
    REQUIRED LOAD ORDER:
      1. styles.css     — CSS variables, base component styles
-     2. auth.css       — authentication UI base styles
-     3. print.css      — print modal base styles
-     4. responsive.css — all @media overrides (must be last)
+     2. print.css      — print modal base styles
+     3. responsive.css — all @media overrides (must be last)
 
    Breakpoints:
      ≤ 1100px  Tablet landscape / small desktop
-                 (right panel hidden, icon-only auth buttons)
+                 (right panel hidden, icon-only print button)
      ≤ 1024px  Tablet portrait + phone landscape — drawer mode
-                 (overlay sidebar, auth moves to hamburger,
+                 (overlay sidebar, actions move to the sidebar menu,
                   typography scaling — intentionally covers
                   phones in landscape: iPhone 14 = 844px,
                   Pixel 7 = 915px, iPhone Pro Max = 932px)
@@ -158,9 +157,8 @@
     display: none;
   }
 
-  /* ── Auth: icon-only buttons (no text) above 1024 ── */
-  .btn-print,
-  .btn-signout-aws {
+  /* ── Icon-only print button (no text) above 1024 ── */
+  .btn-print {
     font-size: 0;
     width: 34px;
     height: 34px;
@@ -170,8 +168,7 @@
     flex-shrink: 0;
   }
 
-  .btn-print svg,
-  .btn-signout-aws svg {
+  .btn-print svg {
     margin: 0 !important;
     display: block !important;
   }
@@ -245,9 +242,9 @@
     gap: 6px;
   }
 
-  /* Sign-out button hidden — it moves to the hamburger menu */
+  /* Print and About buttons hidden — they move to the sidebar menu */
   .header-actions .btn-print,
-  .header-actions .btn-signout-aws {
+  .header-actions .btn-about {
     display: none !important;
   }
 
@@ -291,9 +288,9 @@
     font-size: 13px;
   }
 
-  /* Phase stats: 2×2 grid */
+  /* Pillar stats: 3×2 grid */
   .phase-stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin: 0 1rem 1.25rem;
   }
 
@@ -571,21 +568,6 @@
 }
 
 
-/* ──────────────────────────────────────────────────────────────────────────
-   800px — Hide email text inside badge, keep the icon visible
-   ────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 800px) {
-  .auth-email {
-    display: none;
-  }
-
-  /* Reset badge to icon-only geometry: symmetric padding, no gap */
-  .auth-user-badge {
-    padding: 5px 10px;
-    gap: 0;
-  }
-}
-
 
 /* ──────────────────────────────────────────────────────────────────────────
    480px — Mobile portrait: aggressive compression
@@ -633,8 +615,9 @@
     font-size: 12px;
   }
 
-  /* Phase stats: still 2×2 but smaller padding */
+  /* Pillar stats: 2×3 grid with smaller padding */
   .phase-stats {
+    grid-template-columns: repeat(2, 1fr);
     margin: 0 0.75rem 1rem;
   }
 

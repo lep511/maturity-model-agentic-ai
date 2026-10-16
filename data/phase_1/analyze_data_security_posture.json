@@ -1,9 +1,0 @@
-{
-  "id": "1.7.2",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Data protection",
-  "recommendation": "Analyze data security posture",
-  "aws_service": "Amazon Macie",
-  "guidance": "Use Amazon Macie to discover sensitive data across your S3 buckets and verify it is not publicly exposed or shared with unknown external accounts. The Macie dashboard surfaces buckets that are open to the world, shared outside your organization, or unencrypted — enabling you to catch misconfigurations before they lead to a breach. Enable Automated Sensitive Data Discovery for deeper insight into what type of data each bucket contains. As a complement, explicitly define where each type of sensitive data is safe to store, as clear guidance to developers is more effective than blanket prohibitions.",
-  "how_to_check": "Do you have a data security policy? What mechanisms do you have to make sure it is enforced? Are you using Amazon Macie? Is it enabled on all your accounts? Is Automated Data Discovery turned on? Have you analyzed the findings?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/macie-intentional-data-policies/'>documentation</a>."
-}

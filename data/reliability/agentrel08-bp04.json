@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL08-BP04",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL08",
+  "focus_area": "Graceful degradation and configuration management",
+  "recommendation": "Track agent memory utilization metrics",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock / Amazon CloudWatch",
+  "guidance": "Memory exhaustion produces agents that look healthy but lack the context to reason well. Tracking utilization across short-term, long-term, and in-context tiers reveals the pressure before silent failures begin.",
+  "how_to_check": "• You track token counts per context component and emit context-window utilization percentages.\n• You have alarms when context window utilization exceeds 80%, triggering summarization or pruning workflows.\n• You detect memory growth trends through metric math so gradual leaks surface before they cause failures.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp04.html'>AGENTREL08-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp04.html"
+}

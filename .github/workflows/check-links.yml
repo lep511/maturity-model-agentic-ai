@@ -1,15 +1,21 @@
-name: Check Links
+name: Validate content and check links
 
 on:
   push:
     paths:
       - "data/**"
+      - "guidance/**"
+      - "tools/**"
+      - ".github/workflows/check-links.yml"
   pull_request:
     paths:
       - "data/**"
+      - "guidance/**"
+      - "tools/**"
+      - ".github/workflows/check-links.yml"
 
 jobs:
-  check-links:
+  validate-and-check-links:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +28,13 @@ jobs:
           chmod +x data/extract_link.sh
           chmod +x data/check_link_action.sh
 
+      - name: Validate generated content
+        run: python3 -I tools/validate_content.py
+
       - name: Count characters
         id: count_chars
         run: |
-          ./data/count_chars.sh . || {
+          ./data/count_chars.sh data || {
             echo "large_files_found=true" >> $GITHUB_OUTPUT
             exit 1
           }
@@ -39,7 +48,7 @@ jobs:
           path: large_files.json
 
       - name: Extract links
-        run: ./data/extract_link.sh
+        run: ./data/extract_link.sh .
 
       - name: Check links
         run: ./data/check_link_action.sh

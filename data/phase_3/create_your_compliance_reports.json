@@ -1,9 +1,0 @@
-{
-  "id": "3.2.1",
-  "phase": "Phase 3: Efficient",
-  "capability": "Security assurance",
-  "recommendation": "Create your compliance reports",
-  "aws_service": "AWS Audit Manager",
-  "guidance": "Compliance in AWS is a shared responsibility: AWS provides documentation proving the infrastructure meets regulatory standards, but you must separately demonstrate that your own workloads deployed on AWS are also compliant — this is a GAP assessment. Use AWS Audit Manager to automate evidence collection for multiple frameworks (PCI-DSS, NIST, ISO, CIS, etc.), pulling data from AWS CloudTrail, AWS Security Hub, and AWS License Manager, supplemented by manually attached evidence, to generate audit-ready reports.",
-  "how_to_check": "Are you successfully generating compliance reports for your applicable regulatory frameworks? Do you have the people and processes in place to produce these reports on demand? Are you using AWS Audit Manager or an equivalent solution to automate evidence collection?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/compliance-reports/'>documentation</a>."
-}

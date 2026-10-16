@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL06-BP03",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL06",
+  "focus_area": "Legacy system integration",
+  "recommendation": "Regularly test degraded system performance",
+  "risk": "Medium",
+  "aws_service": "AWS Fault Injection Service / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Resilience claims that have never been tested under real failure conditions are just aspirations. Regular chaos engineering, fault injection, and load testing under constrained resources reveal the gaps in fallback coverage while the environment is safe to break.",
+  "how_to_check": "• You have experiment templates for the failure scenarios most likely to affect agent reliability.\n• You have documented acceptance criteria for each scenario, covering expected fallback activation, acceptable degradation, and recovery time.\n• You run fault-injection experiments at least monthly and track findings through a resilience improvement backlog.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp03.html'>AGENTREL06-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel06-bp03.html"
+}

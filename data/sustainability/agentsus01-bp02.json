@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS01-BP02",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS01",
+  "focus_area": "Resource reusability",
+  "recommendation": "Implement reusable workflow patterns",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions",
+  "guidance": "When every team rebuilds data retrieval, validation, and transformation workflows from scratch, each rebuild costs development time and pays for its own separate optimization cycle. A library of parameterized patterns shifts that cost into a one-time investment and makes subsequent projects compose from tested building blocks instead of starting over.",
+  "how_to_check": "• You have a catalog of parameterized workflow patterns for recurring agent tasks (retrieval, validation, transformation, and decision-making) that teams can discover and instantiate.\n• Teams compose new agent systems from existing patterns before writing new implementations.\n• Each pattern has a documented interface, version history, and declared resource profile, and a single pattern serves many callers through a shared tool layer.\n• You monitor pattern invocation frequency and failure rates so optimizations to a pattern propagate to every caller.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp02.html'>AGENTSUS01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp02.html"
+}

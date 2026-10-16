@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF05-BP04",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF05",
+  "focus_area": "Workflow orchestration and multi-agent collaboration",
+  "recommendation": "Implement efficient agent delegation and handoff patterns",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon DynamoDB / AWS Lambda",
+  "guidance": "Smooth agent-to-agent transitions make multi-agent workflows feel like a single cohesive experience, where the receiving agent picks up exactly where the delegating agent left off. Delegation and handoff both require efficient context transfer. The receiving agent needs enough context to act, but transferring too much wastes time and tokens.",
+  "how_to_check": "• You have agent delegation and handoff operations that complete with minimal latency, transferring precisely the context needed by the receiving agent.\n• You have receiving agents that begin productive processing immediately without re-deriving context the delegating agent already possessed.\n• You have standardized context transfer mechanisms that let any agent delegate to or receive handoffs from any other agent.\n• You have handoff latency measured and optimized as part of the overall workflow performance budget.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp04.html'>AGENTPERF05-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp04.html"
+}

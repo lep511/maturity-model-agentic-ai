@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST07-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST07",
+  "focus_area": "Agent cost governance and continuous optimization",
+  "recommendation": "Establish proactive anomaly detection for agent cost patterns",
+  "risk": "High",
+  "aws_service": "Amazon CloudWatch / AWS Cost Management / Amazon Bedrock AgentCore",
+  "guidance": "Generic billing alerts help you find cost escalation more quickly after it starts. Agent-specific anomaly detection catches reasoning loop token spikes, tool invocation storms, and memory growth quickly, and routing those alerts correctly means that you can alert the team that owns the agent instead of the operations team.",
+  "how_to_check": "• You establish ML-based anomaly detection with statistical baselines and deviation thresholds.\n• You have custom detectors for agent-specific failure modes beyond generic infrastructure monitoring.\n• You pair every anomaly type with an investigation runbook to accelerate resolution.\n• You correlate anomalies to route agent-driven issues to development teams and infrastructure issues to operations teams.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp02.html'>AGENTCOST07-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp02.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC03-BP03",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC03",
+  "focus_area": "Agent identity and permission management",
+  "recommendation": "Implement least privilege with dynamic boundaries",
+  "risk": "High",
+  "aws_service": "AWS Identity and Access Management / AWS IAM Access Analyzer / AWS Organizations / Amazon Bedrock AgentCore",
+  "guidance": "Broad permissions grant an affected agent access well beyond the task it was asked to do. Scoping privilege at each identity layer, backing it with temporary credentials, and layering contextual IAM conditions limits the scope of any single compromised or misprompted call.",
+  "how_to_check": "• Agents operate with the minimum permissions required to complete their defined tasks, with temporary credentials that expire automatically and dynamic permission boundaries that tighten when handling sensitive data or high-risk operations.\n• Just-in-time access patterns help limit elevated permissions to the duration of the operation that requires them.\n• You continually validate policy scoping as workloads evolve, removing drift before it accumulates.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp03.html'>AGENTSEC03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec03-bp03.html"
+}

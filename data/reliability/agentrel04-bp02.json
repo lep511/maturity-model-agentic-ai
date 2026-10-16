@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL04-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL04",
+  "focus_area": "Multi-agent orchestration",
+  "recommendation": "Classify agents with a comprehensive capability taxonomy",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Orchestrators that pick agents by hardcoded identifiers can't adapt when the preferred agent is unavailable or when a new equivalent arrives. A structured capability taxonomy gives the orchestrator a basis for routing decisions, and substitution becomes automatic rather than a redeployment.",
+  "how_to_check": "• You have every agent registered with capability categories, skills, input/output constraints, performance profiles, and dependencies.\n• Your orchestrators consult the registry to select agents rather than hardcoding identifiers.\n• You keep the registry current through the CI/CD pipeline so it reflects the deployed state.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp02.html'>AGENTREL04-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp02.html"
+}

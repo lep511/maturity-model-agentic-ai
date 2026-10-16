@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST03-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST03",
+  "focus_area": "Agent memory and state cost management",
+  "recommendation": "Design cost-effective retrieval systems with tiered memory",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Agent memory has to serve two opposing needs at once: fast access for active context, and cheap storage for history that is rarely touched. Tiered memory matches each class of data to infrastructure priced for its actual access pattern, and selective retrieval keeps token costs proportional to what the current task needs.",
+  "how_to_check": "• You have short-term working memory on high-performance storage and long-term memory on cost-effective tiers, with automatic lifecycle transitions between them.\n• You retrieve only top-K relevant items per reasoning step rather than loading full memory stores into context.\n• You track retrieval operations per session and use the data to tune tier assignments and access patterns.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp01.html'>AGENTCOST03-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp01.html"
+}

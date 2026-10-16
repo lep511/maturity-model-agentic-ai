@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF03-BP04",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF03",
+  "focus_area": "Memory, context, and RAG optimization",
+  "recommendation": "Establish efficient agent caching and data access patterns",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock / Amazon ElastiCache / Amazon DynamoDB / Amazon CloudWatch",
+  "guidance": "Agents that repeatedly fetch the same data benefit from caching, breaking the cycle of redundant retrievals speeds up every reasoning iteration. Agentic workloads often access the same tool outputs, retrieved documents, computed embeddings, and configuration data across multiple reasoning iterations, sessions, or agents in a multi-agent workflow. Without caching, each access pays the full latency and cost of the original operation.",
+  "how_to_check": "• You have multi-layer caching that removes redundant computations and data fetches across reasoning iterations, sessions, and agents.\n• You have cache hit rates monitored and optimized.\n• You have cache invalidation policies tuned to balance freshness requirements with performance benefits.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp04.html'>AGENTPERF03-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf03-bp04.html"
+}

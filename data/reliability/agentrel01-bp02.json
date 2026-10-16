@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL01-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL01",
+  "focus_area": "Predictable agent behavior",
+  "recommendation": "Establish modular, fault-isolated layers",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Monolithic agent architectures force every fault to become a full-system fault. Splitting compute, memory, reasoning, and orchestration into independently scalable layers with fail-fast boundaries keeps the scope of impact small. Teams keep serving requests at reduced capability instead of going unavailable.",
+  "how_to_check": "• Your agent stack is split into distinct layers (compute, memory, reasoning, orchestration, and tool integration) with documented API contracts at each boundary.\n• You have fail-fast behavior on inter-layer calls, with defined fallback modes for each degraded state.\n• You can toggle non-critical capabilities at runtime without redeploying.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp02.html'>AGENTREL01-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp02.html"
+}

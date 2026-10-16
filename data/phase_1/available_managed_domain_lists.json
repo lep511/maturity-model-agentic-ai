@@ -1,9 +1,0 @@
-{
-    "id": "1.5.1",
-    "phase": "Phase 1: Quick Wins",
-    "capability": "Vulnerability management",
-    "recommendation": "Available AWS Managed Domain Lists",
-    "aws_service": "Route 53",
-    "guidance": "Enable AWS Managed Domain Lists in Route 53 DNS Firewall to automatically block outbound DNS queries to known malicious domains at no extra cost. AWS maintains four lists updated continuously using internal sources and Recorded Future: malware distribution, botnet C2, aggregate threats (ransomware, spyware, DNS tunneling), and GuardDuty-sourced domains. Use Aggregate Threat List for broad coverage. Before enabling in production, test rules in Alert mode using CloudWatch metrics and DNS Firewall logs. Handle false positives by adding an explicit Allow rule with a lower numeric priority than the blocking rule.",
-    "how_to_check": "Is DNS Firewall enabled in all VPCs with AWS Managed Domain Lists attached? Were lists tested in Alert mode before blocking? Are DNS Firewall logs being monitored via CloudWatch? Is there a process to handle false positives with explicit Allow rules?\n\nFor more information, please refer to the <a href='https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-dns-firewall-managed-domain-lists.html'>documentation</a>."
-}

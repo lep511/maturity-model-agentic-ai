@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC07-BP04",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC07",
+  "focus_area": "Human oversight protection and agent containment",
+  "recommendation": "Behavioral anomaly detection and agent containment",
+  "risk": "High",
+  "aws_service": "Amazon CloudWatch / Amazon Bedrock AgentCore / Amazon GuardDuty / Amazon Macie / AWS Security Hub CSPM / Amazon EventBridge / AWS Lambda / AWS Step Functions / AWS Systems Manager / AWS Identity and Access Management",
+  "guidance": "Detection without containment leaves issues identified but running. Containment without detection relies on manual observation. Per-agent baselines paired with automated credential revocation and forensic capture stop affected agents within minutes while preserving what investigators need.",
+  "how_to_check": "• You establish behavioral baselines per agent and trigger real-time alerts when deviations cross defined thresholds.\n• You automatically isolate agents exhibiting anomalous behavior within minutes of detection through credential revocation and circuit breaker activation.\n• You capture forensic state before isolation, and manual override capabilities allow incident responders to quarantine or restore agents when human judgment is required.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp04.html'>AGENTSEC07-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec07-bp04.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF06-BP03",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF06",
+  "focus_area": "Tool integration and framework optimization",
+  "recommendation": "Optimize meta-tool utilization and tool chaining",
+  "risk": "Low",
+  "aws_service": "AWS Lambda / Amazon Bedrock AgentCore",
+  "guidance": "Meta-tools let agents accomplish in one reasoning step what would otherwise take five. For tasks that require a predictable sequence of tool calls, a meta-tool combines the entire sequence into a single server-side operation and returns the final result in one reasoning iteration instead of many, cutting both latency and token cost by removing intermediate reasoning steps.",
+  "how_to_check": "• You have common multi-step tool sequences encapsulated as meta-tools that execute the full sequence in a single agent reasoning iteration.\n• You have agents using meta-tools for routine operations and individual tools for novel or unpredictable tasks.\n• You have meta-tool performance monitored to validate that the composite operation is faster than the equivalent sequence of individual tool calls.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp03.html'>AGENTPERF06-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf06-bp03.html"
+}

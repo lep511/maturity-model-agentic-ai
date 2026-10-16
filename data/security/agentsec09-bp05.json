@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC09-BP05",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC09",
+  "focus_area": "Agent vulnerability scanning and penetration testing",
+  "recommendation": "Implement runtime threat detection, security event correlation, and automated remediation for agents",
+  "risk": "High",
+  "aws_service": "Amazon GuardDuty / AWS Security Hub CSPM / Amazon EventBridge / AWS Lambda / AWS Step Functions / Amazon Bedrock AgentCore / Amazon CloudWatch / Amazon Macie / Amazon Inspector",
+  "guidance": "Scanning finds latent weaknesses. Runtime detection catches the attacks happening now. Correlating events across agent interaction surfaces and triggering automated remediation compresses the gap between an active exploit and the response that contains it.",
+  "how_to_check": "• You continually monitor security events from agent activity, correlate them across interaction surfaces, and analyze them for multi-step attack sequences.\n• You detect active threats targeting agentic systems within minutes, with critical attack sequences surfaced at the highest severity.\n• Automated remediation workflows trigger containment actions and generate ready-to-implement fixes, reducing mean time to detection and mean time to remediation.\n• Security teams have a unified view of agent-related threats alongside findings from vulnerability scanning and penetration testing.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp05.html'>AGENTSEC09-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec09-bp05.html"
+}

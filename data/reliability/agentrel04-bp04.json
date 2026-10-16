@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL04-BP04",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL04",
+  "focus_area": "Multi-agent orchestration",
+  "recommendation": "Implement resilient control planes for agent coordination",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions / Amazon CloudWatch",
+  "guidance": "A control plane that fails takes every agent with it. Applying the same reliability principles used on agents, redundancy, durable state, and loose coupling, to the coordination infrastructure keeps workflows running during brief outages and preserves state across restarts.",
+  "how_to_check": "• You deploy agents on managed, highly available execution infrastructure with multi-AZ redundancy.\n• You persist workflow state durably so the control plane can recover without losing progress.\n• You design agents to complete in-flight work during brief control plane outages rather than failing immediately.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp04.html'>AGENTREL04-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel04-bp04.html"
+}

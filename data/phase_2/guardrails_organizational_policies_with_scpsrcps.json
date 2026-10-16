@@ -1,9 +1,0 @@
-{
-  "id": "2.3.1",
-  "phase": "Phase 2: Foundational",
-  "capability": "Identity & access management",
-  "recommendation": "GuardRails: Organizational Policies with SCPs/RCPs",
-  "aws_service": "AWS Organizations",
-  "guidance": "Use Service Control Policies (SCPs) and Resource Control Policies (RCPs) to enforce security invariants across your organization — things you never want to happen, such as member accounts leaving the org, root usage on member accounts, or use of unauthorized instance types. SCPs limit the maximum permissions that IAM can grant on accounts or OUs; RCPs do the same but are resource-centric, controlling which identities can access your resources. Neither policy type grants permissions — they only restrict them. SCPs apply even to root users of member accounts, but not to the management account. Both services are free.",
-  "how_to_check": "Are SCPs and RCPs in place to enforce security invariants? Do they prevent undesirable actions such as accounts leaving the org, root usage on member accounts, or launching unauthorized instance types? Have the AWS-provided SCP/RCP examples been reviewed for applicability?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/guardrails/'>documentation</a>."
-}

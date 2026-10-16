@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL05-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL05",
+  "focus_area": "Agent cognition",
+  "recommendation": "Design modular, fault-tolerant agentic reasoning components",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "A monolithic reasoning pipeline fails completely whenever any stage fails. Splitting cognition into modular stages with clear interfaces and stage-specific fallbacks lets an agent keep reasoning, with reduced quality, even when one stage is degraded.",
+  "how_to_check": "• You have the reasoning pipeline decomposed into modular stages with explicit input/output schemas.\n• You have stage-specific fallbacks that activate automatically when error rates climb.\n• You log the retrieval tier and model tier used in each invocation so quality analysis is possible after the fact.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp01.html'>AGENTREL05-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel05-bp01.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF04-BP03",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF04",
+  "focus_area": "Communication and protocol efficiency",
+  "recommendation": "Design high-performing event-driven integration patterns",
+  "risk": "Medium",
+  "aws_service": "Amazon EventBridge / Amazon Kinesis Data Streams / AWS Lambda / Amazon DynamoDB / AWS Step Functions",
+  "guidance": "Agents that react to events in real time, data changes, user actions, and system alerts deliver faster business outcomes than agents that poll for work. Overly broad event subscriptions trigger agents for irrelevant events, missing filtering causes agents to process and discard events they don't need. Inefficient routing adds delays that push response time past user expectations.",
+  "how_to_check": "• You have agent workflows triggered by precisely filtered events that match their processing requirements, with minimal latency between event emission and agent invocation.\n• You have efficient event schemas that include only routing metadata, with agents retrieving full context on demand.\n• You have event-driven patterns that support both real-time and batch processing modes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp03.html'>AGENTPERF04-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf04-bp03.html"
+}

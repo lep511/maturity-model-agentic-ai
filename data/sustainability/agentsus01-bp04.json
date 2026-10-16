@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS01-BP04",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS01",
+  "focus_area": "Resource reusability",
+  "recommendation": "Scale cognitive processing pathways appropriately",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore",
+  "guidance": "Foundation model inference is the single most energy-intensive operation in an agent workflow, and it runs hundreds or thousands of times a day. Matching model size, retrieval depth, and memory scope to actual task complexity keeps cognitive resource consumption proportional to the value delivered, rather than defaulting every call to the largest available model.",
+  "how_to_check": "• You have tiered model routing in place, so each task goes to the smallest model that meets its quality bar.\n• Retrieval depth and context window size are scoped to task complexity, so routine tasks don't carry the retrieval overhead of complex reasoning.\n• Multimodal extraction uses purpose-built services where applicable, not raw vision models for every document.\n• Agents operate within token budgets and rate limits enforced at the runtime layer for each agent.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp04.html'>AGENTSUS01-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus01-bp04.html"
+}

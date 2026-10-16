@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST07-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST07",
+  "focus_area": "Agent cost governance and continuous optimization",
+  "recommendation": "Implement automated cost controls with intelligent cutoffs",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Budgets",
+  "guidance": "Autonomous agents that invoke tools and accumulate memory without caps are a primary cost risk of agentic systems. Hierarchical budget limits, automatic cutoffs on runaway sessions, and graduated throttling help keep your costs bounded without forcing the agent to stop working at the first sign of pressure.",
+  "how_to_check": "• You enforce per-cycle, per-task, and per-day budget limits as pre-invocation checks, not alerts after the fact.\n• You have automatic cutoffs that halt reasoning loops at iteration or cost thresholds.\n• You have graduated throttling that slows invocations as budgets approach limits rather than forcing binary shutdown.\n• You require approval for capability expansions that materially increase cost profiles.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp01.html'>AGENTCOST07-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost07-bp01.html"
+}

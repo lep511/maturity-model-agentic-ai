@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF02-BP04",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF02",
+  "focus_area": "Core processing and reasoning pipeline optimization",
+  "recommendation": "Optimize streaming responses and time-to-first-token for agent interactions",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock / Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "User-facing agents are judged on perceived latency, not total processing time. Time-to-first-token (TTFT), the delay before the first output reaches the user, is the dominant perceived-performance signal, and streaming delivery keeps TTFT short even when total processing takes several seconds. Agentic streaming is complicated by reasoning loops that must pause mid-stream to invoke tools and by multi-agent workflows where the final agent streams while upstream agents are still producing.",
+  "how_to_check": "• You have TTFT tracked as a distinct KPI from end-to-end latency, with a target bounded by the interaction type.\n• You have LLM output streamed to the user as it is generated, so the user begins seeing output well before the reasoning loop finishes.\n• You have pre-inference latency, context assembly, prompt construction, retrieval, kept short enough that it doesn't dominate TTFT.\n• You have tool invocations handled within streams so the user receives progress feedback rather than an unexplained pause when the agent calls a tool mid-response.\n• You have multi-agent workflows designed so the user-facing agent begins streaming as soon as its inputs are available, rather than blocking until every upstream agent fully completes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp04.html'>AGENTPERF02-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf02-bp04.html"
+}

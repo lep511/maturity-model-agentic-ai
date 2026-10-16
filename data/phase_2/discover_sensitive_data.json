@@ -1,9 +1,0 @@
-{
-  "id": "2.7.3",
-  "phase": "Phase 2: Foundational",
-  "capability": "Data protection",
-  "recommendation": "Discover sensitive data",
-  "aws_service": "Amazon Macie",
-  "guidance": "Organizations should identify their most sensitive data ('crown jewels') and where it resides, but sensitive data often ends up in unexpected locations. Use Amazon Macie's managed data identifiers to scan S3 buckets for common sensitive data types (credit cards, ID numbers, access keys, PII, etc.), and supplement with custom data identifiers (regex-based) to detect organization-, industry-, or region-specific sensitive data. For sensitive data in databases, partner solutions such as DataGuise or Imperva Data Security are available on AWS Marketplace.",
-  "how_to_check": "Has sensitive data been classified and its expected locations documented? Is Amazon Macie running sensitive data discovery jobs across accounts? Are custom data identifiers configured for organization-specific sensitive data? Is sensitive data in databases being scanned?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/identify-sensitive-data/'>documentation</a>."
-}

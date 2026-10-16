@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL08-BP01",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL08",
+  "focus_area": "Graceful degradation and configuration management",
+  "recommendation": "Establish consistent configuration management practices",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "When different agent instances run with different configuration, the resulting reliability issues are hard to reproduce and harder to trust. Centralized configuration with versioning, validation, and automated distribution keeps every instance on the same current state and makes rollback a matter of changing a version pointer.",
+  "how_to_check": "• You have centralized configuration with versioning and validation for every setting agents read dynamically.\n• You have deployment strategies, gradual rollout for routine changes, immediate for emergencies, with automatic rollback on error.\n• You detect configuration drift across the agent fleet and remediate it automatically.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp01.html'>AGENTREL08-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel08-bp01.html"
+}

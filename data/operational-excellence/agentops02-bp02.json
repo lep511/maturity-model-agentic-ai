@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS02-BP02",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS02",
+  "focus_area": "Prompt and configuration lifecycle management",
+  "recommendation": "Implement configuration drift detection and remediation",
+  "risk": "High",
+  "aws_service": "AWS Config / AWS CloudTrail / AWS CloudFormation / Amazon CloudWatch",
+  "guidance": "Configurations can drift, creating outdated or unstable versions over time. For example, a manual tweak in one environment, a guardrail flag changed during an incident, or an experimental override never reverted can produce agents that behave differently in production than in testing. Automated drift detection catches these events before they turn into incidents.",
+  "how_to_check": "• Agent configurations stay consistent with approved baselines across every environment.\n• Unauthorized or unintended changes are detected and remediated automatically.\n• Every configuration change follows a documented approval workflow with a full audit trail.\n• Cross-environment consistency is validated continually so development, staging, and production don't drift apart.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp02.html'>AGENTOPS02-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp02.html"
+}

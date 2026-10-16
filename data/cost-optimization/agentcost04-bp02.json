@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST04-BP02",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST04",
+  "focus_area": "Agent tool serving cost optimization",
+  "recommendation": "Cost optimize tool serving through serverless and resource sharing",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch / AWS Cost Explorer",
+  "guidance": "Tool infrastructure that runs constantly to serve unpredictable agent traffic carries the highest idle cost in an agent stack. Serverless tool serving with shared infrastructure across agents aligns spend with actual invocations and removes the fixed overhead of per-agent dedicated instances.",
+  "how_to_check": "• You have tool-serving infrastructure that scales dynamically with agent usage and charges only for actual invocations.\n• You share stateless tool services across agents while maintaining security isolation.\n• You use private networking and compact serialization to reduce data transfer costs on high-frequency tool invocations.\n• You track per-agent cost attribution for targeted optimization.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp02.html'>AGENTCOST04-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost04-bp02.html"
+}

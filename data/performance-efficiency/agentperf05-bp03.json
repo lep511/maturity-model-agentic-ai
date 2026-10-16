@@ -1,0 +1,12 @@
+{
+  "id": "AGENTPERF05-BP03",
+  "pillar": "Performance efficiency",
+  "focus_area_id": "AGENTPERF05",
+  "focus_area": "Workflow orchestration and multi-agent collaboration",
+  "recommendation": "Optimize multi-stage AI pipeline execution",
+  "risk": "Medium",
+  "aws_service": "AWS Step Functions / AWS Lambda / Amazon ECS / Amazon Bedrock AgentCore / Amazon Kinesis Data Streams / Amazon Bedrock",
+  "guidance": "Real-world agent tasks rarely complete in a single step. Document processing, data analysis, and customer service workflows all involve multiple sequential stages where each stage's throughput is limited by the slowest process or mechanism. Each stage transition introduces overhead (like serialization, network transfer, or cold starts), and streaming or micro-batching allows downstream stages to begin processing before upstream stages complete, overlapping execution to cut total latency.",
+  "how_to_check": "• You have multi-stage AI pipelines that execute with minimal inter-stage overhead, with data flowing efficiently between stages.\n• You have pipeline throughput balanced across stages with no single stage creating a persistent bottleneck.\n• You have streaming implemented where possible to overlap processing.\n• You have each stage's compute resources right-sized for its specific requirements.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp03.html'>AGENTPERF05-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentperf05-bp03.html"
+}

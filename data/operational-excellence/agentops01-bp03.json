@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS01-BP03",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS01",
+  "focus_area": "Operational practices for agentic AI systems",
+  "recommendation": "Develop test scenarios that accurately capture failures of dependent components, orchestration protocols, and business processes",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore Evaluations / AWS Fault Injection Service / Amazon CloudWatch / AWS CodePipeline",
+  "guidance": "Happy-path testing predicts how agents behave when everything works, while failure testing predicts how they behave in the event of unforeseen issues. A resilience posture built on injected failures, deadlock scenarios, and disrupted business processes is the difference between graceful degradation and an unexpected outage.",
+  "how_to_check": "• You have a failure test suite for every agent covering dependent-component failures, orchestration breakdowns, and business-process disruptions.\n• You can inject failures into agent workflows on demand and verify that error handling, graceful degradation, and escalation behave as designed.\n• You maintain known failure patterns as regression tests that run automatically on every behavioral change.\n• You track failure test pass rates over time as a visible resilience metric.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp03.html'>AGENTOPS01-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops01-bp03.html"
+}

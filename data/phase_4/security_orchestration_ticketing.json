@@ -1,9 +1,0 @@
-{
-  "id": "4.9.3",
-  "phase": "Phase 4: Optimized",
-  "capability": "Incident response",
-  "recommendation": "Security Orchestration & Ticketing",
-  "aws_service": "N/A",
-  "guidance": "Every security incident should have a tracked ticket with clear ownership and SLA. Key practices: auto-escalate tickets breaching acknowledgment SLAs; document every significant action for forensics; enrich tickets with asset context and IoC threat intelligence lookups; and track KPIs per incident phase (Detect → Analysis → Containment → Eradication → Recovery). Use a SOAR solution (e.g., Splunk SOAR, Palo Alto Cortex XSOAR) to combine ticketing and automated response, both of which integrate with AWS Security Hub via EventBridge/SQS.",
-  "how_to_check": "Is every incident tracked in a ticketing or SOAR platform with a defined owner and SLA? Are tickets auto-escalated if not acknowledged within SLA thresholds? Are IoCs cross-referenced against threat intelligence sources? Are KPIs tracked per incident phase and reported regularly?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/security-orchestration-ticketing/'>documentation</a>."
-}

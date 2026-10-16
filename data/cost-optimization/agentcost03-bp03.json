@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST03-BP03",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST03",
+  "focus_area": "Agent memory and state cost management",
+  "recommendation": "Implement cost-optimized state persistence and lifecycle management",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon S3 / Amazon CloudWatch",
+  "guidance": "Agent state grows quickly when every reasoning step triggers a checkpoint, and it stays forever when no lifecycle policy removes it. Saving state at meaningful decision points, tiering by access pattern, and automating archival keeps recoverability without paying for a growing backlog of stale sessions.",
+  "how_to_check": "• You checkpoint at meaningful decision points rather than after every reasoning step.\n• You have session state tiered by access pattern, with high-performance storage reserved for active work.\n• You have automated lifecycle policies that archive or purge stale context.\n• You track storage cost per agent and session, with alarms for unexpected growth.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp03.html'>AGENTCOST03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost03-bp03.html"
+}

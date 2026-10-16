@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC04-BP02",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC04",
+  "focus_area": "Agent goal alignment and manipulation prevention",
+  "recommendation": "Human-in-the-loop for critical decisions",
+  "risk": "High",
+  "aws_service": "AWS Step Functions / Amazon SNS / Amazon SES / Amazon S3 / Amazon CloudWatch",
+  "guidance": "Routing every agent action through human review produces rubber-stamp approvals. Routing none produces unbounded autonomy. Risk-tiered approval pauses agents only for the decisions where human judgment actually changes the outcome, with enough context to make those decisions meaningful.",
+  "how_to_check": "• You pause high-risk agent operations for human review before execution, and reviewers receive enough context to make informed decisions within a defined time window.\n• Escalation paths handle cases where primary reviewers are unavailable.\n• You log human approval decisions with timestamps and reviewer identities, creating an auditable record of human oversight for compliance purposes.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04-bp02.html'>AGENTSEC04-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec04-bp02.html"
+}

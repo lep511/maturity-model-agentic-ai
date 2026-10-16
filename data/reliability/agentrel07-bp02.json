@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL07-BP02",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL07",
+  "focus_area": "Agent monitoring, management and recovery",
+  "recommendation": "Enable automatic recovery from agent execution failures",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Uniform retry wastes effort on non-retryable failures and creates thundering herds on transient ones. Classifying failures by type and applying targeted strategies, retry for transient errors, fallback for persistent ones, escalation for unrecoverable ones, keeps availability high without manual intervention.",
+  "how_to_check": "• You classify agent failures into retryable and non-retryable categories at the point of failure.\n• You use exponential backoff with full jitter on retryable failures, with failure-type-specific retry counts.\n• You enforce retry budgets to help prevent retry storms, and escalate to fallback or human review when retries are exhausted.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp02.html'>AGENTREL07-BP02 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel07-bp02.html"
+}

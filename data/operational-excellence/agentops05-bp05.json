@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS05-BP05",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS05",
+  "focus_area": "Observability and monitoring for agentic systems",
+  "recommendation": "Create workflow-specific dashboards for operational health",
+  "risk": "Medium",
+  "aws_service": "Amazon CloudWatch / Amazon Bedrock AgentCore",
+  "guidance": "Generic infrastructure dashboards can hide important metrics to agentic workflows. A dashboard designed around a specific workflow's critical path, step-level latencies, and characteristic failure modes provides detail that operators need to quickly see issues and understand the root cause.",
+  "how_to_check": "• Each critical agent workflow has a dedicated dashboard with real-time visibility into workflow health.\n• Operators identify issues and quickly understand root causes.\n• Dashboards are tailored to the specific characteristics of each workflow, not generic templates.\n• Operational teams use these dashboards as the primary tool for workflow monitoring and incident response.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp05.html'>AGENTOPS05-BP05 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops05-bp05.html"
+}

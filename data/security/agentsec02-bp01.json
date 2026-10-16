@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSEC02-BP01",
+  "pillar": "Security",
+  "focus_area_id": "AGENTSEC02",
+  "focus_area": "Secure agent tool usage",
+  "recommendation": "Implement tool authorization",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore / AWS Step Functions / Amazon API Gateway / Amazon CloudWatch / AWS CloudTrail",
+  "guidance": "An agent with unconstrained tool access has no meaningful privilege boundary. Externally enforced authorization at the gateway, combined with identity propagation and human review for mutating operations, enforces bounded autonomy at the tool layer.",
+  "how_to_check": "• You authorize every tool invocation against a defined policy before execution, with agent identity and user context propagated through the authorization chain.\n• Agents can invoke only the tools within their approved scope, and attempts to access unauthorized tools are blocked and logged.\n• Human-in-the-loop checkpoints intercept high-risk mutating operations so consequential actions receive review before execution.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp01.html'>AGENTSEC02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsec02-bp01.html"
+}

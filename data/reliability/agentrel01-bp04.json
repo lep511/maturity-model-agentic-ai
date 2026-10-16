@@ -1,0 +1,12 @@
+{
+  "id": "AGENTREL01-BP04",
+  "pillar": "Reliability",
+  "focus_area_id": "AGENTREL01",
+  "focus_area": "Predictable agent behavior",
+  "recommendation": "Standardize communication protocols",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Custom message formats between every agent pair turn new integrations into one-off engineering projects. Standardized schemas, versioned endpoints, and a canonical error format let agents compose into workflows without a translation layer at every boundary.",
+  "how_to_check": "• You have a canonical message schema, error format, and retry policy that every agent follows.\n• You version endpoints and maintain backward compatibility so existing integrations keep working when protocols evolve.\n• You enforce protocol adherence through automated contract tests in the CI/CD pipeline.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp04.html'>AGENTREL01-BP04 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp04.html"
+}

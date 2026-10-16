@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS03-BP03",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS03",
+  "focus_area": "Agent governance",
+  "recommendation": "Maintain comprehensive specifications for agents and agentic systems",
+  "risk": "High",
+  "aws_service": "Amazon Bedrock AgentCore",
+  "guidance": "Agents without specifications become systems that only their original developers understand. Thorough documentation, purpose, boundaries, integration points, and decision logic keep institutional knowledge available to the whole team and verify that agent behavior is traceable as teams and business processes change.",
+  "how_to_check": "• Each deployed agent has a specification covering business purpose, operational boundaries, decision criteria, and escalation paths.\n• Specifications are stored in version-controlled artifacts alongside the agent implementation.\n• A centralized agent catalog lets team members discover, review, and reuse agent capabilities.\n• Runtime behavior is documented automatically and compared against design specifications to detect drift.\n• Governance requires specification validation before agents reach production.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp03.html'>AGENTSUS03-BP03 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus03-bp03.html"
+}

@@ -1,0 +1,12 @@
+{
+  "id": "AGENTOPS07-BP01",
+  "pillar": "Operational excellence",
+  "focus_area_id": "AGENTOPS07",
+  "focus_area": "Operational recovery and consumption monitoring",
+  "recommendation": "Implement automated response and recovery mechanisms",
+  "risk": "High",
+  "aws_service": "AWS Step Functions / Amazon CloudWatch / AWS Lambda / Amazon Bedrock AgentCore",
+  "guidance": "Agents that recover from failure without human intervention keep service running and give the team the failure data they need to help prevent recurrence. Manual-only recovery scales poorly and can turn routine degradations into incidents.",
+  "how_to_check": "• Agent systems detect and recover from common failure scenarios automatically, maintaining service availability and user experience continuity.\n• Automatic cutoffs help prevent cascading failures from propagating across the agent environment.\n• Fallback strategies keep agents degrading gracefully rather than failing completely when primary capabilities are unavailable.\n• Recovery time objectives are defined, met, and tested regularly.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp01.html'>AGENTOPS07-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops07-bp01.html"
+}

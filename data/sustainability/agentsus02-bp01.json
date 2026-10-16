@@ -1,0 +1,12 @@
+{
+  "id": "AGENTSUS02-BP01",
+  "pillar": "Sustainability",
+  "focus_area_id": "AGENTSUS02",
+  "focus_area": "Resource right-sizing",
+  "recommendation": "Optimize context management and memory utilization",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon Bedrock",
+  "guidance": "Agent memory that grows without bounds forces every retrieval to search through increasingly large stores and every turn to reprocess history the agent has already seen. Tiered memory with retention policies keeps infrastructure scaled to the context that actually matters, so memory operations stay fast and memory cost stays proportional to use.",
+  "how_to_check": "• You have tiered memory with active session context separated from archival data, so hot and cold tiers are not competing for the same storage.\n• Retention, archival, and pruning policies keep memory bounded and automatically move aging context to the appropriate tier.\n• Multi-agent systems share persistent context through namespaces rather than duplicating it per agent.\n• Agents incrementally build context rather than reprocessing full interaction histories on every turn.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp01.html'>AGENTSUS02-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentsus02-bp01.html"
+}

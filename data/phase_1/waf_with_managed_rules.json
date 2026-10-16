@@ -1,9 +1,0 @@
-{
-  "id": "1.8.1",
-  "phase": "Phase 1: Quick Wins",
-  "capability": "Application security",
-  "recommendation": "WAF with managed rules",
-  "aws_service": "AWS WAF",
-  "guidance": "Enable AWS-managed WAF rules to quickly gain protection against OWASP Top 10 vulnerabilities and block disreputable IPs. Choose rule packages based on your workload and set them to block (not just count). Supplement with third-party rules from AWS Marketplace partners (e.g., F5, Fortinet) as needed. Use AWS Firewall Manager to enforce a default WebACL across all CloudFront distributions, ALBs, and API Gateways.",
-  "how_to_check": "Is AWS WAF deployed consistently across all applications? Are rules set to Block mode? Are AWS-managed rule groups active? Is AWS Firewall Manager used to enforce a default WebACL organization-wide?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/waf/'>documentation</a>."
-}

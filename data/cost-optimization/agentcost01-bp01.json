@@ -1,0 +1,12 @@
+{
+  "id": "AGENTCOST01-BP01",
+  "pillar": "Cost optimization",
+  "focus_area_id": "AGENTCOST01",
+  "focus_area": "Reasoning and execution cost optimization",
+  "recommendation": "Use the reflection pattern to design efficient agent reasoning loops",
+  "risk": "Medium",
+  "aws_service": "Amazon Bedrock AgentCore / Amazon CloudWatch",
+  "guidance": "Unbounded reasoning loops consume tokens unpredictably and can result in higher than expected token consumption for routine tasks. A bounded reflection pattern gives you predictable token budgets and preserves decision quality.",
+  "how_to_check": "• You have explicit termination conditions for every agent: a maximum iteration count, a confidence threshold, and a per-session token budget.\n• You apply reflection selectively, triggering full self-correction only when initial output quality falls below a threshold.\n• You track per-cycle token consumption and decision quality so termination parameters can be tuned from data rather than guesswork.\n\nFor more information, see the <a href='https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp01.html'>AGENTCOST01-BP01 documentation</a>.",
+  "doc_url": "https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentcost01-bp01.html"
+}
