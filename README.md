@@ -40,9 +40,9 @@ The same content is exposed as a read-only JSON API implemented as a single Verc
 Add `?pretty=1` to any endpoint for indented JSON. Errors are JSON: `{"error": {"code": "...", "message": "..."}}` with 400, 404, 405 or 500.
 
 ```bash
-curl -s https://aws-maturity-model.vercel.app/api/best-practices?pillar=security&risk=High&fields=id,title
-curl -s https://aws-maturity-model.vercel.app/api/focus-areas/AGENTSEC03?pretty=1
-curl -s https://aws-maturity-model.vercel.app/api/best-practices/AGENTOPS01-BP01/guidance
+curl -s https://agentic-ai-lens-assessment.vercel.app/api/best-practices?pillar=security&risk=High&fields=id,title
+curl -s https://agentic-ai-lens-assessment.vercel.app/api/focus-areas/AGENTSEC03?pretty=1
+curl -s https://agentic-ai-lens-assessment.vercel.app/api/best-practices/AGENTOPS01-BP01/guidance
 ```
 
 The function reads the generated `data/` and `guidance/` files at runtime (`includeFiles` in `vercel.json` bundles them) and caches them in memory per instance. `node tools/api_smoke_test.mjs` runs the router in-process against the repository content; CI runs it on every change.
@@ -141,7 +141,7 @@ vercel          # preview
 vercel --prod   # production
 ```
 
-Production: https://aws-maturity-model.vercel.app
+Production: https://agentic-ai-lens-assessment.vercel.app
 
 ## CI
 

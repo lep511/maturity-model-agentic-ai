@@ -25,7 +25,7 @@ vercel          # preview
 vercel --prod   # production
 ```
 
-Production URL: https://aws-maturity-model.vercel.app
+Production URL: https://agentic-ai-lens-assessment.vercel.app
 
 ## Content Pipeline (do not hand-edit `data/` or `guidance/`)
 
