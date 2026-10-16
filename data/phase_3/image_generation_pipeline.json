@@ -1,0 +1,9 @@
+{
+  "id": "3.6.1",
+  "phase": "Phase 3: Efficient",
+  "capability": "Infrastructure protection",
+  "recommendation": "Image Generation Pipeline",
+  "aws_service": "EC2 Image Builder",
+  "guidance": "Build a golden image pipeline to ensure all base AMIs are consistently hardened and up to date. Each image should start from the latest patched OS, apply CIS benchmark hardening, and pre-install required agents (SSM, anti-malware, FIM). Use EC2 Image Builder to automate this on a schedule, and enforce approved AMI usage via AWS Config rules (approved-amis-by-tag or approved-amis-by-id). EC2 Image Builder is free — you only pay for the resources generated.",
+  "how_to_check": "Is a golden image pipeline implemented and widely adopted? Are teams prevented from launching arbitrary AMIs? Are AWS Config rules in place to detect instances launched from non-approved AMIs?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/ec2-image-builder/'>documentation</a>."
+}

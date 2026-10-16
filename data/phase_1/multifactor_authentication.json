@@ -1,0 +1,9 @@
+{
+  "id": "1.3.1",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Identity & access management",
+  "recommendation": "Multi-Factor Authentication",
+  "aws_service": "IAM / IAM Identity Center",
+  "guidance": "Enable MFA for all users, prioritizing root and privileged accounts. Free virtual MFA apps (Authy, Google Authenticator, etc.) are sufficient for most use cases. For low adoption scenarios, consider adaptive authentication that only prompts MFA on anomalous behavior (new device, unexpected location). MFA is straightforward to enforce via IAM Identity Center and Amazon Cognito.",
+  "how_to_check": "Is MFA enabled on all root accounts? Does your Identity Provider require MFA for all employees? Are there any IAM users without MFA? Is MFA enforced for customers on critical application actions?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/mfa/'>documentation</a>."
+}

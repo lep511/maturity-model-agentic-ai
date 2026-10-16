@@ -1,0 +1,52 @@
+name: Check Links
+
+on:
+  push:
+    paths:
+      - "data/**"
+  pull_request:
+    paths:
+      - "data/**"
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Give execution permissions
+        run: |
+          chmod +x data/count_chars.sh
+          chmod +x data/extract_link.sh
+          chmod +x data/check_link_action.sh
+
+      - name: Count characters
+        id: count_chars
+        run: |
+          ./data/count_chars.sh . || {
+            echo "large_files_found=true" >> $GITHUB_OUTPUT
+            exit 1
+          }
+
+      # Uploads large_files.json ONLY if count_chars found oversized files
+      - name: Upload large files report
+        if: always() && steps.count_chars.outputs.large_files_found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: large-files-report
+          path: large_files.json
+
+      - name: Extract links
+        run: ./data/extract_link.sh
+
+      - name: Check links
+        run: ./data/check_link_action.sh
+
+      - name: Upload results as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-results
+          path: links_checked.json

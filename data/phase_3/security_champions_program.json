@@ -1,0 +1,9 @@
+{
+  "id": "3.5.1",
+  "phase": "Phase 3: Efficient",
+  "capability": "Vulnerability management",
+  "recommendation": "Security Champions Program",
+  "aws_service": "N/A",
+  "guidance": "A Security Champions program embeds a security-minded developer in each team to own day-to-day security practices: threat modeling, security test cases, vulnerability management, and peer coaching. Executive sponsorship (CEO/CIO level) is critical for consistent team participation. Incentivize through awards, exclusive training, and gamification (e.g., leaderboards, AWS Security Game Days). Reference the AWS Security Guardians blog post for how Amazon built and scaled its own program.",
+  "how_to_check": "Does each development team have a designated Security Champion? Is there a formal program with structured training, incentives, and executive sponsorship? Are Champions actively involved in threat modeling, code reviews, and vulnerability management? Is there a regular touchpoint for Champions to collaborate with the central security team?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/security-champions/'>documentation</a>."
+}

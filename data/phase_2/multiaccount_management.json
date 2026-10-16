@@ -1,0 +1,9 @@
+{
+  "id": "2.6.4",
+  "phase": "Phase 2: Foundational",
+  "capability": "Infrastructure protection",
+  "recommendation": "Multi-account management",
+  "aws_service": "AWS Control Tower",
+  "guidance": "Use AWS Control Tower to implement a multi-account landing zone with centrally enforced SCPs and CloudTrail logs protected in a dedicated logging account. Structure accounts into core accounts (logging, audit, backups, networking) and per-environment/workload accounts. This reduces blast radius and enables SCP enforcement. Key security services (GuardDuty, Security Hub, Inspector, etc.) support delegated administration, giving the security team org-wide visibility from a central account. Use Landing Zone Accelerator as an alternative if Control Tower is too restrictive.",
+  "how_to_check": "Is AWS Control Tower or equivalent deployed? Are workloads isolated across multiple accounts rather than consolidated in one? Are core accounts (logging, audit, security) separate from workload accounts? Is the security team using delegated administration for centralized visibility?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/multi-account-management/'>documentation</a>."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "3.6.3",
+  "phase": "Phase 3: Efficient",
+  "capability": "Infrastructure protection",
+  "recommendation": "Outbound Traffic Control",
+  "aws_service": "AWS Network Firewall",
+  "guidance": "Control outbound VPC traffic to prevent communication with malicious URLs, IPs, or unauthorized tunnels. Two primary options: Route 53 Resolver DNS Firewall (deny-by-default for all domains except trusted ones, easy to deploy via Firewall Manager) and AWS Network Firewall (L3-L7 inspection including east-west traffic). For web-only workloads, WAF may suffice. Use AWS PrivateLink for private partner connectivity. Forward firewall/proxy logs to your SIEM for Shadow IT detection.",
+  "how_to_check": "Is outbound VPC traffic restricted to known destinations? Is Route 53 Resolver DNS Firewall deployed with a deny-by-default policy? Is AWS Network Firewall or equivalent in place for L3-L7 inspection? Are firewall logs forwarded to a SIEM?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/outbound-traffic-control/'>documentation</a>."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "1.4.2",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Threat detection",
+  "recommendation": "Audit API calls",
+  "aws_service": "AWS CloudTrail",
+  "guidance": "Enable, Centralize, and Secure AWS CloudTrail Logs. Use AWS CloudTrail audit logs to investigate incidents by retaining logs for the period your security policy determines. CloudTrail Event history is available free for 90 days; configure Trails to send log output to an S3 bucket for longer retention. Centralize logs into a dedicated Logging account to protect them from malicious access and destruction. If using AWS Control Tower, the Logging account is generated automatically with logs centralized and protected. Security teams should be trained to search and investigate CloudTrail logs.",
+  "how_to_check": "Do you have AWS Control Tower enabled? If not: Have you enabled a CloudTrail organizational trail? Have you enabled SCPs to prevent adversaries from stopping the generation of CloudTrail logs and manipulating log files? How prepared is your team to investigate CloudTrail logs?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/cloudtrail/'>documentation</a>."
+}

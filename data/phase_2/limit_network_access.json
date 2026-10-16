@@ -1,0 +1,9 @@
+{
+  "id": "2.6.1",
+  "phase": "Phase 2: Foundational",
+  "capability": "Infrastructure protection",
+  "recommendation": "Limit Network Access",
+  "aws_service": "EC2",
+  "guidance": "Apply least privilege in Security Groups by chaining access via SG references: ALB accepts internet traffic on 80/443, web servers accept traffic only from the ALB SG, databases accept traffic only from the web server SG. This ensures all traffic passes through inspection points like WAF. Use the AWS Config 'restricted-common-ports' rule to detect overly permissive ports, and AWS Firewall Manager to centrally audit and enforce SG rules across accounts.",
+  "how_to_check": "Are Security Groups configured with minimum required permissions using SG references rather than open CIDRs? Are internal applications accessible only from intended sources? Is AWS Firewall Manager or Config used to detect and remediate overly permissive Security Groups?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/security-groups/'>documentation</a>."
+}

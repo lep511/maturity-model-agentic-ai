@@ -1,0 +1,9 @@
+{
+  "id": "3.4.1",
+  "phase": "Phase 3: Efficient",
+  "capability": "Threat detection",
+  "recommendation": "Custom Threat Detection capabilities (SecLake / SIEM)",
+  "aws_service": "Amazon Security Lake",
+  "guidance": "GuardDuty does not support custom detections. For organization-specific use cases, use Amazon Security Lake to centralize and normalize logs from multi-account AWS environments and third-party sources (CrowdStrike, Okta, Palo Alto, etc.) into an OCSF-compliant data lake. Connect a SIEM (Splunk, QRadar, etc.) or query directly with Athena. Alternatively, deploy an open-source SIEM on Amazon OpenSearch using the aws-samples CloudFormation template, which includes 2,200 Sigma rules out of the box.",
+  "how_to_check": "Are custom threat detection use cases identified beyond GuardDuty? Are logs centralized across accounts via Security Lake or equivalent? Is a SIEM or query tool configured with custom correlation rules? Are third-party log sources ingested alongside AWS logs?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/siem-custom-threat-detection/'>documentation</a>."
+}

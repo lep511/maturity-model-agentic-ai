@@ -1,0 +1,9 @@
+{
+  "id": "1.9.1",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Incident response",
+  "recommendation": "Act on Critical Security Findings",
+  "aws_service": "AWS Security Hub",
+  "guidance": "Detective controls only improve security when someone acts on findings. Configure SNS alerts or Lambda/Slack notifications for critical findings and centralize them in AWS Security Hub. Critical findings requiring immediate action include AWS Abuse notifications, exposed Access Keys, and GuardDuty findings such as C2 connections or TOR client activity. If an account may be compromised, open a support ticket to engage the AWS Customer Incident Response Team (CIRT), which provides free assistance during active incidents.",
+  "how_to_check": "Is a designated person or team responsible for reviewing and acting on critical findings? Are alerts configured to reach more than one person? Is AWS Security Hub centralized across all accounts and regions? Is the team aware of AWS CIRT and able to differentiate a risk from an active incident?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/act-on-critical-security-findings/'>documentation</a>."
+}

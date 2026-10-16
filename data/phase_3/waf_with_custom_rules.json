@@ -1,0 +1,9 @@
+{
+  "id": "3.8.2",
+  "phase": "Phase 3: Efficient",
+  "capability": "Application security",
+  "recommendation": "WAF with custom rules",
+  "aws_service": "AWS WAF",
+  "guidance": "Beyond managed rules, AWS WAF supports custom rules for application-specific risks. Key use cases: virtual patching (block exploit patterns while a code fix is pending), rate limiting per IP to mitigate HTTP floods and credential stuffing (baseline in Count mode, then switch to Block), geo-based rate limits for unexpected countries, Account Creation Protection (ACP) against bot registrations, and Account Takeover Protection (ATP) on login forms. Export rules to version control for auditability.",
+  "how_to_check": "Are custom WAF rules deployed beyond managed rule groups? Are rate limits tuned from observed baselines and set to Block mode? Are ATP and ACP enabled on login and registration endpoints? Are WAF rules versioned and logs reviewed for blocked requests and emerging patterns?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/waf-custom-rules/'>documentation</a>."
+}

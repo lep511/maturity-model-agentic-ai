@@ -1,0 +1,9 @@
+{
+  "id": "2.10.1",
+  "phase": "Phase 2: Foundational",
+  "capability": "Resiliency",
+  "recommendation": "Redundancy using multiple Availability Zones",
+  "aws_service": "N/A",
+  "guidance": "Deploy applications across multiple Availability Zones (AZs) to increase fault tolerance and disaster resilience. AWS AZs are physically separated by up to 100km, making it rare for a disaster in one AZ to affect others, while the distance is small enough to avoid significant latency impact.",
+  "how_to_check": "Are critical applications deployed across multiple Availability Zones? Is there a single point of failure in any AZ that could cause a full outage?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/multi-az/'>documentation</a>."
+}

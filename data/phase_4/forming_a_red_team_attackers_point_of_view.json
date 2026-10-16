@@ -1,0 +1,9 @@
+{
+  "id": "4.8.2",
+  "phase": "Phase 4: Optimized",
+  "capability": "Application security",
+  "recommendation": "Forming a Red Team (Attacker's Point of View)",
+  "aws_service": "N/A",
+  "guidance": "A Red Team simulates real-world attackers by actively exploiting vulnerabilities, assessing impact, and attempting lateral movement — going beyond automated scanners. Findings are shared with the Blue Team to drive remediation and build cyber-resilience. AWS-compatible tools include GuardDuty Tester, Stratus Red Team, Pacu, AWS CloudSaga, and commercial platforms (XM Cyber, AttackIQ). Red teaming requires skilled personnel and proper authorization before any exercise.",
+  "how_to_check": "Is there a formal Red Team function conducting adversarial simulations beyond automated scanning? Do exercises include exploitation, lateral movement, and impact assessment? Are findings tracked and remediated? Are attack simulation tools used to validate detection coverage?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/red-team/'>documentation</a>."
+}

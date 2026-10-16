@@ -1,0 +1,9 @@
+{
+  "id": "1.5.2",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Vulnerability management",
+  "recommendation": "Active Threat Defense Managed Rule Groups",
+  "aws_service": "AWS Network Firewall",
+  "guidance": "Add the AttackInfrastructure managed rule group to your Network Firewall policies to block traffic to known malicious infrastructure, including malware staging URLs, botnet C2 servers, and crypto-mining pools. Rules are powered by MadPot, AWS's internal threat intelligence service, and updated automatically with no manual intervention required.",
+  "how_to_check": "Is AWS Network Firewall deployed across all relevant VPCs? Is the AttackInfrastructure rule group attached to active firewall policies? Is rule evaluation order correctly configured? Is CloudWatch Logs enabled to monitor firewall activity?\n\nFor more information, please refer to the <a href='https://docs.aws.amazon.com/network-firewall/latest/developerguide/aws-managed-rule-groups-atd.html'>documentation</a>."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "4.10.2",
+  "phase": "Phase 4: Optimized",
+  "capability": "Resiliency",
+  "recommendation": "Forming a Chaos Engineering team",
+  "aws_service": "Fault Injection Service",
+  "guidance": "Chaos Engineering validates resilience by intentionally injecting failures to verify that multi-AZ designs, failover mechanisms, and recovery automations work as intended. Use AWS Fault Injection Service (FIS) to run controlled experiments (AZ outages, CPU stress, network latency, EC2 termination). Always start in test environments before production. This is an advanced practice recommended only for organizations with high availability requirements — mistakes can cause real outages.",
+  "how_to_check": "Have chaos experiments been run against critical workloads, starting in non-production? Is FIS or equivalent used to simulate realistic failure scenarios? Are results documented and used to drive architectural improvements? Is a skilled team responsible for designing and executing experiments safely?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/chaos-engineering/'>documentation</a>."
+}

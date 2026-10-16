@@ -1,0 +1,9 @@
+{
+  "id": "4.6.1",
+  "phase": "Phase 4: Optimized",
+  "capability": "Infrastructure protection",
+  "recommendation": "Zero Trust Access",
+  "aws_service": "AWS Verified Access",
+  "guidance": "Zero Trust replaces VPN-based perimeter access with context-aware controls that evaluate each request individually. AWS Verified Access provides VPN-less access to internal applications by combining identity verification (via IdP such as Okta or Azure AD) with device trust signals (e.g., CrowdStrike EDR posture, JAMF compliance). Access policies written in Cedar evaluate contextual signals (network source, OS version, device compliance) to dynamically allow or require MFA step-up, eliminating implicit VPN trust and reducing lateral movement risk.",
+  "how_to_check": "Are internal applications accessible via AWS Verified Access or equivalent ZTNA instead of VPN? Do access policies combine both identity and device trust signals? Are Cedar policies enforcing context-based conditions (e.g., blocking non-compliant devices)? Is MFA step-up triggered for anomalous access signals?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/zero-trust/'>documentation</a>."
+}

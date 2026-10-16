@@ -1,0 +1,9 @@
+{
+  "id": "4.10.1",
+  "phase": "Phase 4: Optimized",
+  "capability": "Resiliency",
+  "recommendation": "Multi-region disaster recovery automation",
+  "aws_service": "AWS Elastic DR",
+  "guidance": "Automate continuous cross-region replication of critical workloads to reduce RTO/RPO. Recommended pattern: Multi-AZ HA for AZ failures, plus Elastic DR for continuous asynchronous cross-region replication, paired with a CloudFormation template to provision secondary region infrastructure on demand. DR also enables point-in-time recovery. Elastic DR supports on-premises to cloud and region-to-region replication with encryption in transit and at rest. If multi-region DR cannot be implemented but is required by business SLAs, an executive must sign a formal risk acceptance.",
+  "how_to_check": "Are RTO/RPO SLAs defined for all critical applications? Is continuous cross-region replication configured via Elastic DR or equivalent? Is secondary region infrastructure defined as code and deployable on demand? Has a DR failover drill validated recovery meets SLA targets? If multi-region DR is absent, has a formal risk acceptance been signed?\n\nFor more information: <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/multi-region-disaster-recovery-automation/'>documentation</a>."
+}

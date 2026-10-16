@@ -1,0 +1,9 @@
+{
+  "id": "4.1.1",
+  "phase": "Phase 4: Optimized",
+  "capability": "Security governance",
+  "recommendation": "Sharing security work and responsibility",
+  "aws_service": "N/A",
+  "guidance": "Security is a shared responsibility across all teams. Document cross-team security collaborations in a RACI matrix, freeing security specialists for strategic work. For ambiguous findings requiring business context (e.g., WAF rate-limit alerts on suspicious orders), establish an escalation mechanism to business owners with enriched context to make approve/block decisions. Reserve autonomous security team blocking for clear-cut threats. Ensure third-party contracts explicitly cover any delegated security responsibilities.",
+  "how_to_check": "Is there a documented RACI matrix covering security responsibilities across all relevant teams? Are security tasks formally assigned to the appropriate teams and tracked? Is there an escalation mechanism for ambiguous findings requiring business context? Do third-party contracts explicitly include delegated security obligations?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/share-security-responsibility/'>documentation</a>."
+}

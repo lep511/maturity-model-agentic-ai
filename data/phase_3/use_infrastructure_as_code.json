@@ -1,0 +1,9 @@
+{
+  "id": "3.1.2",
+  "phase": "Phase 3: Efficient",
+  "capability": "Security governance",
+  "recommendation": "Use infrastructure as code",
+  "aws_service": "CloudFormation",
+  "guidance": "IaC enables versioned, repeatable, and auditable infrastructure deployments — critical for governance, compliance, and rapid recovery from a compromise. Use AWS CloudFormation, CDK, or Terraform for all infrastructure. Integrate CloudFormation Guard into your pipeline to enforce compliance rules (e.g., encryption enabled, no public S3 buckets) before deployment. Adopt IaC early — retrofitting templates onto existing infrastructure is significantly harder.",
+  "how_to_check": "Is all infrastructure deployed via IaC rather than manual console actions? Are templates stored in version control? Is CloudFormation Guard or equivalent integrated into CI/CD to block non-compliant deployments? Can a compromised environment be fully rebuilt from code?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/infrastructure-as-code/'>documentation</a>."
+}

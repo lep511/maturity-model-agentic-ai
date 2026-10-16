@@ -1,0 +1,9 @@
+{
+  "id": "4.9.1",
+  "phase": "Phase 4: Optimized",
+  "capability": "Incident response",
+  "recommendation": "Forming a Blue Team (Incident Response)",
+  "aws_service": "N/A",
+  "guidance": "A Blue Team handles the full IR lifecycle: preparation, identification, containment, eradication, recovery, and lessons learned. In the cloud, IR can be highly automated via CloudTrail, AWS Config, and programmatic resource access. The team should invest significantly in building automated response workflows for frequent or high-impact incident types to reduce mean time to respond.",
+  "how_to_check": "Is there a designated Blue Team with defined roles covering all IR lifecycle phases? Is the team building automated remediation workflows rather than only reacting manually? Are post-incident lessons learned used to improve detection rules, playbooks, and automations?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/blue-team/'>documentation</a>."
+}

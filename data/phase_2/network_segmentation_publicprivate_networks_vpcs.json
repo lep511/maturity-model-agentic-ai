@@ -1,0 +1,9 @@
+{
+  "id": "2.6.3",
+  "phase": "Phase 2: Foundational",
+  "capability": "Infrastructure protection",
+  "recommendation": "Network segmentation - Public/Private Networks (VPCs)",
+  "aws_service": "Amazon VPC",
+  "guidance": "Use VPCs to segment networks and limit lateral movement in case of a compromise. Place only internet-facing resources (e.g., load balancers, web servers) in public subnets; keep databases and internal services in private subnets. Use a NAT Gateway to allow outbound internet access from private subnets without exposing them publicly. Isolate workloads across multiple VPCs and accounts to reduce blast radius. Connect VPCs to on-premises networks via VPN/DirectConnect only when required, and limit VPC peering to what is necessary.",
+  "how_to_check": "Are workloads segmented across multiple VPCs and/or accounts? Are databases and internal services in private subnets? Are critical workloads isolated from the rest of the organization? Is VPC peering limited to only what is required?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/vpcs/'>documentation</a>."
+}

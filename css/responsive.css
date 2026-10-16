@@ -1,0 +1,708 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE.CSS — AWS Security Maturity Model Assessment Tool
+   All layout and component overrides for different screen sizes.
+   Base (non-breakpoint) styles live in styles.css.
+
+   REQUIRED LOAD ORDER:
+     1. styles.css     — CSS variables, base component styles
+     2. auth.css       — authentication UI base styles
+     3. print.css      — print modal base styles
+     4. responsive.css — all @media overrides (must be last)
+
+   Breakpoints:
+     ≤ 1100px  Tablet landscape / small desktop
+                 (right panel hidden, icon-only auth buttons)
+     ≤ 1024px  Tablet portrait + phone landscape — drawer mode
+                 (overlay sidebar, auth moves to hamburger,
+                  typography scaling — intentionally covers
+                  phones in landscape: iPhone 14 = 844px,
+                  Pixel 7 = 915px, iPhone Pro Max = 932px)
+     ≤  480px  Mobile portrait — aggressive compression
+                 (all current phones in portrait: 360–430px)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── MOBILE SCORE STRIP ──────────────────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  #mobileScoreStrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--bg-panel);
+    margin: 0 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    z-index: 5;
+    isolation: isolate;
+  }
+
+  #mobileScoreStrip .panel-section:first-child {
+    border-right: 1px solid var(--border);
+    border-bottom: none;
+  }
+
+  #mobileScoreStrip .panel-section {
+    background: var(--bg-panel);
+    padding: 1rem 1.25rem;
+    margin: 0;
+    border: none;
+  }
+
+  /* Ensure all children have solid backgrounds — no grid bleed-through */
+  #mobileScoreStrip .overall-score-ring,
+  #mobileScoreStrip .radar-wrap {
+    background: var(--bg-panel);
+  }
+
+  /* Overall Score: centered ring */
+  #mobileScoreStrip .overall-score-ring {
+    padding: 0.5rem 0 0;
+    gap: 4px;
+  }
+
+  #mobileScoreStrip .score-ring-svg {
+    width: 100%;
+    height: auto;
+    margin-bottom: 3px;
+    max-width: 140px;
+  }
+
+  #mobileScoreStrip .score-ring-label {
+    font-size: 11px;
+    padding: 0;
+  }
+
+  /* Radar Chart: fills the right column */
+  #mobileScoreStrip .radar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  #mobileScoreStrip .radar {
+    width: 100%;
+    height: auto;
+    margin-bottom: 3px;
+    max-width: 200px;
+  }
+
+  #mobileScoreStrip .panel-title {
+    font-size: 11px;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* ── Show sidebar action buttons when header buttons are hidden (≤ 1024px) ── */
+@media (max-width: 1024px) {
+  .sidebar-bottom-section,
+  .sidebar-reset-section {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   1100px — Tablet landscape: collapse right panel, shrink header
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+
+  /* Header */
+  header {
+    padding: 0 1.25rem;
+    height: 60px;
+    gap: 10px;
+  }
+
+  .brand-title {
+    font-size: 13px;
+  }
+
+  .session-manager {
+    margin-right: 1rem;
+  }
+
+  .session-selector {
+    min-width: 160px;
+  }
+
+  /* Main layout: hide right panel, use 2 columns */
+  .layout {
+    grid-template-columns: 220px 1fr;
+    margin: 0 1.25rem 2rem;
+  }
+
+  .right-panel {
+    display: none;
+  }
+
+  /* Phase stats */
+  .phase-stats {
+    margin: 0 1.25rem 1.5rem;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 2rem 1.25rem 1.5rem;
+  }
+
+  /* Hide header action buttons — they remain accessible via the sidebar at ≤1024px */
+  .header-actions .btn-reset,
+  .header-actions .btn-load-csv,
+  .header-actions .btn-export-csv {
+    display: none;
+  }
+
+  /* ── Auth: icon-only buttons (no text) above 1024 ── */
+  .btn-print,
+  .btn-signout-aws {
+    font-size: 0;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .btn-print svg,
+  .btn-signout-aws svg {
+    margin: 0 !important;
+    display: block !important;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   769px–1100px — Tablet landscape: sidebar stays as normal grid element
+   ────────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1025px) and (max-width: 1100px) {
+  .sidebar {
+    position: static;
+    transform: none;
+    pointer-events: all;
+    width: auto;
+    height: auto;
+    max-height: none;
+    box-shadow: none;
+    z-index: auto;
+    display: block;
+    overflow-y: auto;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   1024px — Tablet portrait: sidebar becomes overlay drawer
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+
+  /* Header */
+  header {
+    padding: 0 1rem;
+    height: 56px;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  /* Hide brand text label (keep icon) */
+  .brand-label {
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+
+  /* Session manager: hide date, shrink */
+  .session-date {
+    display: none;
+  }
+
+  .session-selector {
+    min-width: 120px;
+    max-width: 160px;
+    padding: 5px 10px;
+  }
+
+  .session-name {
+    max-width: 120px;
+    font-size: 12px;
+  }
+
+  .session-manager {
+    margin-right: 0.5rem;
+  }
+
+  /* ── Auth: hide header buttons — they move to the hamburger menu ── */
+  .header-actions {
+    gap: 6px;
+  }
+
+  /* Sign-out button hidden — it moves to the hamburger menu */
+  .header-actions .btn-print,
+  .header-actions .btn-signout-aws {
+    display: none !important;
+  }
+
+  .header-actions::before {
+    display: none;
+  }
+
+  /* Hamburger toggle button (injected by JS) */
+  .btn-sidebar-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    flex-shrink: 0;
+    order: -1; /* before brand */
+    transition: all 0.15s;
+  }
+
+  .btn-sidebar-toggle:hover {
+    border-color: var(--aws);
+    color: var(--aws);
+    background: var(--aws-dim);
+  }
+
+  /* Hero */
+  .hero {
+    padding: 1.5rem 1rem 1.25rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-sub {
+    font-size: 13px;
+  }
+
+  /* Phase stats: 2×2 grid */
+  .phase-stats {
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0 1rem 1.25rem;
+  }
+
+  /* Main layout: single column, sidebar as overlay */
+  .layout {
+    grid-template-columns: 1fr;
+    margin: 0 1rem 2rem;
+  }
+
+  /* Sidebar: overlay drawer */
+  .sidebar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 1100;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-bright);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: none;
+    pointer-events: none;
+  }
+
+  /* Sidebar open state (toggled via JS adding class to body) */
+  body.sidebar-open .sidebar {
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  /* Scrim: injected as a real div by mobile-sidebar-toggle.js */
+  .sidebar-scrim {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: rgba(7, 12, 26, 0.65);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  body.sidebar-open .sidebar-scrim {
+    display: block;
+    pointer-events: all;
+    opacity: 1;
+  }
+
+  /* Main content: full width */
+  .main-content {
+    max-height: none;
+    min-height: 70vh;
+    border-radius: 0;
+  }
+
+  /* Content toolbar: allow wrapping on small screens */
+  .content-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+  }
+
+  .filter-search input {
+    width: 120px;
+  }
+
+  /* Cards: reduce padding */
+  .cards-container {
+    padding: 1rem;
+    gap: 6px;
+  }
+
+  /* Card detail: single column */
+  .rec-detail-inner {
+    grid-template-columns: 1fr;
+  }
+
+  /* Score select: full width on mobile */
+  .rec-select {
+    min-width: 110px;
+    font-size: 11px;
+    padding: 6px 24px 6px 10px;
+  }
+
+  /* Print modal: full screen, stacked layout */
+  .print-modal-inner {
+    margin: 0;
+    border-radius: 0;
+    max-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .print-modal-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Options panel: compact scrollable strip at top */
+  .print-options-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    max-height: 200px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 0.75rem 1rem;
+  }
+
+  /* Preview panel: fills remaining space */
+  .print-preview-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Preview scroll: smooth native touch scroll */
+  .print-preview-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: 0.75rem;
+    scroll-behavior: smooth;
+  }
+
+  /* Preview doc: reduced padding on mobile */
+  .print-doc {
+    padding: 1.25rem 1rem 2rem;
+    font-size: 10px;
+  }
+
+  /* Hide print modal title text, keep icon only */
+  .print-modal-title span[style] {
+    display: none;
+  }
+
+  /* Confirm / session modals: slide up from bottom like a sheet */
+  #confirmModal,
+  #newSessionModal,
+  #deleteSessionModal {
+    align-items: flex-end;
+    backdrop-filter: none; /* avoid blur stacking bug on Android */
+    -webkit-backdrop-filter: none;
+  }
+
+  .modal-box {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 18px 18px 0 0; /* bottom sheet style */
+    padding: 1.5rem 1.25rem 2rem;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  #confirmModal.open .modal-box,
+  #newSessionModal.open .modal-box,
+  #deleteSessionModal.open .modal-box {
+    transform: translateY(0);
+  }
+
+  /* Drag handle visual cue */
+  .modal-box::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 4px;
+    background: var(--border-bright);
+    border-radius: 2px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .modal-btn-cancel,
+  .modal-btn-confirm {
+    width: 100%;
+    justify-content: center;
+    padding: 13px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  /* Session dropdown: full width */
+  .session-dropdown {
+    width: 280px;
+    left: auto;
+    right: 0;
+  }
+
+  /* Footer */
+  footer {
+    padding: 1rem;
+    font-size: 10px;
+  }
+
+  /* ── Typography scaling: applies to all drawer-mode viewports ──────────
+     This threshold (1024px) deliberately covers both tablet portrait AND
+     phones in landscape (iPhone 14 = 844px, Pixel 7 = 915px, etc.).
+     Any device using the overlay drawer needs mobile-scale text.        ── */
+
+  /* Base font size */
+  body { font-size: 15px; }
+
+  /* Card titles */
+  .rec-title { font-size: 14px; line-height: 1.5; }
+
+  /* Card ID badge */
+  .rec-id { font-size: 11px; }
+
+  /* Capability group header */
+  .cap-group-name { font-size: 13px; }
+
+  /* Score dropdown */
+  .rec-select { font-size: 13px; }
+
+  /* Detail blocks: guidance and how-to-check */
+  .detail-label { font-size: 12px; }
+  .detail-text  { font-size: 13px; line-height: 1.7; }
+
+  /* Comments textarea */
+  .comments-input { font-size: 13px; }
+
+  /* AWS service badge */
+  .rec-service { font-size: 11px; }
+
+  /* Sidebar nav labels */
+  .cap-nav-label  { font-size: 13px; }
+  .cap-nav-count  { font-size: 11px; }
+  .phase-pill     { font-size: 11px; padding: 5px 11px; }
+  .sidebar-heading { font-size: 11px; }
+
+  /* Phase stats */
+  .stat-name  { font-size: 14px; }
+  .stat-pct   { font-size: 14px; }
+  .stat-count { font-size: 12px; }
+
+  /* Toolbar */
+  .toolbar-title { font-size: 15px; }
+  .toolbar-badge { font-size: 11px; }
+
+  /* Hero */
+  .hero-sub { font-size: 14px; line-height: 1.7; }
+
+  /* Sidebar action buttons */
+  .sidebar-action-btn { font-size: 14px; padding: 11px 12px; }
+  .sidebar-reset-btn  { font-size: 14px; padding: 11px 12px; }
+
+  /* Right panel labels */
+  .panel-title     { font-size: 13px; }
+  .cap-score-label { font-size: 12px; }
+
+  /* Modal */
+  .modal-title { font-size: 18px; }
+  .modal-desc  { font-size: 14px; }
+  .modal-btn-cancel,
+  .modal-btn-confirm { font-size: 15px; }
+
+  /* Toast */
+  #savedToast { font-size: 13px; }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   800px — Hide email text inside badge, keep the icon visible
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .auth-email {
+    display: none;
+  }
+
+  /* Reset badge to icon-only geometry: symmetric padding, no gap */
+  .auth-user-badge {
+    padding: 5px 10px;
+    gap: 0;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   480px — Mobile portrait: aggressive compression
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* Header: minimal */
+  header {
+    padding: 0 0.75rem;
+    height: 52px;
+  }
+
+  /* Hide brand icon on very small screens */
+  .brand-icon {
+    display: none;
+  }
+
+  .brand-title {
+    font-size: 11px;
+  }
+
+  /* Session selector even smaller */
+  .session-selector {
+    min-width: 0;
+    max-width: 130px;
+    padding: 4px 8px;
+  }
+
+  .session-name {
+    font-size: 11px;
+    max-width: 90px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 1.25rem 0.75rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-sub {
+    font-size: 12px;
+  }
+
+  /* Phase stats: still 2×2 but smaller padding */
+  .phase-stats {
+    margin: 0 0.75rem 1rem;
+  }
+
+  .phase-stat {
+    padding: 0.9rem 1rem;
+  }
+
+  .stat-name {
+    font-size: 12px;
+  }
+
+  /* Layout */
+  .layout {
+    margin: 0 0.75rem 1.5rem;
+    border-radius: 8px;
+  }
+
+  /* Sidebar drawer width */
+  .sidebar {
+    width: 260px;
+  }
+
+  /* Toolbar: icon-only search */
+  .content-toolbar {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .filter-search input {
+    width: 100px;
+    font-size: 11px;
+  }
+
+  /* Cards padding */
+  .cards-container {
+    padding: 0.75rem;
+  }
+
+  .rec-header {
+    gap: 8px;
+    padding: 10px 10px;
+  }
+
+  .rec-title {
+    font-size: 12px;
+  }
+
+  .rec-id {
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  /* Score select: minimal */
+  .rec-select {
+    min-width: 95px;
+    max-width: 95px;
+    font-size: 10px;
+    padding: 5px 20px 5px 8px;
+  }
+
+  /* Print modal options panel: compact */
+  .print-options-panel {
+    max-height: 180px;
+  }
+
+  /* Toast */
+  #savedToast {
+    bottom: 16px;
+    right: 16px;
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "4.4.1",
+  "phase": "Phase 4: Optimized",
+  "capability": "Threat detection",
+  "recommendation": "Threat Intelligence",
+  "aws_service": "N/A",
+  "guidance": "A Threat Intelligence function monitors security news, tracks threat actors, and feeds IoCs into security controls. Key AWS integration points: add malicious IPs to GuardDuty custom threat lists (supports STIX, OTX, TXT, and more); enrich WAF with partner IP reputation rules from AWS Marketplace; deploy WAF Security Automations to ingest SpamHaus, TORproject, and EmergingThreats feeds. GuardDuty includes native feeds from Amazon, CrowdStrike, Proofpoint, and TOR exit nodes as a baseline. For mature teams, deploy honeypots (decoy AWS resources) to generate environment-specific threat signals.",
+  "how_to_check": "Is there a Threat Intelligence function (internal or subscribed) monitoring threat actor activity and IoCs? Are malicious IPs from external feeds added to GuardDuty custom threat lists? Are WAF Security Automations deployed to ingest open-source threat feeds? Have honeypots been considered to generate environment-specific signals?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/threat-intellingence/'>documentation</a>."
+}

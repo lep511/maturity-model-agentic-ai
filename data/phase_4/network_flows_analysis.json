@@ -1,0 +1,9 @@
+{
+  "id": "4.4.2",
+  "phase": "Phase 4: Optimized",
+  "capability": "Threat detection",
+  "recommendation": "Network Flows analysis",
+  "aws_service": "VPC Flow Logs",
+  "guidance": "VPC Flow Logs capture network traffic metadata (IPs, ports, protocol, accept/reject) at the VPC, subnet, or ENI level — agentlessly and without performance impact. Enable across all VPCs and ship to S3 via Kinesis Firehose for cost-efficient storage and Athena querying, or to CloudWatch for near-real-time alerting. Filter to Rejected traffic to focus on blocked attacks, or capture All traffic for full visibility. Integrate with your SIEM or Security Lake for correlation. For full packet inspection, use VPC Traffic Mirroring.",
+  "how_to_check": "Are VPC Flow Logs enabled across all VPCs, regions, and accounts? Are logs shipped to a central S3 bucket or SIEM for analysis and retention? Are Athena queries or SIEM rules in place to detect anomalous traffic patterns? Are flow logs integrated with Amazon Detective or your SIEM for investigation workflows?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/vpc-flow-logs/'>documentation</a>."
+}

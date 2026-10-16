@@ -1,0 +1,9 @@
+{
+  "id": "3.9.3",
+  "phase": "Phase 3: Efficient",
+  "capability": "Incident response",
+  "recommendation": "Security Investigations - Root cause analysis",
+  "aws_service": "Amazon Detective",
+  "guidance": "Amazon Detective accelerates security investigations by automatically correlating GuardDuty findings, Security Hub alerts, VPC Flow Logs, and CloudTrail logs into a unified graph model. It provides analysts with behavioral baselines and geolocation context to quickly distinguish normal activity from anomalous behavior, discard false positives, and trace the root cause of an incident. Enable Detective from the GuardDuty or Security Hub console — it ingests two weeks of historical data immediately upon activation. A 30-day free trial is available.",
+  "how_to_check": "Is Amazon Detective enabled in all active regions and integrated with GuardDuty and Security Hub? Are analysts using Detective as part of the standard incident investigation workflow rather than manually querying CloudTrail/VPC Flow Logs? Are investigations documented with root cause findings and used to improve detection rules or playbooks?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/detective/'>documentation</a>."
+}

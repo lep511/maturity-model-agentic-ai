@@ -1,0 +1,9 @@
+{
+  "id": "2.8.1",
+  "phase": "Phase 2: Foundational",
+  "capability": "Application security",
+  "recommendation": "Involve security teams in development",
+  "aws_service": "N/A",
+  "guidance": "Security teams must be involved early in the development process — from design and architecture, not just before production. Late involvement creates friction, leaves no time to remediate vulnerabilities, and results in insecure applications being exposed publicly. Security teams should provide proactive guidance on best practices, participate in architectural decisions, and be easily reachable by developers. Later maturity phases build on this with Security Champions and DevSecOps practices.",
+  "how_to_check": "Is the security team involved from the design phase, not just pre-launch? Are architectural decisions made with security team input? Is the security team proactively guiding developers rather than reactively reviewing at deployment? Are security teams accessible for developer questions?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/security-teams-in-dev/'>documentation</a>."
+}

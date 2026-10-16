@@ -1,0 +1,9 @@
+{
+  "id": "2.1.2",
+  "phase": "Phase 2: Foundational",
+  "capability": "Security governance",
+  "recommendation": "Cloud Security Training Plan",
+  "aws_service": "N/A",
+  "guidance": "Implement a structured cloud security training plan for all staff. Mandate Security Awareness Training for every employee (Amazon offers one free at learnsecurity.amazon.com). Create role-based learning paths with deadlines (day 1, week 1, month 1, 3 months) covering foundational cloud skills, with add-ons for red team (pentesting) and blue team (IR). Security team members should pursue the AWS Certified Security Specialty certification. Resources include AWS Skill Builder, the Security Ramp-Up Guide, instructor-led courses, and workshops at workshops.aws.",
+  "how_to_check": "Is a training plan in place with defined learning paths and deadlines? What percentage of cloud personnel have completed training? Does it cover security team, admins, and developers? Are security team members pursuing AWS Security Specialty certification?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/training-plan/'>documentation</a>."
+}

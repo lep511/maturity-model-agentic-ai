@@ -1,0 +1,9 @@
+{
+  "id": "4.9.2",
+  "phase": "Phase 4: Optimized",
+  "capability": "Incident response",
+  "recommendation": "Advanced Security Automations",
+  "aws_service": "N/A",
+  "guidance": "The cloud enables far greater IR automation than on-premises, leveraging CloudTrail, AWS Config, and EventBridge. Focus on two critical actions: automated forensics evidence gathering (EBS snapshots, memory dumps, VPC Flow Log capture) and automated isolation (removing an instance from its security group, revoking IAM credentials). Where human approval is needed, route to multiple approvers with SLA-based escalation. For fully automated responses, assess the business impact of isolation per workload to avoid causing more harm than good. All automations must be tested before relying on them in a real incident.",
+  "how_to_check": "Is there an automated workflow to gather forensics evidence from compromised resources? Is there an automated isolation workflow (security group removal, credential revocation)? Have these been tested in a non-production environment? Are escalation paths and SLAs defined for human-in-the-loop approvals?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/4.-optimized/security-automations-adv/'>documentation</a>."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "1.6.1",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Infrastructure protection",
+  "recommendation": "Cleanup risky admin open ports",
+  "aws_service": "EC2 Security Groups",
+  "guidance": "Close Security Group ingress on ports 22 (SSH) and 3389 (RDP) open to 0.0.0.0/0. The preferred alternative is AWS Systems Manager Fleet Manager, which requires no open inbound ports — only an SSM Agent and an EC2 Instance Profile with AmazonSSMManagedEC2InstanceDefaultPolicy. If Fleet Manager is not feasible, use EC2 Instance Connect or restrict access to known IP ranges.",
+  "how_to_check": "Are ports 22 and 3389 unrestricted (0.0.0.0/0) in any Security Group? Verify with Security Hub controls EC2.13 and EC2.14. Is Fleet Manager or another secure access method in use instead of direct SSH/RDP?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/risky-open-ports-sg/'>documentation</a>."
+}

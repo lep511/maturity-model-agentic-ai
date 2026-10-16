@@ -1,0 +1,9 @@
+{
+  "id": "3.10.1",
+  "phase": "Phase 3: Efficient",
+  "capability": "Resiliency",
+  "recommendation": "Disaster Recovery Plan",
+  "aws_service": "N/A",
+  "guidance": "Define a Business Continuity Plan classifying workloads by resilience level: Multi-AZ HA for most applications, and cross-region DR for critical workloads. Match each workload's strategy to its RTO/RPO. A common pattern is Multi-AZ HA with continuous cross-region data replication and an on-demand CloudFormation template for recovery. DR also enables point-in-time recovery, useful against ransomware or accidental corruption. Use AWS Elastic Disaster Recovery to set up and test DR scenarios.",
+  "how_to_check": "Is a BCP documented with workloads classified by resilience level (AZ vs. region)? Are RTO/RPO defined per workload and matched to the appropriate strategy? Is data replicated continuously to a second region for critical workloads? Have DR scenarios been actively tested?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/disaster-recovery/'>documentation</a>."
+}

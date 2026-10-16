@@ -1,0 +1,9 @@
+{
+  "id":"3.8.3",
+  "phase":"Phase 3: Efficient",
+  "capability":"Application security",
+  "recommendation":"Advanced DDoS Mitigation (L7)",
+  "aws_service":"AWS Shield",
+  "guidance":"AWS Shield Standard (free, default) covers L3/L4 attacks. Enable Shield Advanced for L7 protection against HTTP floods, DNS query floods, and TLS abuse, plus 24x7 DDoS Response Team access, cost protection during attacks, and unlimited WAF/Firewall Manager usage. Use Firewall Manager to automatically protect all ALBs and API Gateways. If using a third-party CDN (e.g., Cloudflare, Akamai), ensure L7 DDoS mitigation is explicitly included.",
+  "how_to_check":"Is Shield Advanced enabled? Are all critical resources (ALBs, API Gateways, CloudFront) registered as protected? Are health checks and automatic remediation configured?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/shield-advanced/'>documentation</a>."
+}

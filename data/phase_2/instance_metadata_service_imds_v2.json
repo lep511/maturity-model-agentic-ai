@@ -1,0 +1,9 @@
+{
+  "id": "2.3.3",
+  "phase": "Phase 2: Foundational",
+  "capability": "Identity & access management",
+  "recommendation": "Instance Metadata Service (IMDS) v2",
+  "aws_service": "Amazon EC2",
+  "guidance": "The EC2 Instance Metadata Service (IMDS) provides temporary, auto-rotated credentials to instances, eliminating the need to hardcode credentials. IMDSv2 adds session-oriented protections that prevent credentials from being stolen via SSRF attacks — a key risk with IMDSv1. While AWS made IMDSv2 the default for new launches from mid-2024, older instances may still use IMDSv1. Ensure all new EC2 launches default to IMDSv2 and migrate existing IMDSv1 instances. Use AWS Security Hub control EC2.8 or the AWS Config rule 'ec2-imdsv2-check' to detect non-compliant instances.",
+  "how_to_check": "Are all EC2 instances using IMDSv2? Is IMDSv2 set as the default for all new instance launches? Is AWS Security Hub (EC2.8) or AWS Config (ec2-imdsv2-check) used to enforce and monitor compliance?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/2.-foundational/imdsv2/'>documentation</a>."
+}

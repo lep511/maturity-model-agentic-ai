@@ -1,0 +1,9 @@
+{
+  "id": "3.8.1",
+  "phase": "Phase 3: Efficient",
+  "capability": "Application security",
+  "recommendation": "Perform threat modeling",
+  "aws_service": "N/A",
+  "guidance": "Threat modeling identifies threat actors, attack paths, and potential impact on each workload's confidentiality, integrity, and availability — enabling security teams to prioritize investments rather than block innovation. Perform threat modeling per workload during the design phase, mapping threats to MITRE ATT&CK techniques for AWS environments. Use AWS Threat Composer (open source) to accelerate the process and the AWS Threat Technique Catalog for AWS-specific attack patterns.",
+  "how_to_check": "Is threat modeling performed during the design phase of critical workloads? Are identified threats mapped to MITRE ATT&CK techniques and tracked to resolution? Are structured tools (e.g., Threat Composer, STRIDE) used for consistency?\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/3.-efficient/threat-modeling/'>documentation</a>."
+}

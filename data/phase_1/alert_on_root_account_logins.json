@@ -1,0 +1,9 @@
+{
+  "id": "1.4.5",
+  "phase": "Phase 1: Quick Wins",
+  "capability": "Threat detection",
+  "recommendation": "Alert on Root Account Logins",
+  "aws_service": "Amazon EventBridge",
+  "guidance": "Create an EventBridge rule to detect Root console logins and send immediate alerts via SNS. Root bypasses all IAM policies and SCPs, so any unexpected login is a critical security event. The rule must be deployed in us-east-1 — Root logins always appear in that region's CloudTrail regardless of where the user connects. Match events from source aws.signin where detail.userIdentity.type equals Root and detail.eventName equals ConsoleLogin. Forward matches to an SNS topic that reaches the security team via email, Slack, or PagerDuty.",
+  "how_to_check": "Is there an EventBridge rule in us-east-1 matching Root ConsoleLogin events? Does the alert reach an actively monitored channel (not just an unread inbox)? Has the alert been tested with a controlled Root login? You can also verify via Security Hub control CloudWatch.1.\n\nFor more information, please refer to the <a href='https://maturitymodel.security.aws.dev/en/1.-quickwins/root-protection/'>documentation</a>."
+}
