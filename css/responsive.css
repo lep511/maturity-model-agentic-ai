@@ -358,7 +358,7 @@
   }
 
   .filter-search input {
-    width: 120px;
+    width: 150px;
   }
 
   /* Cards: reduce padding */
@@ -649,6 +649,10 @@
     width: 100px;
     font-size: 11px;
   }
+
+  .toolbar-tools { gap: 6px; }
+  .font-btn { padding: 8px 9px; font-size: 11px; }
+  .font-reset { min-width: 46px; }
 
   /* Cards padding */
   .cards-container {

@@ -24,6 +24,7 @@
   --r4: #4da6ff; /* Performance efficiency */
   --r5: #ffd93d; /* Cost optimization */
   --r6: #3ecf8e; /* Sustainability */
+  --card-scale: 1; /* card text size multiplier, set by adjustCardFontScale() */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -687,20 +688,22 @@ h1 span { color: var(--aws); }
 .filter-search {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 10px;
+  border-radius: 8px;
+  padding: 8px 14px;
+  transition: border-color 0.15s;
 }
+.filter-search:focus-within { border-color: var(--border-bright); }
 .filter-search input {
   background: none;
   border: none;
   outline: none;
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: 13px;
   font-family: 'Roboto', sans-serif;
-  width: 160px;
+  width: 230px;
 }
 .filter-search input::placeholder { color: var(--text-dim); }
 
@@ -788,13 +791,15 @@ h1 span { color: var(--aws); }
 }
 .cap-group-header:not(:first-child) { margin-top: 0.75rem; border-top: 1px solid var(--border); }
 .cap-icon {
-  width: 31px; height: 31px;
+  min-width: 31px; height: 31px;
+  padding: 0 8px;
   border-radius: 6px;
   display: grid; place-items: center;
   font-size: 10px;
   font-family: 'Roboto Mono', monospace;
   font-weight: 800;
   letter-spacing: 0.02em;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 .cap-group-name {
@@ -852,9 +857,9 @@ h1 span { color: var(--aws); }
   gap: 4px;
   font-family: 'Roboto Mono', monospace;
   font-size: 10px;
-  color: var(--blue-accent);
-  background: rgba(77,166,255,0.08);
-  border: 1px solid rgba(77,166,255,0.2);
+  color: var(--text-primary);               /* same light gray as the best-practice title */
+  background: rgba(213,222,231,0.07);      /* tints derived from --text-primary (#d5dee7) */
+  border: 1px solid rgba(213,222,231,0.22);
   padding: 1px 7px;
   border-radius: 4px;
 }
@@ -1679,9 +1684,27 @@ footer span { color: var(--aws); }
 }
 .fa-nav-chevron { color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0; }
 .fa-nav-pillar.collapsed .fa-nav-chevron { transform: rotate(-90deg); }
-.fa-nav-children { padding-left: 4px; }
-.fa-nav-children.collapsed { display: none; }
-.fa-nav-children .cap-nav-icon { min-width: 44px; font-size: 9px; }
+/* Collapsible group: grid-row 1fr -> 0fr animates the height without knowing it */
+.fa-nav-children {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  padding-left: 4px;
+  transition: grid-template-rows 0.28s ease, opacity 0.22s ease;
+}
+.fa-nav-children > .fa-nav-inner { min-height: 0; overflow: hidden; }
+.fa-nav-children.collapsed { grid-template-rows: 0fr; opacity: 0; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fa-nav-children, .fa-nav-chevron { transition: none; }
+}
+/* Sidebar code chip (OPS01, PERF06 ...): grows with its label, never overflows */
+.cap-nav-icon {
+  display: inline-grid; place-items: center;
+  min-width: 44px; height: 20px; padding: 0 6px;
+  border: 1px solid transparent; border-radius: 4px;
+  font-family: 'Roboto Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0;
+}
 
 /* Focus-area group header above the cards */
 .fa-group-header { align-items: flex-start; flex-wrap: wrap; }
@@ -1748,19 +1771,6 @@ footer span { color: var(--aws); }
 }
 .rec-doc-link:hover { color: var(--aws); border-bottom-color: var(--aws); }
 .rec-card.highlight { box-shadow: 0 0 0 2px var(--aws); transition: box-shadow 0.3s; }
-
-/* Right panel: compact focus-area score rows */
-#faScoresList { max-height: 420px; overflow-y: auto; padding-right: 4px; }
-#faScoresList .cap-score-row { margin-bottom: 8px; cursor: pointer; align-items: center; }
-#faScoresList .cap-score-row:hover .fa-score-label { text-decoration: underline; }
-.fa-score-label {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 10px;
-  width: 54px;
-  flex: 0 0 54px;
-  white-space: nowrap;
-}
-#faScoresList .cap-score-bar-track { margin-top: 0; }
 
 /* Focus-area modal */
 .fa-modal-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -1833,3 +1843,89 @@ footer span { color: var(--aws); }
 .solution-modal-footer { gap: 12px; align-items: center; }
 .solution-modal-footer .modal-doc-link { margin-right: auto; font-size: 12px; color: var(--aws); text-decoration: none; }
 .solution-modal-footer .modal-doc-link:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD TEXT SIZE (A- / A+ controls in the toolbar). The multiplier is bounded
+   in js/app.js (CARD_FONT_MIN .. CARD_FONT_MAX).
+   ═══════════════════════════════════════════════════════════════════════════ */
+.toolbar-tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.font-controls {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-card);
+}
+.font-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  line-height: 1;
+  padding: 10px 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.font-btn + .font-btn { border-left: 1px solid var(--border); }
+.font-btn:hover:not(:disabled) { color: var(--aws); background: var(--bg-hover); }
+.font-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.font-reset { min-width: 58px; text-align: center; color: var(--text-dim); }
+
+/* Startup highlight: a few orange pulses to draw attention to the text-size control */
+@keyframes font-controls-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,153,0,0); border-color: var(--border); }
+  40%      { box-shadow: 0 0 0 5px rgba(255,153,0,0.22), 0 0 18px rgba(255,153,0,0.35); border-color: var(--aws); }
+}
+.font-controls.highlight { animation: font-controls-pulse 1.1s ease-in-out 3; }
+.font-controls.highlight .font-btn { color: var(--aws); }
+@media (prefers-reduced-motion: reduce) {
+  .font-controls.highlight { animation: none; border-color: var(--aws); box-shadow: 0 0 0 3px rgba(255,153,0,0.2); }
+}
+
+.cap-group-name     { font-size: calc(12px * var(--card-scale)); }
+.fa-group-question  { font-size: calc(12px * var(--card-scale)); }
+.rec-id             { font-size: calc(10px * var(--card-scale)); }
+.rec-title          { font-size: calc(13px * var(--card-scale)); }
+.rec-service, .rec-risk { font-size: calc(10px * var(--card-scale)); }
+.roadmap-tag        { font-size: calc(9px * var(--card-scale)); }
+.detail-label       { font-size: calc(11px * var(--card-scale)); }
+.detail-text        { font-size: calc(12px * var(--card-scale)); }
+.comments-input     { font-size: calc(11px * var(--card-scale)); }
+.rec-doc-link, .btn-solution { font-size: calc(11px * var(--card-scale)); }
+
+/* FILTERED tag: clearly separated from the item count, with the reset button right next to it */
+.filtered-tag {
+  margin-left: 28px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--aws);
+  vertical-align: middle;
+}
+
+/* "Reset filters" button shown next to the FILTERED tag in the cards toolbar */
+.btn-reset-filters {
+  margin-left: 10px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--aws);
+  background: var(--aws-dim);
+  color: var(--aws);
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-reset-filters:hover { background: var(--aws); color: #000; }
+
+/* The card text-size control (A- / A+) also scales the Implementation guidance modal */
+#guidanceModal .solution-modal-body      { font-size: calc(13px * var(--card-scale)); }
+#guidanceModal .solution-modal-body h1   { font-size: calc(18px * var(--card-scale)); }
+#guidanceModal .solution-modal-body h2   { font-size: calc(15px * var(--card-scale)); }
+#guidanceModal .solution-modal-body h3   { font-size: calc(13px * var(--card-scale)); }
+#guidanceModal .solution-modal-body code { font-size: calc(12px * var(--card-scale)); }

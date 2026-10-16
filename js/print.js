@@ -108,8 +108,10 @@ function buildSummaryGrid(data, accent) {
   const aligned  = data.filter(d => scores[d.id] === 1).length;
   const partial  = data.filter(d => scores[d.id] > 0 && scores[d.id] < 1).length;
   const highOpen = data.filter(d => d.risk === 'High' && scores[d.id] !== 'na' && scores[d.id] !== 1).length;
-  const avg = assessed > 0
-    ? Math.round(data.filter(d => isScoredId(d.id)).reduce((s,d) => s + (scores[d.id] || 0), 0) / assessed * 100)
+  // Coverage over applicable items (unassessed count as 0%, excluded are left out), as in the app
+  const applicable = data.filter(d => scores[d.id] !== 'na');
+  const avg = applicable.length > 0
+    ? Math.round(applicable.reduce((s,d) => s + (isScoredId(d.id) ? scores[d.id] : 0), 0) / applicable.length * 100)
     : 0;
   const alignColor   = accent === '#111' ? '#111' : '#00875a';
   const partialColor = accent === '#111' ? '#555' : '#b35a00';
@@ -120,7 +122,7 @@ function buildSummaryGrid(data, accent) {
     <div class="print-summary-box"><div class="psb-val" style="color:${alignColor}">${aligned}</div><div class="psb-label">100% Aligned</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${partialColor}">${partial}</div><div class="psb-label">Partial</div></div>
     <div class="print-summary-box"><div class="psb-val" style="color:${riskColor}">${highOpen}</div><div class="psb-label">High Risk Open</div></div>
-    <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${avg}%</div><div class="psb-label">Avg Score</div></div>
+    <div class="print-summary-box"><div class="psb-val" style="color:${accent}">${avg}%</div><div class="psb-label">Overall Score</div></div>
   </div>`;
 }
 

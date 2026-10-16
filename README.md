@@ -15,7 +15,7 @@ A static web app for self-assessing an agentic AI workload against the **AWS Wel
 | --- | --- |
 | 6 pillars (Operational excellence, Security, Reliability, Performance efficiency, Cost optimization, Sustainability) | Top stats bar, pillar filter pills, pillar progress bars, radar axes |
 | 41 focus areas (`AGENTOPS01` ... `AGENTSUS03`), each with a guiding question, capability intent, 5 maturity levels and common issues | Sidebar navigation grouped by pillar, card group headers, **Maturity levels** modal |
-| 150 best practices with a High / Medium / Low risk level | One card each: summary, desired outcome, risk badge, related AWS services, **Implementation guidance** modal, link to the official page |
+| 150 best practices with a High / Medium / Low risk level | One card each: summary, desired outcome, risk badge, related AWS services, **Implementation guidance** modal (shows the implementation steps), link to the official page |
 | Lens roadmap reading paths (Building your first agent, Moving to production, Scaling to multi-agent systems, Hardening an existing deployment) | Roadmap filter pills and tags on cards |
 | Design principles, definitions, pillar introductions | **About the Lens** modal |
 
@@ -81,7 +81,7 @@ The function reads the generated `data/` and `guidance/` files at runtime (`incl
 │   ├── extract_link.sh        # CI: extract Lens documentation links from data/ and guidance/
 │   ├── check_link_action.sh   # CI: verify extracted links respond with 2xx/3xx
 │   └── ToolsInfo.md           # Script documentation
-├── guidance/<pillar>/<bp-id>.md   # 150 condensed implementation guidance pages (rendered in a modal)
+├── guidance/<pillar>/<bp-id>.md   # 150 condensed implementation guidance pages (the app shows their Implementation steps section)
 └── tools/
     ├── build_lens_content.py  # Generates data/ and guidance/ from the AWS docs (stdlib only)
     ├── validate_content.py    # Offline consistency checks (used by CI)
@@ -205,11 +205,12 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * 150 best practices scored on a 6-point coverage scale (0%, 25%, 50%, 75%, 100%, Excluded)
 * Filters by pillar, focus area, Lens roadmap reading path, unassessed and excluded items, plus full-text search
 * Official 5-level maturity table, capability intent and common issues for every focus area
-* Condensed implementation guidance (desired outcome, anti-patterns, benefits, steps, resources) with links to the official pages
-* Pillar progress, per-focus-area progress and a 6-axis radar chart
+* **Implementation guidance** modal with the official implementation steps of each practice; the full condensed guidance (desired outcome, anti-patterns, benefits, steps, resources) is kept in `guidance/` and served by the API
+* Overall score, pillar progress and a 6-axis radar chart, all computed as coverage over every applicable best practice (unassessed items count as 0%, excluded items are left out)
 * Multi-session management persisted in the browser (localStorage + cookie)
 * CSV export / import (imports read the `ID`, `Score` and `Comments` columns)
 * Print preview with cards or table layout, color or black & white, risk and AWS services columns
+* Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)
 * Responsive layout for tablets and phones
 * Read-only JSON API (`/api`, OpenAPI at `/api/openapi.json`) over the same content
 

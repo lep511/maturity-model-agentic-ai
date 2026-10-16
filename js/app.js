@@ -135,7 +135,7 @@ const comments = {};
 let activePillarFilter  = 'all';   // 'all' | 'unassessed' | 'excluded' | '0'..'5'
 let activeFaFilter      = 'all';   // 'all' | focus area id
 let activeRoadmapFilter = 'all';   // 'all' | roadmap path id
-const collapsedPillars  = new Set();
+let expandedPillar      = null;    // sidebar accordion: at most one pillar group expanded
 
 // STORAGE
 const STORAGE_KEY = 'aal_sessions_v1';
@@ -416,7 +416,20 @@ document.addEventListener('click', function(e) {
 });
 
 // INIT
+// Draw attention to the text-size control when the app starts (3 pulses, ~3.5 s).
+// Removed early as soon as the user touches the control.
+function highlightFontControls() {
+  const fc = document.getElementById('fontControls');
+  if (!fc) return;
+  fc.classList.add('highlight');
+  const clear = () => fc.classList.remove('highlight');
+  const timer = setTimeout(clear, 3600);
+  ['click', 'focusin', 'pointerdown'].forEach(evt => fc.addEventListener(evt, () => { clearTimeout(timer); clear(); }, { once: true }));
+}
+
 function init() {
+  loadCardFontScale();
+  highlightFontControls();
   renderPillarChrome();
   renderFaNav();
   renderCards();
@@ -532,23 +545,28 @@ function renderFaNav() {
     if (!fas.length) return;
     const color = PILLAR_COLORS[i];
     const pillarCount = DATA.filter(d => d.pillar === p).length;
-    const collapsed = collapsedPillars.has(p) && pillarFilterIdx < 0;
+    const collapsed = pillarFilterIdx < 0 && expandedPillar !== p;
 
     const header = document.createElement('div');
     header.className = 'fa-nav-pillar' + (collapsed ? ' collapsed' : '');
+    header.dataset.pillar = p;
     header.innerHTML = `
       <span class="fa-nav-dot" style="background:${color}"></span>
       <span class="fa-nav-pillar-name" title="${escapeHtml(p)}">${escapeHtml(p)}</span>
       <span class="cap-nav-count">${pillarCount}</span>
       <svg class="fa-nav-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
     header.onclick = () => {
-      if (collapsedPillars.has(p)) collapsedPillars.delete(p); else collapsedPillars.add(p);
-      renderFaNav();
+      expandedPillar = expandedPillar === p ? null : p;
+      // Toggle classes in place so the CSS transition can run; re-render only as a fallback
+      if (!applyNavAccordion()) renderFaNav();
     };
     nav.appendChild(header);
 
     const children = document.createElement('div');
     children.className = 'fa-nav-children' + (collapsed ? ' collapsed' : '');
+    children.dataset.pillar = p;
+    const inner = document.createElement('div');
+    inner.className = 'fa-nav-inner';
     fas.forEach(fa => {
       const count = DATA.filter(d => d.focus_area_id === fa.id).length;
       const div = document.createElement('div');
@@ -559,10 +577,67 @@ function renderFaNav() {
         <span class="cap-nav-label" title="${escapeHtml(fa.id + ': ' + fa.question)}">${escapeHtml(fa.name)}</span>
         <span class="cap-nav-count">${count}</span>
       `;
-      children.appendChild(div);
+      inner.appendChild(div);
     });
+    children.appendChild(inner);
     nav.appendChild(children);
   });
+}
+
+// Apply the sidebar accordion state to the existing DOM (animated by CSS).
+// Returns false when the nav has not been rendered yet.
+function applyNavAccordion() {
+  const nav = document.getElementById('faNav');
+  if (!nav) return false;
+  const headers = nav.querySelectorAll('.fa-nav-pillar');
+  const groups = nav.querySelectorAll('.fa-nav-children');
+  if (!headers.length || !groups.length) return false;
+  const pillarFilterIdx = /^\d+$/.test(activePillarFilter) ? parseInt(activePillarFilter) : -1;
+  const isCollapsed = p => pillarFilterIdx < 0 && expandedPillar !== p;
+  headers.forEach(h => h.classList.toggle('collapsed', isCollapsed(h.dataset.pillar)));
+  groups.forEach(g => g.classList.toggle('collapsed', isCollapsed(g.dataset.pillar)));
+  return true;
+}
+
+// ─── CARD TEXT SIZE ───────────────────────────────────────────────────────────
+// Scales the text inside the best-practice cards through the --card-scale CSS
+// variable, within fixed bounds, and remembers the choice in localStorage.
+const CARD_FONT_MIN = 0.8;
+const CARD_FONT_MAX = 1.4;
+const CARD_FONT_STEP = 0.1;
+const CARD_FONT_KEY = 'aal_card_font_scale';
+let cardFontScale = 1;
+
+function clampCardFontScale(v) {
+  const n = Number.isFinite(v) ? v : 1;
+  return Math.round(Math.min(CARD_FONT_MAX, Math.max(CARD_FONT_MIN, n)) * 100) / 100;
+}
+
+function applyCardFontScale(scale) {
+  cardFontScale = clampCardFontScale(scale);
+  document.documentElement.style.setProperty('--card-scale', String(cardFontScale));
+  const dec = document.getElementById('fontDecBtn');
+  const inc = document.getElementById('fontIncBtn');
+  const reset = document.getElementById('fontResetBtn');
+  if (dec) dec.disabled = cardFontScale <= CARD_FONT_MIN + 1e-9;
+  if (inc) inc.disabled = cardFontScale >= CARD_FONT_MAX - 1e-9;
+  if (reset) {
+    reset.textContent = `${Math.round(cardFontScale * 100)}%`;
+    reset.title = cardFontScale === 1 ? 'Card text size (default)' : 'Reset card text size to 100%';
+  }
+  try { localStorage.setItem(CARD_FONT_KEY, String(cardFontScale)); } catch(e) { /* storage unavailable */ }
+}
+
+// dir: -1 smaller, +1 larger, 0 reset to the default size
+function adjustCardFontScale(dir) {
+  if (dir === 0) return applyCardFontScale(1);
+  applyCardFontScale(cardFontScale + dir * CARD_FONT_STEP);
+}
+
+function loadCardFontScale() {
+  let stored = null;
+  try { stored = parseFloat(localStorage.getItem(CARD_FONT_KEY)); } catch(e) { /* ignore */ }
+  applyCardFontScale(Number.isFinite(stored) ? stored : 1);
 }
 
 function getFilteredData() {
@@ -604,16 +679,28 @@ function renderCards() {
   const isFiltered = activePillarFilter !== 'all' || activeFaFilter !== 'all' || activeRoadmapFilter !== 'all' || document.getElementById('searchInput').value.trim() !== '';
   document.getElementById('itemCountBadge').textContent = `${filtered.length} items`;
   const existingTag = document.getElementById('filteredTag');
+  const existingReset = document.getElementById('resetFiltersBtn');
   if (isFiltered) {
     if (!existingTag) {
       const tag = document.createElement('span');
       tag.id = 'filteredTag';
+      tag.className = 'filtered-tag';
       tag.textContent = 'FILTERED';
-      tag.style.cssText = 'margin-left:8px;font-size:10px;font-family:"Roboto Mono",monospace;color:var(--aws);letter-spacing:0.08em;font-weight:700;';
       document.getElementById('itemCountBadge').after(tag);
+    }
+    if (!existingReset) {
+      const btn = document.createElement('button');
+      btn.id = 'resetFiltersBtn';
+      btn.type = 'button';
+      btn.className = 'btn-reset-filters';
+      btn.title = 'Clear the pillar, focus area, roadmap and search filters';
+      btn.textContent = 'Reset filters';
+      btn.onclick = resetFilters;
+      (document.getElementById('filteredTag') || document.getElementById('itemCountBadge')).after(btn);
     }
   } else {
     if (existingTag) existingTag.remove();
+    if (existingReset) existingReset.remove();
   }
 
   if (filtered.length === 0) {
@@ -744,22 +831,32 @@ function getSelectClass(val) {
   return '';
 }
 
-function toggleDetail(id) {
+function closeDetail(id) {
   const detail = document.getElementById(`detail-${id}`);
   const btn = document.getElementById(`btn-${id}`);
   const card = document.getElementById(`card-${id}`);
+  if (detail) detail.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+  if (card) card.classList.remove('expanded');
+}
 
+// Accordion: opening a card closes any other open card.
+function toggleDetail(id) {
+  const detail = document.getElementById(`detail-${id}`);
+  if (!detail) return;
   const isOpen = detail.classList.contains('open');
+  if (isOpen) { closeDetail(id); return; }
 
-  if (isOpen) {
-    detail.classList.remove('open');
-    if (btn) btn.classList.remove('open');
-    if (card) card.classList.remove('expanded');
-  } else {
-    detail.classList.add('open');
-    if (btn) btn.classList.add('open');
-    if (card) card.classList.add('expanded');
-  }
+  document.querySelectorAll('.rec-detail.open').forEach(el => {
+    const otherId = el.id.replace(/^detail-/, '');
+    if (otherId !== id) closeDetail(otherId);
+  });
+
+  const btn = document.getElementById(`btn-${id}`);
+  const card = document.getElementById(`card-${id}`);
+  detail.classList.add('open');
+  if (btn) btn.classList.add('open');
+  if (card) card.classList.add('expanded');
 }
 
 function handleHeaderClick(e, id) {
@@ -817,17 +914,20 @@ function isScored(id) {
   return s !== null && s !== undefined && s !== 'na';
 }
 
-function avgPct(items) {
-  const scored = items.filter(d => isScored(d.id));
-  if (scored.length === 0) return null;
-  return (scored.reduce((sum, d) => sum + (scores[d.id] || 0), 0) / scored.length) * 100;
+// Coverage over every applicable item: unassessed items count as 0%, items
+// excluded from the analysis ('na') are left out of the denominator.
+// Returns null when there is nothing applicable (everything excluded).
+function coveragePct(items) {
+  const applicable = items.filter(d => scores[d.id] !== 'na');
+  if (applicable.length === 0) return null;
+  return (applicable.reduce((sum, d) => sum + (isScored(d.id) ? scores[d.id] : 0), 0) / applicable.length) * 100;
 }
 
 function updateScores() {
   // Per pillar
   PILLARS.forEach((p, i) => {
     const items = DATA.filter(d => d.pillar === p);
-    const pct = Math.round(avgPct(items) ?? 0);
+    const pct = Math.round(coveragePct(items) ?? 0);
     const bar = document.getElementById(`bar-p${i}`);
     if (bar) bar.style.width = pct + '%';
     const pctEl = document.getElementById(`pct-p${i}`);
@@ -840,44 +940,22 @@ function updateScores() {
     if (rpct) rpct.textContent = pct + '%';
   });
 
-  // Overall
-  const allScored = DATA.filter(d => isScored(d.id));
-  const op = Math.round(avgPct(DATA) ?? 0);
+  // Overall: coverage of all applicable best practices (unassessed = 0%)
+  const assessed = DATA.filter(d => isScored(d.id)).length;
+  const excluded = DATA.filter(d => scores[d.id] === 'na').length;
+  const applicable = DATA.length - excluded;
+  const op = Math.round(coveragePct(DATA) ?? 0);
   const circumference = 314.2;
   const offset = circumference - (circumference * op / 100);
   document.getElementById('scoreRing').style.strokeDashoffset = offset;
   document.getElementById('scoreRingText').textContent = op + '%';
-  document.getElementById('scoreLabel').textContent = allScored.length === 0
+  document.getElementById('scoreLabel').textContent = assessed === 0
     ? 'No assessments yet'
-    : `${allScored.length} of ${DATA.length} best practices assessed`;
+    : `${assessed} of ${applicable} assessed${excluded ? ` · ${excluded} excluded` : ''}`;
 
-  renderFaScores();
   renderRadar();
 }
 
-function renderFaScores() {
-  const list = document.getElementById('faScoresList');
-  if (!list) return;
-  list.innerHTML = '';
-  const pillarFilterIdx = /^\d+$/.test(activePillarFilter) ? parseInt(activePillarFilter) : -1;
-  FOCUS_AREAS.forEach(fa => {
-    const pi = pillarIdx(fa.pillar);
-    if (pillarFilterIdx >= 0 && pi !== pillarFilterIdx) return;
-    const items = DATA.filter(d => d.focus_area_id === fa.id);
-    const pct = Math.round(avgPct(items) ?? 0);
-    const color = PILLAR_COLORS[pi] || '#FF9900';
-    const row = document.createElement('div');
-    row.className = 'cap-score-row';
-    row.title = `${fa.id}: ${fa.name}`;
-    row.onclick = () => filterByFocusArea(fa.id);
-    row.innerHTML = `
-      <span class="cap-score-label fa-score-label" style="color:${color}">${faShort(fa.id)}</span>
-      <div class="cap-score-bar-track"><div class="cap-score-bar-fill" style="width:${pct}%; background: linear-gradient(90deg, ${color}, ${color}cc);"></div></div>
-      <span class="cap-score-val" style="color:${color}">${pct}%</span>
-    `;
-    list.appendChild(row);
-  });
-}
 
 function renderRadar() {
   const svg = document.getElementById('radarSvg');
@@ -885,11 +963,12 @@ function renderRadar() {
   const n = PILLARS.length;
   const NS = 'http://www.w3.org/2000/svg';
 
-  // null = no scored items in that pillar (distinct from 0%)
+  // Coverage per pillar (unassessed = 0%); null only when every item is excluded
   const pillarScores = PILLARS.map(p => {
-    const pct = avgPct(DATA.filter(d => d.pillar === p));
+    const pct = coveragePct(DATA.filter(d => d.pillar === p));
     return pct === null ? null : pct / 100;
   });
+  const anyScored = DATA.some(d => isScored(d.id));
 
   svg.innerHTML = '';
 
@@ -920,7 +999,7 @@ function renderRadar() {
     svg.appendChild(line);
   });
 
-  const hasAnyData = pillarScores.some(s => s !== null);
+  const hasAnyData = anyScored && pillarScores.some(s => s !== null);
   if (hasAnyData) {
     const dataPoints = pillarScores.map((score, i) => {
       const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
@@ -1021,7 +1100,6 @@ function filterByPillar(value, el) {
 
   renderFaNav();
   renderCards();
-  renderFaScores();
 }
 
 function filterPillarStat(idx) {
@@ -1035,7 +1113,10 @@ function filterPillarStat(idx) {
 
 function filterByFocusArea(faId) {
   activeFaFilter = faId;
-  if (faId !== 'all') {
+  if (faId === 'all') {
+    expandedPillar = null; // back to the initial state: every pillar group collapsed
+  } else {
+    expandedPillar = FA_BY_ID[faId]?.pillar || expandedPillar;
     activePillarFilter = 'all';
     clearPillarPillClasses();
     const allPill = document.querySelector('.phase-pill[data-p="all"]');
@@ -1044,7 +1125,6 @@ function filterByFocusArea(faId) {
   }
   renderFaNav();
   renderCards();
-  renderFaScores();
   if (faId !== 'all') {
     const main = document.getElementById('mainContent');
     if (main && window.innerWidth <= 1024) main.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1056,6 +1136,27 @@ function filterByRoadmap(pathId, el) {
   document.querySelectorAll('.roadmap-pill').forEach(p => p.classList.remove('active-roadmap'));
   if (!el) el = document.querySelector(`.roadmap-pill[data-r="${pathId}"]`);
   if (el) el.classList.add('active-roadmap');
+  renderCards();
+}
+
+// Clear every filter (pillar, focus area, roadmap, search) and restore the default view.
+function resetFilters() {
+  const search = document.getElementById('searchInput');
+  if (search) search.value = '';
+  activePillarFilter = 'all';
+  activeFaFilter = 'all';
+  activeRoadmapFilter = 'all';
+  expandedPillar = null;
+
+  clearPillarPillClasses();
+  const allPill = document.querySelector('.phase-pill[data-p="all"]');
+  if (allPill) allPill.classList.add('active-p0');
+  document.querySelectorAll('.phase-stat').forEach(s => s.classList.add('active'));
+  document.querySelectorAll('.roadmap-pill').forEach(p => p.classList.remove('active-roadmap'));
+  const allRoadmap = document.querySelector('.roadmap-pill[data-r="all"]');
+  if (allRoadmap) allRoadmap.classList.add('active-roadmap');
+
+  renderFaNav();
   renderCards();
 }
 
@@ -1082,6 +1183,61 @@ function closeModal() {
 
 const guidanceCache = {};
 
+// Extract one section of a guidance markdown file: from its heading (any level)
+// up to the next heading of the same or a higher level. Returns null if absent.
+function extractMarkdownSection(markdown, title) {
+  const lines = String(markdown || '').split('\n');
+  const start = lines.findIndex(l => new RegExp(`^#{1,6}\\s+${title}\\s*$`, 'i').test(l.trim()));
+  if (start < 0) return null;
+  const level = lines[start].trim().match(/^#+/)[0].length;
+  let end = lines.length;
+  for (let i = start + 1; i < lines.length; i++) {
+    const m = lines[i].trim().match(/^(#{1,6})\s+\S/);
+    if (m && m[1].length <= level) { end = i; break; }
+  }
+  return lines.slice(start, end).join('\n').trim();
+}
+
+// The modal shows only the "Implementation steps" section, preceded by a short
+// context line. Falls back to the full guidance when a file has no such section.
+function implementationStepsMarkdown(item, markdown) {
+  const steps = extractMarkdownSection(markdown, 'Implementation steps');
+  const context = `**${item.id}** · ${item.recommendation}\n\n`;
+  if (!steps) return markdown;
+  return context + steps.replace(/^#{1,6}\s+/, '## ');
+}
+
+// Load the guidance markdown for an item. The static file is tried first; if it
+// fails (blocked .md extension or text/markdown content type on some networks,
+// missing file, HTTP error) the same content is requested from the read-only
+// API as JSON. Throws with a diagnostic message when every attempt fails.
+async function fetchGuidance(item) {
+  const attempts = [
+    { url: `${item._guidancePath}?v=${Date.now()}`, kind: 'markdown' },
+    { url: `api/best-practices/${encodeURIComponent(item.id)}/guidance?format=json`, kind: 'json' },
+  ];
+  const errors = [];
+  for (const attempt of attempts) {
+    const label = attempt.url.split('?')[0];
+    try {
+      const resp = await fetch(attempt.url, { cache: 'no-store' });
+      if (!resp.ok) { errors.push(`${label}: HTTP ${resp.status}`); continue; }
+      if (attempt.kind === 'json') {
+        const payload = await resp.json();
+        if (payload && typeof payload.markdown === 'string' && payload.markdown.trim()) return payload.markdown;
+        errors.push(`${label}: unexpected JSON payload`);
+        continue;
+      }
+      const text = await resp.text();
+      if (text && text.trim().startsWith('#')) return text;
+      errors.push(`${label}: unexpected content (${(resp.headers.get('content-type') || 'unknown type').split(';')[0]})`);
+    } catch (e) {
+      errors.push(`${label}: ${e && e.message ? e.message : 'network error'}`);
+    }
+  }
+  throw new Error(errors.join(' | '));
+}
+
 async function openGuidanceModal(itemId) {
   const item = DATA.find(d => d.id === itemId);
   if (!item || !item._hasGuidance) return;
@@ -1099,16 +1255,15 @@ async function openGuidanceModal(itemId) {
 
   if (!guidanceCache[itemId]) {
     try {
-      const resp = await fetch(item._guidancePath + `?v=${Date.now()}`);
-      if (!resp.ok) throw new Error();
-      guidanceCache[itemId] = await resp.text();
-    } catch {
-      body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red)">Could not load the implementation guidance.${item.doc_url ? ` <a href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">Open the official page</a>.` : ''}</div>`;
+      guidanceCache[itemId] = await fetchGuidance(item);
+    } catch (err) {
+      body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red)">Could not load the implementation guidance.${item.doc_url ? ` <a href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">Open the official page</a>.` : ''}
+        <div style="margin-top:12px;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);word-break:break-all">${escapeHtml(err && err.message ? err.message : 'unknown error')}</div></div>`;
       return;
     }
   }
 
-  body.innerHTML = marked.parse(guidanceCache[itemId]);
+  body.innerHTML = marked.parse(implementationStepsMarkdown(item, guidanceCache[itemId]));
   body.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
   body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
   body.scrollTop = 0;
@@ -1693,15 +1848,15 @@ loadData().then(() => {
   // ── Mobile Score Strip ───────────────────────────────────────────────────────
   // Moves Overall Score and Radar Chart below the hero on mobile,
   // and returns them to the right-panel on desktop resize.
-  // The right panel must keep exactly four sections in this order:
-  // 1 overall score, 2 pillar progress, 3 focus-area scores, 4 radar.
+  // Sections are located by id (#panelOverall, #panelRadar), so the right panel
+  // can gain or lose other sections without breaking the mobile layout.
   function initMobileScoreStrip() {
     const rightPanel   = document.querySelector('.right-panel');
-    const scoreSection = rightPanel ? rightPanel.querySelector('.panel-section:nth-child(1)') : null;
-    const radarSection = rightPanel ? rightPanel.querySelector('.panel-section:nth-child(4)') : null;
+    const scoreSection = document.getElementById('panelOverall');
+    const radarSection = document.getElementById('panelRadar');
     const phaseStats   = document.getElementById('phaseStats');
 
-    if (!scoreSection || !radarSection || !phaseStats) return;
+    if (!rightPanel || !scoreSection || !radarSection || !phaseStats) return;
 
     // Create container
     const strip = document.createElement('div');

@@ -131,18 +131,25 @@
         <span class="toolbar-title">Best Practices</span>
         <span class="toolbar-badge" id="itemCountBadge">150 items</span>
       </div>
-      <div class="filter-search">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="4" stroke="#3d5a7e" stroke-width="1.5"/><path d="M8.5 8.5l2 2" stroke="#3d5a7e" stroke-width="1.5" stroke-linecap="round"/></svg>
-        <input type="text" placeholder="Search best practices, IDs, focus areas..." id="searchInput" oninput="applyFilters()">
+      <div class="toolbar-tools">
+        <div class="font-controls" id="fontControls" role="group" aria-label="Card text size">
+          <button type="button" class="font-btn" id="fontDecBtn" onclick="adjustCardFontScale(-1)" title="Smaller card text" aria-label="Smaller card text">A&minus;</button>
+          <button type="button" class="font-btn font-reset" id="fontResetBtn" onclick="adjustCardFontScale(0)" title="Card text size (default)" aria-label="Reset card text size">100%</button>
+          <button type="button" class="font-btn" id="fontIncBtn" onclick="adjustCardFontScale(1)" title="Larger card text" aria-label="Larger card text">A+</button>
+        </div>
+        <div class="filter-search">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="4" stroke="#3d5a7e" stroke-width="1.5"/><path d="M8.5 8.5l2 2" stroke="#3d5a7e" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="text" placeholder="Search best practices, IDs, focus areas..." id="searchInput" oninput="applyFilters()">
+        </div>
       </div>
     </div>
     <div class="cards-container" id="cardsContainer"></div>
     <div class="no-results" id="noResults">No best practices match your filters.</div>
   </div>
 
-  <!-- RIGHT PANEL (keep exactly four sections in this order: the mobile layout relies on it) -->
+  <!-- RIGHT PANEL (#panelOverall and #panelRadar are moved below the hero on small screens) -->
   <div class="right-panel">
-    <div class="panel-section">
+    <div class="panel-section" id="panelOverall">
       <div class="panel-title">Overall Score</div>
       <div class="overall-score-ring">
         <svg class="score-ring-svg" width="120" height="120" viewBox="0 0 120 120">
@@ -163,12 +170,7 @@
       <div class="progress-overview" id="pillarProgress"></div>
     </div>
 
-    <div class="panel-section">
-      <div class="panel-title">By Focus Area</div>
-      <div id="faScoresList"></div>
-    </div>
-
-    <div class="panel-section">
+    <div class="panel-section" id="panelRadar">
       <div class="panel-title">Radar Chart (pillars)</div>
       <div class="radar-wrap">
         <svg class="radar" width="264" height="264" viewBox="0 0 264 264" id="radarSvg"></svg>

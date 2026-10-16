@@ -64,7 +64,11 @@ Single-page app with no build step — vanilla HTML/CSS/JS served as static file
 - `js/print.js` — print preview modal rendering
 - `css/styles.css` — main styles (pillar colors `--r1..--r6`, Lens component styles at the end); `css/responsive.css` — mobile breakpoints; `css/print.css` — print media styles
 - Internal CSS/DOM names from the previous version are kept for the generic parts (`phase-stats`, `phase-pill`, `phase-tag-N`, `cap-nav-item`, `cap-group-header`, `solution-modal-*`); "phase" now means pillar and "cap" means focus area.
-- The right panel must keep exactly four `.panel-section` blocks in order (overall score, pillar progress, focus-area scores, radar): the mobile layout reparents sections 1 and 4 by `nth-child`.
+- `renderCards()` shows a FILTERED tag plus a `Reset filters` button (`resetFilters()`, id `resetFiltersBtn`) whenever a pillar, focus-area, roadmap or search filter is active.
+- Accordion behaviour: `toggleDetail()` closes any other open card; the sidebar keeps at most one pillar group expanded (`expandedPillar`, all collapsed by default; selecting a focus area expands its group). Header clicks call `applyNavAccordion()` to toggle classes in place so the CSS `grid-template-rows` transition animates; `renderFaNav()` is only the fallback.
+- Card text size: `adjustCardFontScale()` sets `--card-scale` (bounded by `CARD_FONT_MIN`/`CARD_FONT_MAX`, step `CARD_FONT_STEP`, persisted under `aal_card_font_scale`); card typography rules at the end of `css/styles.css` use `calc(Npx * var(--card-scale))`, and so does the Implementation guidance modal body (`#guidanceModal .solution-modal-body`). `highlightFontControls()` pulses the control (`.font-controls.highlight`) for a few seconds after load.
+- The right panel has three sections (overall score `#panelOverall`, pillar progress, radar `#panelRadar`); the mobile layout reparents the two sections by id.
+- Scores are coverage percentages over all applicable best practices: unassessed items count as 0%, items excluded (`'na'`) are left out of the denominator (`coveragePct()` in `js/app.js`, same rule in the print summary).
 
 ## Data Model
 
@@ -72,7 +76,7 @@ Single-page app with no build step — vanilla HTML/CSS/JS served as static file
 - `data/lens/lens.json` — lens metadata: abstract, design principles, pillars (intro, pillar design principles, focus-area ids), roadmap reading paths, definitions, counts, publication date
 - `data/lens/focus_areas.json` — 41 records: `id`, `pillar`, `name`, `question` (from the focus-area page), `appendix_question` (Appendix A wording, used by the update checker), `intro`, `capability_intent[]`, `maturity_levels[]` (5 rows), `common_issues[]`, `best_practices[]`, `roadmap[]`, `doc_url`
 - `data/<pillar-slug>/<bp-id>.json` — one item per best practice (pillar slugs: `operational-excellence`, `security`, `reliability`, `performance-efficiency`, `cost-optimization`, `sustainability`)
-- `guidance/<pillar-slug>/<bp-id>.md` — condensed implementation guidance rendered in the "Implementation guidance" modal (1:1 with the item files)
+- `guidance/<pillar-slug>/<bp-id>.md` — condensed implementation guidance (1:1 with the item files). The "Implementation guidance" modal fetches the file (falling back to `/api/best-practices/{id}/guidance?format=json`) and renders only its `### Implementation steps` section via `extractMarkdownSection()`; the full file is available through the API
 
 Item schema:
 ```json
