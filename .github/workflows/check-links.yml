@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Give execution permissions
         run: |
@@ -38,7 +38,7 @@ jobs:
         run: python3 -I tools/validate_content.py
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
@@ -56,7 +56,7 @@ jobs:
       # Uploads large_files.json ONLY if count_chars found oversized files
       - name: Upload large files report
         if: always() && steps.count_chars.outputs.large_files_found == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: large-files-report
           path: large_files.json
@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload results as artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: link-results
           path: links_checked.json
