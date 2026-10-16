@@ -85,6 +85,7 @@ The function reads the generated `data/` and `guidance/` files at runtime (`incl
 └── tools/
     ├── build_lens_content.py  # Generates data/ and guidance/ from the AWS docs (stdlib only)
     ├── validate_content.py    # Offline consistency checks (used by CI)
+    ├── check_lens_updates.py  # Detects new or changed entries in the published Lens (runs on every push)
     └── api_smoke_test.mjs     # In-process tests for the read-only API (used by CI)
 ```
 
@@ -123,6 +124,48 @@ python3 -I tools/validate_content.py
 
 The generator asserts the counts of the known release (6 pillars, 41 questions, 150 best practices, 90 High / 59 Medium / 1 Low). When AWS publishes a revision, run with `--refresh --clean --allow-count-drift`, review the warnings, and update the counts in the script and in `tools/validate_content.py`.
 
+## Checking for new entries in the Lens
+
+AWS revises the Lens over time (the generated content records the publication date it was built from). `tools/check_lens_updates.py` compares the **currently published** documentation with the repository and reports anything new, removed or changed, so you know when to regenerate.
+
+```bash
+# Light check (3 small requests): pillars, focus-area questions, best practices, risk levels, publication date
+python3 -I tools/check_lens_updates.py
+
+# Deep check: regenerate everything into a temp dir and diff it against data/ and guidance/
+# (catches wording changes inside existing pages; ~200 requests with --refresh)
+python3 -I tools/check_lens_updates.py --deep --refresh
+
+# Machine-readable report
+python3 -I tools/check_lens_updates.py --json
+```
+
+| Exit code | Meaning |
+| --- | --- |
+| `0` | No new entries: the repository matches the published Lens |
+| `1` | Updates detected (new or removed pillars, focus areas or best practices; changed titles, risk levels or questions; new publication date; or, with `--deep`, changed files) |
+| `2` | The check could not run (network or parse error). Never treated as "no changes" |
+
+Example output when the repository is current:
+
+```
+Upstream publication date: June 10, 2026
+Upstream: 6 pillars, 41 focus areas, 150 best practices
+
+No new entries: the repository matches the published Lens.
+```
+
+When updates are reported, regenerate and validate:
+
+```bash
+python3 -I tools/build_lens_content.py --refresh --clean --allow-count-drift
+python3 -I tools/validate_content.py
+```
+
+and, if the counts changed, update `EXPECTED` in `tools/build_lens_content.py` and `tools/validate_content.py`.
+
+**Automated check.** `.github/workflows/check-lens-updates.yml` runs the light check on every push to the repository (and on demand from the Actions tab, optionally in deep mode). When updates are detected the run fails, uploads `lens-updates.json` as an artifact and opens an issue labelled `lens-update` (or comments on the open one) with the list of changes and the regeneration commands.
+
 ## Run locally
 
 A local HTTP server is required: opening `index.html` directly via `file://` blocks the JSON fetches.
@@ -152,6 +195,8 @@ Production: https://agentic-ai-lens-assessment.vercel.app
 3. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
 4. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
 5. `data/check_link_action.sh` — fails on any 4xx/5xx response
+
+A second workflow, `check-lens-updates.yml`, runs on every push to detect new entries in the published Lens (see above).
 
 See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 

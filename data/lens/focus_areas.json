@@ -5,6 +5,7 @@
     "slug": "agentops01",
     "name": "Operational practices for agentic AI systems",
     "question": "How do you establish operational practices for agentic AI systems?",
+    "appendix_question": "How do you establish operational practices for agentic AI systems?",
     "intro": "Agentic systems that are built on strong operational foundations (with clear roles, reliable handoffs, and tested failure recovery) earn stakeholder trust and scale confidently into production. These systems combine precedent and best practices from several architectural disciplines, including generative AI and multi-agent coordination. These practices can't be combined without careful consideration. They must be judiciously selected and refined based on the workload being built and the business problem being addressed.",
     "capability_intent": [
       "Each agent has a documented purpose, measurable success criteria, and autonomy boundaries that stakeholders can trace back to a specific business outcome.",
@@ -63,6 +64,7 @@
     "slug": "agentops02",
     "name": "Prompt and configuration lifecycle management",
     "question": "How do you manage prompt and configuration lifecycle?",
+    "appendix_question": "How do you manage prompt and configuration lifecycle?",
     "intro": "Agent prompts, configurations, and tool permissions define agent behavior and evolve continually as business needs change. Managing these artifacts requires balancing rapid iteration with stability so that changes are tracked, tested, and reversible.",
     "capability_intent": [
       "Agent prompts, behavioral configurations, and tool permissions are managed as first-class operational artifacts with full version history, documented ownership, and a defined lifecycle from authoring through retirement.",
@@ -120,6 +122,7 @@
     "slug": "agentops03",
     "name": "Agent lifecycle and deployment processes",
     "question": "How do you manage agent lifecycle and deployment processes?",
+    "appendix_question": "How do you manage agent lifecycle and deployment processes?",
     "intro": "Agent lifecycle management extends beyond traditional software deployment to include behavioral evolution, capability updates, and operational governance. Agents require ongoing management as they adapt to changing business requirements, integrate new tools, and scale across different environments.",
     "capability_intent": [
       "Every agent has a documented owner, lifecycle state, and set of transition criteria, from initial development through to clean decommissioning.",
@@ -177,6 +180,7 @@
     "slug": "agentops04",
     "name": "Tool integration and management practices",
     "question": "How do you establish tool integration and management practices?",
+    "appendix_question": "How do you establish tool integration and management practices?",
     "intro": "Agents rely on external tools and services to complete work, and the way those integrations are managed determines whether agent behavior stays consistent as the tool inventory grows. Without a shared registry, standardized protocols, and common fallback behavior, every new tool adds operational burden and every tool failure risks broader agent outages.",
     "capability_intent": [
       "Agents discover available tools and their capabilities through a single authoritative catalog rather than hardcoded integrations or spoken knowledge.",
@@ -233,6 +237,7 @@
     "slug": "agentops05",
     "name": "Observability and monitoring for agentic systems",
     "question": "How do you implement comprehensive observability and monitoring for agentic systems?",
+    "appendix_question": "How do you implement comprehensive observability and monitoring for agentic systems?",
     "intro": "Observability in agentic systems requires capturing not just infrastructure metrics, but also agent reasoning steps, decision paths, and workflow execution patterns. Traditional monitoring approaches must be extended to provide visibility into agent behavior, tool invocations, and multi-agent interactions.",
     "capability_intent": [
       "Agent executions produce distributed traces that capture reasoning steps, tool invocations, memory operations, and inter-agent handoffs, with trace context propagated across every service boundary.",
@@ -293,6 +298,7 @@
     "slug": "agentops06",
     "name": "Testing, evaluation, and validation frameworks",
     "question": "How do you implement testing, evaluation, and validation frameworks?",
+    "appendix_question": "How do you implement testing, evaluation, and validation frameworks?",
     "intro": "Systematic testing and evaluation processes confirm agent quality, reliability, and alignment with business objectives through both traditional software testing and AI-specific quality assessment. Without a framework that covers every stage of the agent lifecycle, quality regressions from prompt changes, tool updates, or model updates reach users before anyone notices.",
     "capability_intent": [
       "Agents are validated at every layer, from isolated components to entire workflows running in production-shadow mode, before changes reach users.",
@@ -351,6 +357,7 @@
     "slug": "agentops07",
     "name": "Operational recovery and consumption monitoring",
     "question": "How do you establish operational recovery and consumption monitoring?",
+    "appendix_question": "How do you establish operational recovery and consumption monitoring?",
     "intro": "Agentic systems must handle operational failures gracefully and help prevent runaway behavior that could affect business operations. Recovery mechanisms need to balance automation with appropriate escalation, and consumption monitoring must detect agents that exceed expected operational boundaries.",
     "capability_intent": [
       "Agent failures trigger automated cutoffs, fallback chains, and recovery workflows that restore service within defined recovery time objectives.",
@@ -408,6 +415,7 @@
     "slug": "agentsec01",
     "name": "Secure agent memory and state",
     "question": "How do you secure agentic memory and securely manage state between agents?",
+    "appendix_question": "How do you secure agentic memory and securely manage state between agents?",
     "intro": "One reason agentic AI is effective is the ability to perform long-running tasks. To achieve a goal, agents need to store context, tasks, and results. Agent memory systems can be targeted to introduce false information or influence agent decisions, so securing memory and state helps maintain agent integrity.",
     "capability_intent": [
       "Agent memory is partitioned along the isolation axes that matter for the workload, with each principal restricted to the namespaces its task requires.",
@@ -464,6 +472,7 @@
     "slug": "agentsec02",
     "name": "Secure agent tool usage",
     "question": "How do you control and secure agent tool usage?",
+    "appendix_question": "How do you control and secure agent tool usage?",
     "intro": "Agents interact with external systems through tools such as APIs, databases, file systems, and other services. Without proper controls, an agent with tool access can be directed to perform unintended actions. Authorization, input validation, and tool governance reduce the risk of tool misuse and unauthorized operations.",
     "capability_intent": [
       "Every tool invocation is authorized against a declarative policy before execution, with the agent identity and the originating user context propagated through the authorization chain.",
@@ -520,6 +529,7 @@
     "slug": "agentsec03",
     "name": "Agent identity and permission management",
     "question": "How do you manage agent identities, permissions, and prevent privilege escalation?",
+    "appendix_question": "How do you manage agent identities, permissions, and prevent privilege escalation?",
     "intro": "Agents access resources, invoke tools, and interact with other services in two patterns: Identity and permission management needs to handle both. Without it, agent permissions can lead to unauthorized access to resources and data. To maintain security boundaries, apply least-privilege principles, separate agent and human permissions, and set up strong authentication for agent identities.",
     "capability_intent": [
       "Every agent-to-agent and agent-to-service communication authenticates through verifiable mechanisms, whether that is certificate-based mutual TLS, signed OAuth tokens, or platform-managed workload identity.",
@@ -579,6 +589,7 @@
     "slug": "agentsec04",
     "name": "Agent goal alignment and manipulation prevention",
     "question": "How do you support agent goal alignment and prevent manipulation?",
+    "appendix_question": "How do you support agent goal alignment and prevent manipulation?",
     "intro": "Agents can be directed to pursue unintended objectives or exhibit behaviors outside their defined scope. Without goal alignment mechanisms, agents might take actions that conflict with organizational policies or user intent. Implementing guardrails, layered validation controls, and human-in-the-loop approvals helps verify that agents operate within intended boundaries.",
     "capability_intent": [
       "Operational and policy boundaries for each agent are defined up front and enforced through layered controls rather than prompt instructions alone.",
@@ -636,6 +647,7 @@
     "slug": "agentsec05",
     "name": "Agent observability and non-repudiation",
     "question": "How do you implement observability and prevent repudiation?",
+    "appendix_question": "How do you implement observability and prevent repudiation?",
     "intro": "Without proper logging and traceability, agent actions can't be investigated or attributed. Agents operate autonomously across multiple services, tools, and data sources, generating complex interaction chains that are difficult to reconstruct after the fact. Observability through logging, distributed tracing, and decision artifact storage supports security investigations, compliance reporting, and continuous improvement of agent behavior. Two decisions drive this question. First, what record of agent behavior you keep, where it lives, and how it is protected against tampering by the agent itself. Second, how you follow a single request across agents, tools, and asynchronous boundaries so that any action can be reconstructed end-to-end.",
     "capability_intent": [
       "Agent decisions, reasoning chains, tool invocations, and intermediate steps are captured to tamper-evident, queryable storage that sits outside the agent's own operational scope.",
@@ -691,6 +703,7 @@
     "slug": "agentsec06",
     "name": "Secure multi-agent orchestration",
     "question": "How do you secure multi-agent orchestration and coordination?",
+    "appendix_question": "How do you secure multi-agent orchestration and coordination?",
     "intro": "Multi-agent systems introduce coordination challenges that don't exist in single-agent architectures. Agents need to discover peers, share capabilities, delegate tasks, and exchange context across trust boundaries. Without proper identity verification and communication security, agent impersonation and message tampering can affect entire multi-agent workflows. Standardized protocols like Agent-to-Agent (A2A) and Model Context Protocol (MCP) provide interoperability across frameworks, but organizations must layer security controls on top of these protocols to maintain trust boundaries.",
     "capability_intent": [
       "Agents are segmented into trust zones based on role, capability, and risk profile, and inter-zone communication flows only along documented paths enforced at both the network and the application layer.",
@@ -750,6 +763,7 @@
     "slug": "agentsec07",
     "name": "Human oversight protection and agent containment",
     "question": "How do you protect human oversight from manipulation and detect rogue agents?",
+    "appendix_question": "How do you protect human oversight from manipulation and detect rogue agents?",
     "intro": "Human oversight is a key control in agentic systems, but it is only effective if reviewers can make informed decisions without being overwhelmed or misled. At the same time, you must detect and contain agents that deviate from their intended behavior before they can affect other parts of the system. This capability covers both sides: protecting the quality of human review, and implementing detection and containment mechanisms for agents that operate outside their defined boundaries.",
     "capability_intent": [
       "Review queues are prioritized and load-balanced, and reviewer workload is monitored for signs of rubber-stamping, so human reviewers make informed decisions rather than approving under pressure.",
@@ -810,6 +824,7 @@
     "slug": "agentsec08",
     "name": "Secure agent inputs and outputs",
     "question": "How do you validate and secure agent inputs and outputs?",
+    "appendix_question": "How do you validate and secure agent inputs and outputs?",
     "intro": "Agents process inputs from users, tools, and other agents, and they generate outputs for downstream systems, memory stores, and end users. Without proper validation, adversarial inputs such as prompt injection can influence agent behavior, and agent outputs can inadvertently disclose sensitive information or generate harmful content. Multi-layer validation at both the input and output boundaries helps verify that agents operate safely within their intended scope.",
     "capability_intent": [
       "Every agent input surface (direct user messages, tool outputs, inter-agent messages, retrieved external content, and memory reads) has validation appropriate to its risk profile, with no input reaching the agent's reasoning process unchecked.",
@@ -867,6 +882,7 @@
     "slug": "agentsec09",
     "name": "Agent vulnerability scanning and penetration testing",
     "question": "How do you perform vulnerability scanning and penetration testing for agentic AI systems?",
+    "appendix_question": "How do you perform vulnerability scanning and penetration testing for agentic AI systems?",
     "intro": "Agentic AI systems introduce new attack surfaces that traditional application security testing doesn't cover. Agents reason about inputs, chain multi-step actions, interact with tools and APIs, and operate with varying degrees of autonomy. These behaviors create complex vulnerability paths that rule-based scanners and periodic manual assessments can't address. Automated vulnerability scanning and penetration testing tailored to agentic workloads help you identify exploitable weaknesses across the full development lifecycle, from design documents and code through to running applications, and validate that security controls hold up under realistic attack scenarios.",
     "capability_intent": [
       "Security testing covers the full agentic AI development lifecycle, from design documents through pull requests and into running applications, so vulnerabilities are caught at the point where remediation is cheapest.",
@@ -925,6 +941,7 @@
     "slug": "agentrel01",
     "name": "Predictable agent behavior",
     "question": "How do I develop reliable agentic systems?",
+    "appendix_question": "How do I develop reliable agentic systems?",
     "intro": "Agents combine compute, memory, cognition, and orchestration components, and each component is a point where a workflow can fail. Organizations that run agents on resilient messaging, modular fault isolation, and adaptive provisioning spend less time repairing infrastructure and more time improving agent capabilities.",
     "capability_intent": [
       "Agent-to-agent and agent-to-system communication runs through a durable messaging substrate, so transient failures are absorbed through persistence, retry, and dead-letter handling rather than cascading across the workflow.",
@@ -983,6 +1000,7 @@
     "slug": "agentrel02",
     "name": "Predictable task execution",
     "question": "How do you develop agentic systems that reliably execute tasks with predictable outcomes?",
+    "appendix_question": "How do you develop agentic systems that reliably execute tasks with predictable outcomes?",
     "intro": "Agents that constrain LLM stochasticity through atomic task design, least-privilege permissions, and clear instruction protocols deliver predictable outcomes even when the underlying models are non-deterministic. Agent reliability extends beyond supporting infrastructure to the reliability of executing the intended task with the appropriate data at the correct time.",
     "capability_intent": [
       "Each agent owns a single atomic capability with explicit input validation and a structured output schema, so LLM stochasticity is bounded by narrow, testable contracts.",
@@ -1043,6 +1061,7 @@
     "slug": "agentrel03",
     "name": "Agent memory and state management",
     "question": "How do you support agent memory and state remaining reliably accessible throughout the agent lifecycle?",
+    "appendix_question": "How do you support agent memory and state remaining reliably accessible throughout the agent lifecycle?",
     "intro": "Agents that classify, persist, and recover memory reliably deliver consistent behavior across sessions and maintain functionality even during component failures. Agent memory is beholden to the same reliability considerations of any data store. How do you support returning the right information, and how does the agent behave when state is unavailable?",
     "capability_intent": [
       "Agent memory is explicitly classified by scope and persistence, so short-term session context never contaminates long-term knowledge and retrieval is predictable across task types.",
@@ -1100,6 +1119,7 @@
     "slug": "agentrel04",
     "name": "Multi-agent orchestration",
     "question": "How do you orchestrate multi-agent systems to reliably execute tasks?",
+    "appendix_question": "How do you orchestrate multi-agent systems to reliably execute tasks?",
     "intro": "Multi-agent systems that implement centralized coordination, capability-based routing, and pre-defined fallback chains execute tasks reliably even when individual agents fail. Multi-agent workflows must be highly orchestrated and controlled to help prevent unreliable agent executions from disrupting an entire workflow.",
     "capability_intent": [
       "Conflict resolution is concentrated in a dedicated arbiter that acts only when coordination is needed, so specialized agents operate independently without negotiating every disagreement peer-to-peer.",
@@ -1159,6 +1179,7 @@
     "slug": "agentrel05",
     "name": "Agent cognition",
     "question": "How do you implement reliable agent cognition that accesses the right data at the right time?",
+    "appendix_question": "How do you implement reliable agent cognition that accesses the right data at the right time?",
     "intro": "Agents that ground their reasoning in current, accurate information and adapt based on structured feedback deliver reliable cognition even as task requirements and data distributions evolve. Agentic cognition engines must be provided with appropriate information at all layers of workflow execution to reliably execute tasks.",
     "capability_intent": [
       "Agent reasoning is decomposed into modular stages with explicit interfaces, so a failure in one stage produces stage-scoped fallback rather than complete cognition failure.",
@@ -1215,6 +1236,7 @@
     "slug": "agentrel06",
     "name": "Legacy system integration",
     "question": "How do agents integrate effectively with existing systems without impacting the reliability of established processes?",
+    "appendix_question": "How do agents integrate effectively with existing systems without impacting the reliability of established processes?",
     "intro": "Agents that integrate with existing systems through adapter patterns and abstraction interfaces preserve legacy system stability while enabling automation of established workflows. These systems might not be optimized for agent interactions and might require support for protocols such as MCP or A2A. How do agents integrate effectively without impacting the reliability of established processes?",
     "capability_intent": [
       "Legacy systems are reached through adapter interfaces that expose agent-native tool contracts, so agents don't need to understand the protocols behind them.",
@@ -1277,6 +1299,7 @@
     "slug": "agentrel07",
     "name": "Agent monitoring, management and recovery",
     "question": "How do fault tolerant agent systems recover?",
+    "appendix_question": "How do fault tolerant agent systems recover?",
     "intro": "Agent systems that decompose workflows into recoverable stages, classify failures for targeted retry, and implement end-to-end distributed tracing recover smoothly from the failures that occur across their many components.",
     "capability_intent": [
       "Agent workflows are decomposed into stages with persisted outputs and explicit validation between them, so failures are contained to the affected stage rather than cascading through the whole workflow.",
@@ -1335,6 +1358,7 @@
     "slug": "agentrel08",
     "name": "Graceful degradation and configuration management",
     "question": "How do agents determine when and where graceful degradation is appropriate?",
+    "appendix_question": "How do agents determine when and where graceful degradation is appropriate?",
     "intro": "Agents that detect degradation accurately through thorough telemetry and maintain consistent configuration across all instances make informed decisions about when to activate graceful degradation. Consistent configuration management helps agents have reliable, up-to-date information about capabilities and limitations across the agent environment.",
     "capability_intent": [
       "Agent configuration lives in a central, versioned, schema-validated source, so every instance runs the same current settings and drift is detected automatically.",
@@ -1394,6 +1418,7 @@
     "slug": "agentperf01",
     "name": "Strategic performance planning and measurement",
     "question": "How do you plan strategically for agent performance and establish measurement practices?",
+    "appendix_question": "How do you plan strategically for agent performance and establish measurement practices?",
     "intro": "Agentic AI systems introduce novel performance dimensions beyond traditional infrastructure metrics, including reasoning latency, token throughput, tool invocation efficiency, time-to-first-token, and overall task completion time. Strategic performance planning requires defining measurable success criteria with per-phase latency budgets, implementing thorough telemetry across the reasoning pipeline, systematically profiling overall latency to identify bottlenecks, and establishing performance testing practices that validate agent responsiveness under load. Without deliberate performance planning, organizations risk deploying agents that appear functional but fail to meet latency, throughput, or quality expectations at scale. For agent maturity models and lifecycle governance, see [AGENTOPS03-BP01](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops03-bp01.html). For business metrics feedback loops, see [AGENTOPS02-BP04](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops02-bp04.html). For agent evaluation frameworks, see [AGENTOPS06-BP02](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentops06-bp02.html).",
     "capability_intent": [
       "Performance success criteria are defined as measurable service level objectives per agent workload, covering latency (including time-to-first-token and end-to-end completion), throughput, quality, and efficiency dimensions that agent-specific reasoning, tool use, and multi-agent coordination introduce.",
@@ -1450,6 +1475,7 @@
     "slug": "agentperf02",
     "name": "Core processing and reasoning pipeline optimization",
     "question": "How do you optimize core agent processing and reasoning pipelines?",
+    "appendix_question": "How do you optimize core agent processing and cognitive pipelines?",
     "intro": "A well-optimized reasoning pipeline is what makes agents feel fast, responsive, and worth using. It is the difference between an agent that users rely on and one they abandon. The reasoning pipeline (encompassing perception, reasoning, planning, decision-making, and action execution) is the performance-critical path of every agentic AI system. Each iteration of the agent loop involves an LLM inference call, which is typically the most latency-intensive and resource-consuming operation in the stack. Optimizing core processing requires designing efficient reasoning pipelines that minimize unnecessary iterations, selecting models appropriate to task complexity, reducing execution path latency through architectural decisions, and optimizing streaming delivery to minimize perceived latency for user-facing interactions. Poor pipeline design produces agents that are slow, expensive, and unresponsive, regardless of how well the underlying infrastructure is provisioned. For the actor model as a foundational execution pattern, see [AGENTREL01-BP03](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentrel01-bp03.html).",
     "capability_intent": [
       "Reasoning pipelines are bounded by iteration caps and confidence-based early termination so simple tasks resolve in one or two iterations while complex tasks receive the iterations they need.",
@@ -1509,6 +1535,7 @@
     "slug": "agentperf03",
     "name": "Memory, context, and RAG optimization",
     "question": "How do you optimize memory management, context windows, and retrieval-augmented generation?",
+    "appendix_question": "How do you optimize memory management, context windows, and retrieval-augmented generation?",
     "intro": "Agentic AI systems depend on efficient access to contextual information through short-term conversational memory, long-term knowledge stores, retrieval-augmented generation pipelines, and LLM context windows to produce accurate, relevant responses. Memory and context management directly impacts both performance and quality. Overstuffing context windows increases inference latency and cost, and insufficient context leads to poor reasoning and hallucination. Optimizing this layer requires implementing tiered memory architectures that match storage and retrieval characteristics to access patterns, managing context windows to maximize information density without exceeding token limits, designing RAG pipelines that retrieve relevant information with minimal latency, and establishing caching strategies that reduce redundant retrievals. These optimizations matter because memory and context operations occur on every reasoning iteration, making their efficiency a multiplier across the agent lifecycle.",
     "capability_intent": [
       "Agent memory is organized into tiers that match storage technology to access pattern, so session reads and long-term semantic queries don't compete on the same hot path.",
@@ -1567,6 +1594,7 @@
     "slug": "agentperf04",
     "name": "Communication and protocol efficiency",
     "question": "How do you achieve efficient communication and protocol usage across agent interactions?",
+    "appendix_question": "How do you achieve efficient communication and protocol usage across agent interactions?",
     "intro": "Efficient communication between agents, tools, and services scales multi-agent systems from prototypes to production without latency growing alongside complexity. Agentic AI systems rely on communication between agents, tools, services, and users through various protocols and messaging patterns. The efficiency of these communication channels directly impacts agent performance. Every message exchange adds latency, every protocol handshake consumes time, and every serialization or deserialization operation uses compute resources. Optimizing communication requires selecting appropriate protocols for each interaction pattern, implementing efficient asynchronous messaging, and designing event-driven architectures that minimize polling and unnecessary processing.",
     "capability_intent": [
       "Agent-to-agent and agent-to-service communication uses asynchronous messaging by default, with synchronous calls reserved for interactions that genuinely require an immediate response.",
@@ -1623,6 +1651,7 @@
     "slug": "agentperf05",
     "name": "Workflow orchestration and multi-agent collaboration",
     "question": "How do you optimize workflow orchestration and multi-agent collaboration for performance?",
+    "appendix_question": "How do you optimize workflow orchestration and multi-agent collaboration for performance?",
     "intro": "The most impactful agent use cases (complex research, multi-domain customer service, and process automation) require multiple agents working together, and well-designed orchestration is what makes the whole greater than the sum of its parts. Complex agentic AI systems often involve multiple agents collaborating to solve tasks that exceed the capability of any single agent. Workflow orchestration coordinates these multi-agent interactions through patterns like supervisor-worker hierarchies, peer-to-peer collaboration, and pipeline-based task decomposition. The performance of multi-agent systems depends on how efficiently work is distributed, how agents are selected and invoked, how intermediate results are passed between agents, and how parallel execution is used to reduce latency.",
     "capability_intent": [
       "Multi-agent workflows run with minimal orchestration overhead, so end-to-end latency approaches the critical path of dependent operations rather than the sum of every step.",
@@ -1684,6 +1713,7 @@
     "slug": "agentperf06",
     "name": "Tool integration and framework optimization",
     "question": "How do you optimize tool integrations and framework usage for agent performance?",
+    "appendix_question": "How do you optimize tool integrations and framework usage for agent performance?",
     "intro": "Agents extend their capabilities by invoking external tools (APIs, databases, search engines, code interpreters, and other services) and operate within frameworks that provide the scaffolding for agent behavior. The performance of tool integrations directly impacts agent responsiveness because tool invocations occur within the agent reasoning loop, adding latency to every iteration that requires external capabilities. Framework selection and configuration similarly affect performance through their impact on agent loop efficiency, memory management, and orchestration overhead. Optimizing this layer requires selecting frameworks that minimize overhead, designing tool integration strategies that reduce invocation latency, implementing efficient tool discovery and selection mechanisms, and using meta-tools that compose multiple capabilities into single efficient operations.",
     "capability_intent": [
       "Tool invocations add minimal latency to the agent reasoning loop, and the selection experience is consistent across agents regardless of where a tool is implemented.",
@@ -1742,6 +1772,7 @@
     "slug": "agentperf07",
     "name": "Multi-tenancy and resource optimization",
     "question": "How do you manage multitenant performance isolation and optimize resource utilization?",
+    "appendix_question": "How do you manage multitenant performance isolation and optimize resource utilization?",
     "intro": "A well-designed multitenant agent service lets organizations serve many teams and customers from shared infrastructure while delivering consistent, predictable performance to each. Multitenant agent deployments must isolate one tenant's workload so it can't degrade the performance experienced by other tenants, and at the same time optimize overall resource utilization to control costs. This requires designing deployment models that provide appropriate isolation boundaries, implementing throttling and quota mechanisms that enforce fair resource allocation, and right-sizing serverless compute configurations for the bursty nature of agent workloads.",
     "capability_intent": [
       "Tenant deployments are organized into tiers with explicit performance, isolation, and cost profiles, rather than a single shape applied uniformly to every tenant.",
@@ -1799,6 +1830,7 @@
     "slug": "agentcost01",
     "name": "Reasoning and execution cost optimization",
     "question": "How do you optimize agent reasoning and execution costs?",
+    "appendix_question": "How do you optimize agent reasoning and execution costs?",
     "intro": "Teams that initially design cost-aware reasoning patterns can achieve predictable token budgets and avoid the cost growth that can emerge in agentic projects after launch. Agent reasoning cycles consume tokens through iterative plan-execute-verify-reflect loops, and multi-agent coordination adds multiplicative overhead. Unlike traditional applications where compute costs are predictable, agentic systems can accumulate cost in extended reasoning loops or inefficient agent-to-agent communication patterns.",
     "capability_intent": [
       "Agent reasoning cycles are bounded by explicit termination conditions and confidence-based exits, so token consumption is predictable and proportional to decision complexity.",
@@ -1858,6 +1890,7 @@
     "slug": "agentcost02",
     "name": "Model invocation and token cost optimization",
     "question": "How do you optimize agent model invocation and token consumption costs?",
+    "appendix_question": "How do you optimize agent model invocation and token consumption costs?",
     "intro": "Teams that right-size model selection to task complexity and optimize token consumption per invocation can improve their cost reductions without sacrificing agent decision quality. Foundation model costs can dominate agentic AI budgets, with agents potentially invoking expensive models for simple tasks or consuming excessive tokens through verbose reasoning.",
     "capability_intent": [
       "Model selection matches task complexity, with routine classification and formatting handled by cost-efficient models and premium models reserved for reasoning that genuinely needs them.",
@@ -1917,6 +1950,7 @@
     "slug": "agentcost03",
     "name": "Agent memory and state cost management",
     "question": "How do you manage agent memory and state costs efficiently?",
+    "appendix_question": "How do you manage agent memory and state costs efficiently?",
     "intro": "Agents with well-tiered memory architectures maintain reasoning quality while keeping storage and retrieval costs proportional to actual usage rather than total history size. Agent memory systems can become expensive through uncontrolled context accumulation, inefficient retrieval patterns, and persistent state storage. Long-running conversations consume growing context windows, and episodic memory retrieval can trigger vector database queries on every reasoning step.",
     "capability_intent": [
       "Memory storage is aligned to access frequency, with active context on high-performance stores and historical data on lower-cost tiers.",
@@ -1973,6 +2007,7 @@
     "slug": "agentcost04",
     "name": "Agent tool serving cost optimization",
     "question": "How do you optimize agent tool invocation costs?",
+    "appendix_question": "How do you optimize agent tool invocation?",
     "intro": "Agents that evaluate tool necessity before invocation and cache results for recurring patterns keep tool costs predictable even as autonomous capabilities expand. Agent tool usage can create unpredictable cost spikes through excessive API calls, failed invocation retry storms, and always-on infrastructure that scales poorly with demand.",
     "capability_intent": [
       "Tools are invoked only when needed, with agents designed to consult context, managed memory, and prior tool results before issuing new calls.",
@@ -2031,6 +2066,7 @@
     "slug": "agentcost05",
     "name": "Agent cost visibility and attribution",
     "question": "How do you implement cost attribution?",
+    "appendix_question": "How do you implement cost attribution?",
     "intro": "Organizations that instrument agent costs at the reasoning-cycle level make data-driven optimization decisions that compound savings across their entire agent fleet. Traditional cost tracking fails with agentic systems because costs span reasoning cycles, multi-agent workflows, tool invocations, and tenant boundaries that standard billing can't capture.",
     "capability_intent": [
       "Agent spending is attributable at the reasoning-cycle, agent, workflow, and tenant level rather than only at the account level.",
@@ -2090,6 +2126,7 @@
     "slug": "agentcost06",
     "name": "Agent discovery and deployment cost optimization",
     "question": "How do you optimize agent discovery, registry, and deployment costs?",
+    "appendix_question": "How do you optimize agent discovery registry and deployment costs?",
     "intro": "Teams that optimize agent lifecycle infrastructure through lightweight discovery, efficient versioning, and warm initialization help keep operational overhead from growing faster than the agent fleet itself. Agent infrastructure costs can escalate through inefficient discovery mechanisms, version proliferation, and cold start penalties.",
     "capability_intent": [
       "Agent discovery runs on consumption-based infrastructure, so registry costs track actual query and write activity rather than a fixed overhead for the fleet.",
@@ -2148,6 +2185,7 @@
     "slug": "agentcost07",
     "name": "Agent cost governance and continuous optimization",
     "question": "How do you establish agent cost governance and continuous optimization?",
+    "appendix_question": "How do you establish agent cost governance and continuous optimization?",
     "intro": "Organizations that implement layered cost controls (including budget enforcement, anomaly detection, and systematic optimization reviews) can deploy autonomous agents with spending bounded at multiple layers. Autonomous agents can generate unpredictable cost patterns that traditional budget controls don't address well.",
     "capability_intent": [
       "Agent spending is bounded at multiple layers, including per-cycle, per-task, and per-day budgets, with automatic cutoffs that stop runaway reasoning and tool invocation before material cost is incurred.",
@@ -2204,6 +2242,7 @@
     "slug": "agentsus01",
     "name": "Resource reusability",
     "question": "How do you build sustainable and repeatable frameworks for managing compute, memory, and other shareable agent resources?",
+    "appendix_question": "How do you build sustainable and repeatable frameworks for managing compute, memory, and other shareable agent resources?",
     "intro": "Organizations that invest in reusable agent infrastructure accelerate every subsequent project while reducing cumulative resource consumption. As agents are used more, the opportunity to optimize, share, and recycle agent resources increases. Shared resources pose a less significant burden on the overall architecture, creating a more sustainable workflow.",
     "capability_intent": [
       "Each agent encapsulates a single, well-defined capability with explicit resource boundaries, and those boundaries cascade through delegation to child agents so no subtree consumes resources without a defined cap.",
@@ -2262,6 +2301,7 @@
     "slug": "agentsus02",
     "name": "Resource right-sizing",
     "question": "How do I establish sustainable frameworks for agent dependencies?",
+    "appendix_question": "How do I establish sustainable frameworks for agent dependencies?",
     "intro": "Agents that right-size their dependencies (memory, caching, compute, and networking) deliver automation value without placing unsustainable load on the systems they depend on. Increased agent traffic increases the load on these dependencies. Sustainable frameworks help dependent systems scale proportionally to the benefit achieved through agentic automation.",
     "capability_intent": [
       "Memory and context infrastructure scales with actual contextual needs rather than worst-case estimates, with tiered storage and shared persistent context separating hot and cold access paths.",
@@ -2319,6 +2359,7 @@
     "slug": "agentsus03",
     "name": "Agent governance",
     "question": "How do I establish durable patterns for agent interactions with users and business processes?",
+    "appendix_question": "How do I establish durable patterns for agent interactions with users and business processes?",
     "intro": "Organizations that deliberately design how agents interact with users and business processes sustain both automation value and institutional expertise as adoption scales. As agents proliferate, there is a risk that internal expertise will be diluted or lost to fully automated processes. The patterns governing agent interactions must be deliberately designed and maintained, establishing reusable approaches based on real-world organizational needs.",
     "capability_intent": [
       "Organizational competencies are deliberately categorized across human-owned, agent-augmented, and fully automated tiers, with clear boundaries enforced by routing and guardrail policies.",

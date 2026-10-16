@@ -39,6 +39,14 @@ python3 -I tools/validate_content.py [--max-chars 2500]
 
 Fails (exit code 1) when: a JSON file does not parse; `manifest.json` lists a missing path or a wrong `total`; an item lacks a required field, has a duplicate id or an id that does not match its filename, an unknown pillar or focus area, or an invalid risk level; an item file exceeds the character limit; a focus area has fewer than 5 maturity levels; or an item has no matching `guidance/` file.
 
+## 2a. `tools/check_lens_updates.py` — detect new entries in the published Lens
+
+```bash
+python3 -I tools/check_lens_updates.py [--deep] [--refresh] [--json] [--root DIR] [--sleep 0.5]
+```
+
+Fetches `appendix-a.md`, `agentic-ai-lens.md` and `document-revisions.md` fresh (bypassing the cache) and compares pillars, focus-area questions, best-practice ids, titles, risk levels and the publication date with the repository. `--deep` regenerates everything into a temporary directory (`build_lens_content.py --out`) and diffs `data/` and `guidance/` file by file. Exit codes: 0 no updates, 1 updates detected, 2 the check could not run. `.github/workflows/check-lens-updates.yml` runs it on every push (and on demand) and opens an issue labelled `lens-update` when it exits 1.
+
 ## 2b. `tools/api_smoke_test.mjs` — read-only API test
 
 ```bash

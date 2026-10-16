@@ -1,0 +1,83 @@
+name: Check for Lens updates
+
+# On every push, checks that the published AWS Well-Architected Agentic AI Lens
+# still matches the generated content in this repository. Fails (and opens an
+# issue) when AWS has published new or changed entries, so the content can be
+# regenerated. Can also be run manually from the Actions tab (deep mode optional).
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      deep:
+        description: "Also regenerate everything and diff file by file (slower, ~200 requests)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-lens-updates:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compare the published Lens with the repository content
+        id: check
+        run: |
+          set +e
+          ARGS="--json"
+          if [ "${{ inputs.deep }}" = "true" ]; then ARGS="$ARGS --deep --refresh"; fi
+          python3 -I tools/check_lens_updates.py $ARGS > lens-updates.json
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          python3 -I tools/check_lens_updates.py ${{ inputs.deep == true && '--deep' || '' }} || true
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lens-updates-report
+          path: lens-updates.json
+
+      - name: Open or update an issue when updates are detected
+        if: steps.check.outputs.exit_code == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SUMMARY=$(python3 -I - <<'PY'
+          import json
+          r = json.load(open("lens-updates.json"))
+          c = r["changes"]
+          lines = [f"The published Lens (publication date: {r['upstream']['published']}) differs from the generated content.", ""]
+          lines.append(f"Upstream counts: {r['upstream']['counts']}  |  Repository counts: {r['local']['counts']}")
+          for key in ("new_pillars", "new_focus_areas", "new_best_practices", "removed_focus_areas", "removed_best_practices", "changed_focus_areas", "changed_best_practices", "publication"):
+              entries = c.get(key) or []
+              if entries:
+                  lines.append(f"\n**{key.replace('_', ' ').capitalize()}** ({len(entries)})")
+                  for e in entries[:20]:
+                      lines.append(f"- `{e.get('id') or e.get('field') or e}` " + (e.get('title') or e.get('question') or ''))
+          if r.get("deep"):
+              d = r["deep"]
+              lines.append(f"\n**Deep diff**: {len(d['added_files'])} added, {len(d['removed_files'])} removed, {len(d['changed_files'])} changed file(s)")
+          lines += ["", "Regenerate with:", "```bash", "python3 -I tools/build_lens_content.py --refresh --clean --allow-count-drift", "python3 -I tools/validate_content.py", "```", "Then update `EXPECTED` in `tools/build_lens_content.py` and `tools/validate_content.py` if the counts changed."]
+          print("\n".join(lines))
+          PY
+          )
+          TITLE="Agentic AI Lens update detected ($(date -u +%Y-%m-%d))"
+          EXISTING=$(gh issue list --repo "$GITHUB_REPOSITORY" --label lens-update --state open --json number --jq '.[0].number')
+          gh label create lens-update --repo "$GITHUB_REPOSITORY" --color D93F0B --description "The published Lens changed" 2>/dev/null || true
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body "$SUMMARY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --label lens-update --body "$SUMMARY"
+          fi
+
+      - name: Fail the run when updates are detected
+        if: steps.check.outputs.exit_code != '0'
+        run: |
+          echo "check_lens_updates.py exited with ${{ steps.check.outputs.exit_code }} (1 = updates detected, 2 = check failed)"
+          exit 1

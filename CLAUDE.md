@@ -34,6 +34,8 @@ python3 -I tools/build_lens_content.py   # fetch (cached in .cache/lens-docs/), 
 python3 -I tools/validate_content.py     # offline consistency checks, also run by CI
 ```
 
+`python3 -I tools/check_lens_updates.py` (optionally `--deep --refresh`, `--json`) compares the published Lens with the repository and exits 1 when new or changed entries exist; `.github/workflows/check-lens-updates.yml` runs it on every push and opens a `lens-update` issue when it exits 1. `build_lens_content.py --out DIR` writes to another root (used by the deep check).
+
 `build_lens_content.py` is standard-library only (Python 3.9+). It enumerates pillars, questions and best practices from `appendix-a.md`, parses each focus-area and best-practice page, and emits deterministic output (re-running produces no diff). Flags: `--refresh`, `--full`, `--clean`, `--sleep`, `--allow-count-drift`. It asserts the known release counts (6 / 41 / 150, risk 90 High / 59 Medium / 1 Low); update `EXPECTED` in the script and `tools/validate_content.py` when AWS revises the Lens.
 
 ## Read-only API (Vercel Function)
@@ -68,7 +70,7 @@ Single-page app with no build step — vanilla HTML/CSS/JS served as static file
 
 - `data/manifest.json` — `{ "lens", "focus_areas", "items": [150 paths in pillar order], "total": 150 }`
 - `data/lens/lens.json` — lens metadata: abstract, design principles, pillars (intro, pillar design principles, focus-area ids), roadmap reading paths, definitions, counts, publication date
-- `data/lens/focus_areas.json` — 41 records: `id`, `pillar`, `name`, `question`, `intro`, `capability_intent[]`, `maturity_levels[]` (5 rows), `common_issues[]`, `best_practices[]`, `roadmap[]`, `doc_url`
+- `data/lens/focus_areas.json` — 41 records: `id`, `pillar`, `name`, `question` (from the focus-area page), `appendix_question` (Appendix A wording, used by the update checker), `intro`, `capability_intent[]`, `maturity_levels[]` (5 rows), `common_issues[]`, `best_practices[]`, `roadmap[]`, `doc_url`
 - `data/<pillar-slug>/<bp-id>.json` — one item per best practice (pillar slugs: `operational-excellence`, `security`, `reliability`, `performance-efficiency`, `cost-optimization`, `sustainability`)
 - `guidance/<pillar-slug>/<bp-id>.md` — condensed implementation guidance rendered in the "Implementation guidance" modal (1:1 with the item files)
 

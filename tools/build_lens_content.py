@@ -38,7 +38,7 @@ USER_AGENT = "agentic-ai-lens-self-assessment/1.0 (content build script; stdlib 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CACHE_DIR = REPO_ROOT / ".cache" / "lens-docs"
-DATA_DIR = REPO_ROOT / "data"
+DATA_DIR = REPO_ROOT / "data"          # default output locations; main() honours --out
 LENS_DIR = DATA_DIR / "lens"
 GUIDANCE_DIR = REPO_ROOT / "guidance"
 
@@ -626,7 +626,11 @@ def main() -> int:
     ap.add_argument("--full", action="store_true", help="emit full implementation guidance and all resource groups")
     ap.add_argument("--clean", action="store_true", help="delete generated files that are no longer produced")
     ap.add_argument("--allow-count-drift", action="store_true", help="do not fail when pillar/question/BP counts differ from the known lens release")
+    ap.add_argument("--out", metavar="DIR", default=None, help="write data/ and guidance/ under DIR instead of the repository root (used by tools/check_lens_updates.py)")
     args = ap.parse_args()
+
+    out_root = Path(args.out).resolve() if args.out else REPO_ROOT
+    data_dir, lens_dir, guidance_dir = out_root / "data", out_root / "data" / "lens", out_root / "guidance"
 
     fetcher = Fetcher(args.sleep, args.refresh)
     print("Fetching Appendix A ...")
@@ -675,7 +679,8 @@ def main() -> int:
                 fa["question"] = q["question"]
             fa_record = {
                 "id": fa["id"], "pillar": pillar["name"], "slug": fa["slug"], "name": fa["name"],
-                "question": fa["question"], "intro": fa["intro"], "capability_intent": fa["capability_intent"],
+                "question": fa["question"], "appendix_question": q["question"],
+                "intro": fa["intro"], "capability_intent": fa["capability_intent"],
                 "maturity_levels": fa["maturity_levels"], "common_issues": fa["common_issues"],
                 "best_practices": [b["id"] for b in q["best_practices"]],
                 "roadmap": roadmap_by_fa.get(fa["id"], []), "doc_url": fa["doc_url"],
@@ -684,9 +689,9 @@ def main() -> int:
             for bp_ref in q["best_practices"]:
                 bp = parse_bp(fetcher.get(bp_ref["slug"]), bp_ref)
                 rel_json = f"data/{pillar['slug']}/{bp['slug']}.json"
-                items.append((REPO_ROOT / rel_json, build_item(bp, pillar, fa_record)))
+                items.append((out_root / rel_json, build_item(bp, pillar, fa_record)))
                 manifest_items.append(rel_json)
-                guidance_files.append((GUIDANCE_DIR / pillar["slug"] / f"{bp['slug']}.md",
+                guidance_files.append((guidance_dir / pillar["slug"] / f"{bp['slug']}.md",
                                        build_guidance_md(bp, pillar, fa_record, published, args.full)))
             print(f"  {q['id']}: {len(q['best_practices'])} best practices")
 
@@ -712,15 +717,15 @@ def main() -> int:
     for path, text in guidance_files:
         write_text(path, text)
         generated.add(path)
-    write_text(LENS_DIR / "focus_areas.json", dump_json(focus_areas))
-    write_text(LENS_DIR / "lens.json", dump_json(lens))
+    write_text(lens_dir / "focus_areas.json", dump_json(focus_areas))
+    write_text(lens_dir / "lens.json", dump_json(lens))
     manifest = {"lens": "data/lens/lens.json", "focus_areas": "data/lens/focus_areas.json",
                 "items": manifest_items, "total": len(manifest_items)}
-    write_text(DATA_DIR / "manifest.json", dump_json(manifest))
+    write_text(data_dir / "manifest.json", dump_json(manifest))
 
     if args.clean:
         removed = 0
-        for base in [DATA_DIR / p["slug"] for p in PILLARS] + [GUIDANCE_DIR / p["slug"] for p in PILLARS]:
+        for base in [data_dir / p["slug"] for p in PILLARS] + [guidance_dir / p["slug"] for p in PILLARS]:
             if not base.exists():
                 continue
             for f in base.iterdir():

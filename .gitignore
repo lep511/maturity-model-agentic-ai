@@ -94,3 +94,7 @@ desktop.ini
 large_files.json
 links_output.json
 links_checked.json
+
+# Python
+__pycache__/
+*.pyc
