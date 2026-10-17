@@ -60,9 +60,11 @@ The function reads the generated `data/` and `guidance/` files at runtime (`incl
 │   ├── router.mjs             # Routes /api/* by pathname, shapes responses
 │   └── openapi.mjs            # OpenAPI 3.1 document builder
 ├── css/
+│   ├── fonts.css              # @font-face for the self-hosted Inter + JetBrains Mono variable fonts
 │   ├── styles.css             # Main styles (pillar colors --r1..--r6, Lens components)
 │   ├── responsive.css         # Mobile breakpoints
 │   └── print.css              # Print media styles
+├── fonts/                     # Inter + JetBrains Mono (variable woff2, latin + latin-ext) and their OFL licenses
 ├── js/
 │   ├── app.js                 # Core logic: data loading, filters, scoring, radar, sessions, CSV, modals
 │   └── print.js               # Print preview modal
@@ -165,6 +167,10 @@ python3 -I tools/validate_content.py
 and, if the counts changed, update `EXPECTED` in `tools/build_lens_content.py` and `tools/validate_content.py`.
 
 **Automated check.** `.github/workflows/check-lens-updates.yml` runs the light check on every push to the repository (and on demand from the Actions tab, optionally in deep mode). When updates are detected the run fails, uploads `lens-updates.json` as an artifact and opens an issue labelled `lens-update` (or comments on the open one) with the list of changes and the regeneration commands.
+
+## Typography
+
+The UI uses **Inter** (text) and **JetBrains Mono** (codes and labels), self-hosted from `fonts/` as variable woff2 files (latin and latin-ext subsets, weight axis 400 to 800) declared in `css/fonts.css`. The app makes no request to Google Fonts. The CSS only uses weights 400, 600 and 800 through the `--font-sans` / `--font-mono` custom properties. Both families are licensed under the SIL Open Font License; the license texts ship next to the files. To update a font, download the new woff2 subsets and replace the files, keeping the names referenced in `css/fonts.css`.
 
 ## Run locally
 

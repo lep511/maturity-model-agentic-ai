@@ -47,9 +47,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
 }
 .print-modal-title svg { flex-shrink: 0; }
@@ -87,7 +87,7 @@
   margin-bottom: 1.5rem;
 }
 .print-opt-heading {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -178,7 +178,7 @@
 .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
 
 .print-sel-all {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--aws);
   cursor: pointer;
@@ -205,7 +205,7 @@
   flex-shrink: 0;
 }
 .print-preview-label {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -216,7 +216,7 @@
 }
 .print-preview-count {
   font-size: 10px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   color: var(--text-secondary);
   background: var(--bg-panel);
   padding: 2px 8px;
@@ -237,7 +237,7 @@
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   padding: 2.5rem 2.5rem 3rem;
   color: #1a1a2e;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 11px;
   max-width: 820px;
   margin: 0 auto;
@@ -251,7 +251,7 @@
   margin-bottom: 1.5rem;
 }
 .print-doc-logo { display: flex; align-items: center; gap: 10px; }
-.print-doc-brand { font-size: 18px; font-weight: 900; color: #1a1a2e; letter-spacing: -0.02em; }
+.print-doc-brand { font-size: 18px; font-weight: 800; color: #1a1a2e; letter-spacing: -0.02em; }
 .print-doc-brand span { color: #FF9900; }
 .print-doc-sub { font-size: 10px; color: #666; margin-top: 2px; }
 .print-doc-meta { text-align: right; font-size: 10px; color: #666; line-height: 1.7; }
@@ -271,7 +271,7 @@
 }
 .print-summary-box .psb-val {
   font-size: 20px;
-  font-weight: 900;
+  font-weight: 800;
   color: #FF9900;
   line-height: 1;
   margin-bottom: 3px;
@@ -285,7 +285,7 @@
 
 .print-phase-heading {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: #1a1a2e;
   padding: 6px 10px;
   border-radius: 4px;
@@ -296,14 +296,14 @@
 }
 .print-phase-heading .ph-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 10px;
   letter-spacing: 0.05em;
 }
 .print-cap-heading {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   color: #555;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -322,7 +322,7 @@
 .print-table th {
   background: #f5f6fa;
   color: #555;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 10px;
@@ -343,7 +343,7 @@
   padding: 1px 7px;
   border-radius: 10px;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
 }
 .chip-100 { background: #e6f9f0; color: #00875a; }
@@ -360,7 +360,7 @@
   padding: 1px 7px;
   border-radius: 10px;
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
   letter-spacing: 0.03em;
 }
@@ -385,7 +385,7 @@
   margin-bottom: 4px;
 }
 .print-card-id {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   color: #888;
   background: #f0f2f5;
@@ -446,7 +446,7 @@
 .print-footer-info {
   font-size: 11px;
   color: var(--text-dim);
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
 }
 .print-footer-info span { color: var(--aws); }
 .print-modal-actions { display: flex; gap: 10px; }
@@ -457,9 +457,9 @@
   color: #000;
   border: none;
   border-radius: 7px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   display: flex;          /* btn-primary uses inline — this needs flex for icon+text */
   align-items: center;
@@ -499,7 +499,7 @@
     display: block !important;
     background: white;
     color: #1a1a2e;
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--font-sans);
     font-size: 10px;
     padding: 1cm;
   }

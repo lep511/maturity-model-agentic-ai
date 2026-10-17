@@ -266,7 +266,7 @@ function renderSessionList() {
 
   if (sortedSessions.length > 10) {
     const more = document.createElement('div');
-    more.style.cssText = 'text-align:center;padding:8px;font-size:10px;font-family:Roboto Mono,monospace;color:var(--text-dim);border-top:1px solid var(--border);margin-top:4px';
+    more.style.cssText = 'text-align:center;padding:8px;font-size:10px;font-family:var(--font-mono);color:var(--text-dim);border-top:1px solid var(--border);margin-top:4px';
     more.textContent = `+${sortedSessions.length - 10} more sessions (oldest hidden)`;
     list.appendChild(more);
   }
@@ -506,7 +506,7 @@ function renderPillarChrome() {
   if (progress) {
     progress.innerHTML = PILLARS.map((p, i) => `
       <div class="progress-phase-row" title="${escapeHtml(p)}">
-        <span class="progress-phase-label p${i}-color" style="font-size:9px;font-family:'Roboto Mono'">${PILLAR_ABBR[i]}</span>
+        <span class="progress-phase-label p${i}-color" style="font-size:9px;font-family:var(--font-mono)">${PILLAR_ABBR[i]}</span>
         <div class="progress-track"><div class="progress-fill p${i}-fill" id="rbar-p${i}" style="width:0%"></div></div>
         <span class="progress-pct p${i}-color" id="rpct-p${i}">0%</span>
       </div>`).join('');
@@ -1039,7 +1039,7 @@ function renderRadar() {
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('dominant-baseline', 'middle');
     text.setAttribute('font-size', '11');
-    text.setAttribute('font-family', 'Roboto Mono, monospace');
+    text.setAttribute('font-family', 'JetBrains Mono, monospace');
     text.setAttribute('fill', '#3d5a7e');
     text.textContent = 'No assessments yet';
     svg.appendChild(text);
@@ -1057,7 +1057,7 @@ function renderRadar() {
     text.setAttribute('text-anchor', 'middle');
     text.setAttribute('dominant-baseline', 'middle');
     text.setAttribute('font-size', '12');
-    text.setAttribute('font-family', 'Arial, sans-serif');
+    text.setAttribute('font-family', 'Inter, sans-serif');
     text.setAttribute('fill', '#9db1c9ff');
     text.textContent = PILLAR_ABBR[i];
     const title = document.createElementNS(NS, 'title');
@@ -1269,7 +1269,7 @@ async function openGuidanceModal(itemId) {
       guidanceCache[itemId] = await fetchGuidance(item);
     } catch (err) {
       body.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--red)">Could not load the implementation guidance.${item.doc_url ? ` <a href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">Open the official page</a>.` : ''}
-        <div style="margin-top:12px;font-family:'Roboto Mono',monospace;font-size:10px;color:var(--text-dim);word-break:break-all">${escapeHtml(err && err.message ? err.message : 'unknown error')}</div></div>`;
+        <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:var(--text-dim);word-break:break-all">${escapeHtml(err && err.message ? err.message : 'unknown error')}</div></div>`;
       return;
     }
   }
@@ -1675,7 +1675,7 @@ loadData().then(() => {
           <circle cx="24" cy="24" r="22" stroke="#ff4757" stroke-width="2" fill="rgba(255,71,87,0.1)"/>
           <path d="M24 14v14M24 32v2" stroke="#ff4757" stroke-width="3" stroke-linecap="round"/>
         </svg>
-        <p style="font-size:18px;font-weight:700;margin-bottom:12px;color:#ff4757">Failed to load the Lens data</p>
+        <p style="font-size:18px;font-weight:600;margin-bottom:12px;color:#ff4757">Failed to load the Lens data</p>
         <p style="font-size:13px;color:#7a9cc4;margin-bottom:16px;line-height:1.6">${escapeHtml(err.message)}</p>
         <p style="font-size:11px;color:#3d5a7e;line-height:1.6">
           Make sure you're running via a local server:<br>

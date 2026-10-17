@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AWS Well-Architected Agentic AI Lens — Self-Assessment</title>
   <meta name="description" content="Unofficial self-assessment aid for the 150 best practices of the AWS Well-Architected Agentic AI Lens, organized into 41 focus areas across the 6 Well-Architected pillars.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/inter-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/jetbrains-mono-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11/styles/github-dark.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/print.css">
@@ -23,7 +24,7 @@
   background:#070c1a;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:20px;
-  font-family:'Roboto',sans-serif;
+  font-family:var(--font-sans);
 ">
   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="animation:spin 1.2s linear infinite">
     <circle cx="24" cy="24" r="20" stroke="#1e3050" stroke-width="4"/>
@@ -161,7 +162,7 @@
             stroke-dasharray="314.2" stroke-dashoffset="314.2"
             transform="rotate(-90 60 60)"
             style="transition: stroke-dashoffset 0.7s ease;"/>
-          <text x="60" y="65" text-anchor="middle" font-size="22" font-weight="900" fill="#e8eef8" font-family="Roboto,sans-serif" id="scoreRingText">0%</text>
+          <text x="60" y="65" text-anchor="middle" font-size="22" font-weight="800" fill="#e8eef8" font-family="Inter,sans-serif" id="scoreRingText">0%</text>
         </svg>
         <div class="score-ring-label" id="scoreLabel">No assessments yet</div>
       </div>

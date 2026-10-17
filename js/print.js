@@ -15,7 +15,7 @@ function openPrintPreview() {
     lbl.className = 'print-checkbox-row';
     lbl.title = `${fa.id}: ${fa.question}`;
     lbl.innerHTML = `<input type="checkbox" class="cap-chk" value="${escapeHtml(fa.id)}" checked onchange="refreshPreview()">
-      <span class="print-checkbox-label" style="font-size:11px"><span style="font-family:'Roboto Mono',monospace;font-size:9px;color:var(--text-dim)">${faShort(fa.id)}</span> ${escapeHtml(fa.name)}</span>`;
+      <span class="print-checkbox-label" style="font-size:11px"><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-dim)">${faShort(fa.id)}</span> ${escapeHtml(fa.name)}</span>`;
     capBox.appendChild(lbl);
   });
   document.getElementById('printModal').classList.add('open');
@@ -205,7 +205,7 @@ function buildPrintDoc(opts, data) {
     FOCUS_AREAS.filter(fa => fa.pillar === pillar).forEach(fa => {
       if (!grouped[pillar][fa.id]) return;
       const items = grouped[pillar][fa.id];
-      html += `<div class="print-cap-heading"><em style="font-size:8px;font-style:italic;font-weight:700">${faShort(fa.id)}</em> — ${escapeHtml(fa.name)}${fa.question ? `<span class="print-fa-question">${escapeHtml(fa.id)}: ${escapeHtml(fa.question)}</span>` : ''}</div>`;
+      html += `<div class="print-cap-heading"><em style="font-size:8px;font-style:italic;font-weight:600">${faShort(fa.id)}</em> — ${escapeHtml(fa.name)}${fa.question ? `<span class="print-fa-question">${escapeHtml(fa.id)}: ${escapeHtml(fa.question)}</span>` : ''}</div>`;
 
       if (opts.format === 'table') {
         html += `<table class="print-table"><thead><tr>

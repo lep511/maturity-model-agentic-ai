@@ -25,6 +25,8 @@
   --r5: #ffd93d; /* Cost optimization */
   --r6: #3ecf8e; /* Sustainability */
   --card-scale: 1; /* card text size multiplier, set by adjustCardFontScale() */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +34,7 @@
 body {
   background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   min-height: 100vh;
   overflow-x: hidden;
@@ -92,8 +94,8 @@ header {
 .brand-icon svg { position: relative; z-index: 1; }
 
 .brand-text { display: flex; flex-direction: column; }
-.brand-label { font-size: 10px; font-family: 'Roboto Mono', monospace; color: var(--aws); letter-spacing: 0.15em; text-transform: uppercase; }
-.brand-title { font-family: 'Roboto', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+.brand-label { font-size: 10px; font-family: var(--font-mono); color: var(--aws); letter-spacing: 0.15em; text-transform: uppercase; }
+.brand-title { font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.01em; }
 
 .header-actions { display: flex; gap: 8px; align-items: center; }
 
@@ -104,9 +106,9 @@ header {
   color: var(--text-secondary);
   border-radius: 6px;
   cursor: pointer;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s;
   letter-spacing: 0.03em;
 }
@@ -119,9 +121,9 @@ header {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.05em;
   transition: all 0.2s;
 }
@@ -174,7 +176,7 @@ header {
 
 .session-date {
   font-size: 11px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   color: var(--text-secondary);
   line-height: 1.25;
 }
@@ -239,7 +241,7 @@ header {
   padding: 12px 14px;
   border-bottom: 1px solid var(--border);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
@@ -321,7 +323,7 @@ header {
 
 .session-item-date {
   font-size: 10px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   color: var(--text-dim);
 }
 
@@ -360,7 +362,7 @@ header {
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 13px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   outline: none;
   transition: border-color 0.2s;
 }
@@ -448,7 +450,7 @@ header {
 .hero-main h1 { margin-bottom: 0; }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--aws);
   letter-spacing: 0.12em;
@@ -461,7 +463,7 @@ header {
   background: var(--aws);
 }
 h1 {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 800;
   line-height: 1.1;
@@ -513,7 +515,7 @@ h1 span { color: var(--aws); }
 }
 
 .stat-label {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -522,9 +524,9 @@ h1 span { color: var(--aws); }
 }
 
 .stat-name {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   white-space: nowrap;
@@ -546,9 +548,9 @@ h1 span { color: var(--aws); }
 .phase-stat .stat-bar-fill { background: var(--pc); }
 
 .stat-pct {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--pc);
 }
 
@@ -579,7 +581,7 @@ h1 span { color: var(--aws); }
   margin-bottom: 0.5rem;
 }
 .sidebar-heading {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -615,14 +617,14 @@ h1 span { color: var(--aws); }
 .cap-nav-label {
   font-size: 12px;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .cap-nav-count {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-card);
   background: var(--bg-card);
@@ -644,7 +646,7 @@ h1 span { color: var(--aws); }
   background: transparent;
   color: var(--text-dim);
   font-size: 10px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
@@ -679,9 +681,9 @@ h1 span { color: var(--aws); }
 }
 
 .toolbar-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
 }
 .toolbar-badge {
@@ -689,7 +691,7 @@ h1 span { color: var(--aws); }
   align-items: center;
   gap: 4px;
   margin-left: 8px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 10px;
@@ -714,7 +716,7 @@ h1 span { color: var(--aws); }
   outline: none;
   color: var(--text-primary);
   font-size: 13px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   width: 230px;
 }
 .filter-search input::placeholder { color: var(--text-dim); }
@@ -808,22 +810,22 @@ h1 span { color: var(--aws); }
   border-radius: 6px;
   display: grid; place-items: center;
   font-size: 10px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-weight: 800;
   letter-spacing: 0.02em;
   white-space: nowrap;
   flex-shrink: 0;
 }
 .cap-group-name {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--text-secondary);
 }
 .cap-group-phase-badge {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 7px;
   border-radius: 10px;
@@ -837,7 +839,7 @@ h1 span { color: var(--aws); }
 .phase-tag-5 { background: rgba(62,207,142,0.1); color: var(--r6); border: 1px solid rgba(62,207,142,0.25); }
 
 .rec-id {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-dim);
   background: var(--bg-panel);
@@ -851,7 +853,7 @@ h1 span { color: var(--aws); }
 .rec-info { flex: 1; min-width: 0; }
 .rec-title {
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
   line-height: 1.4;
@@ -867,7 +869,7 @@ h1 span { color: var(--aws); }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-primary);               /* same light gray as the best-practice title */
   background: rgba(213,222,231,0.07);      /* tints derived from --text-primary (#d5dee7) */
@@ -890,8 +892,8 @@ h1 span { color: var(--aws); }
   border-radius: 7px;          
   color: var(--text-secondary);
   font-size: 12px;             
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;           
+  font-family: var(--font-sans);
+  font-weight: 600;           
   letter-spacing: 0.01em;      
   padding: 7px 28px 7px 12px;
   cursor: pointer;
@@ -959,7 +961,7 @@ h1 span { color: var(--aws); }
 .rec-detail-inner { padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .rec-detail-block { background: var(--bg-panel); border-radius: 6px; padding: 10px 12px; }
 .detail-label {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -981,7 +983,7 @@ h1 span { color: var(--aws); }
   border-radius: 6px;
   color: var(--text-card);
   font-size: 11px;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   padding: 8px 10px;
   resize: vertical;
   min-height: 52px;
@@ -1020,9 +1022,9 @@ h1 span { color: var(--aws); }
   padding: 1.5rem 1.25rem 1.25rem;
 }
 .panel-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-secondary);
@@ -1068,7 +1070,7 @@ h1 span { color: var(--aws); }
   transition: width 0.5s;
 }
 .cap-score-val {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-dim);
   width: 28px;
@@ -1085,9 +1087,9 @@ h1 span { color: var(--aws); }
 }
 .score-ring-svg { margin-bottom: 12px; }
 .score-ring-val {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 2rem;
-  font-weight: 900;
+  font-weight: 800;
   color: var(--aws);
   letter-spacing: -0.02em;
   line-height: 1;
@@ -1110,7 +1112,7 @@ h1 span { color: var(--aws); }
   margin-bottom: 10px;
 }
 .progress-phase-label {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   width: 20px;
   text-align: center;
@@ -1126,7 +1128,7 @@ h1 span { color: var(--aws); }
 .p4-fill { background: var(--r5); }
 .p5-fill { background: var(--r6); }
 .progress-pct {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   width: 32px;
   text-align: right;
@@ -1235,7 +1237,7 @@ h1 span { color: var(--aws); }
 }
 
 /* RADAR SVG */
-svg.radar text { font-family: 'Roboto Mono', monospace; }
+svg.radar text { font-family: var(--font-mono); }
 
 /* MODAL */
 #confirmModal {
@@ -1280,9 +1282,9 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   margin-bottom: 1.25rem;
 }
 .modal-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 0.5rem;
   letter-spacing: -0.01em;
@@ -1305,9 +1307,9 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   border: 1px solid var(--border-bright);
   border-radius: 7px;
   color: var(--text-secondary);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1318,9 +1320,9 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   border: none;
   border-radius: 7px;
   color: #fff;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
@@ -1382,9 +1384,9 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   flex-shrink: 0;
 }
 .solution-modal-title {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--aws);
 }
 .solution-modal-close {
@@ -1417,7 +1419,7 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
 .solution-modal-body h3 {
   color: var(--text-primary);
   margin: 1.25rem 0 0.5rem;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
 }
 .solution-modal-body h1 { font-size: 18px; color: var(--aws); }
 .solution-modal-body h2 { font-size: 15px; }
@@ -1427,7 +1429,7 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   background: var(--bg-deep);
   padding: 2px 6px;
   border-radius: 4px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--aws);
 }
@@ -1486,7 +1488,7 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   border: 1px solid var(--aws);
   border-radius: 6px;
   color: var(--aws);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
@@ -1515,7 +1517,7 @@ svg.radar text { font-family: 'Roboto Mono', monospace; }
   padding: 10px 16px;
   font-size: 12px;
   color: var(--green);
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   opacity: 0;
   transform: translateY(8px);
@@ -1550,7 +1552,7 @@ footer {
   padding: 1.5rem 2.5rem;
   color: var(--text-dim);
   font-size: 11px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   border-top: 1px solid var(--border);
 }
 footer span { color: var(--aws); }
@@ -1614,9 +1616,9 @@ footer span { color: var(--aws); }
   border: 1px solid var(--border-bright);
   border-radius: 7px;
   color: var(--text-secondary);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1643,9 +1645,9 @@ footer span { color: var(--aws); }
   border: 1px solid rgba(255, 71, 87, 0.3);
   border-radius: 7px;
   color: var(--red);
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1685,9 +1687,9 @@ footer span { color: var(--aws); }
 }
 .fa-nav-pillar-name {
   flex: 1;
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-sans);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   white-space: nowrap;
@@ -1714,7 +1716,7 @@ footer span { color: var(--aws); }
   display: inline-grid; place-items: center;
   min-width: 44px; height: 20px; padding: 0 6px;
   border: 1px solid transparent; border-radius: 4px;
-  font-family: 'Roboto Mono', monospace; font-size: 9px; font-weight: 700;
+  font-family: var(--font-mono); font-size: 9px; font-weight: 600;
   letter-spacing: 0.02em; white-space: nowrap; flex-shrink: 0;
 }
 
@@ -1729,7 +1731,7 @@ footer span { color: var(--aws); }
   letter-spacing: 0;
 }
 .fa-info-btn {
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 3px 9px;
   border-radius: 20px;
@@ -1747,7 +1749,7 @@ footer span { color: var(--aws); }
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   padding: 1px 7px;
   border-radius: 4px;
@@ -1762,7 +1764,7 @@ footer span { color: var(--aws); }
 .roadmap-tag {
   display: inline-flex;
   align-items: center;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   padding: 1px 6px;
   border-radius: 4px;
@@ -1788,7 +1790,7 @@ footer span { color: var(--aws); }
 .fa-modal-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .fa-modal-question {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   border-left: 3px solid var(--aws);
   padding-left: 12px;
@@ -1812,23 +1814,23 @@ footer span { color: var(--aws); }
 .maturity-table th {
   background: var(--bg-card);
   color: var(--text-secondary);
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-.maturity-table .ml-level { font-family: 'Roboto Mono', monospace; color: var(--aws); font-weight: 700; text-align: center; width: 40px; }
-.maturity-table .ml-name { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+.maturity-table .ml-level { font-family: var(--font-mono); color: var(--aws); font-weight: 600; text-align: center; width: 40px; }
+.maturity-table .ml-name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
 .fa-bp-list li { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .fa-bp-list a { text-decoration: none; }
 .fa-bp-list a:hover { text-decoration: underline; }
-.fa-bp-score { font-family: 'Roboto Mono', monospace; font-size: 10px; color: var(--text-dim); margin-left: auto; }
+.fa-bp-score { font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); margin-left: auto; }
 
 /* About modal */
 .about-section { margin-bottom: 1.5rem; }
 .about-section h3 { margin-top: 0; }
 .about-lead { font-size: 14px; line-height: 1.65; color: var(--text-primary); }
-.about-counts { font-family: 'Roboto Mono', monospace; font-size: 11px; color: var(--aws); letter-spacing: 0.04em; }
+.about-counts { font-family: var(--font-mono); font-size: 11px; color: var(--aws); letter-spacing: 0.04em; }
 .about-note, .about-source { font-size: 11px; color: var(--text-dim); line-height: 1.5; }
 .about-pillar, .about-definitions {
   border: 1px solid var(--border);
@@ -1839,18 +1841,18 @@ footer span { color: var(--aws); }
 }
 .about-pillar summary, .about-definitions summary {
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .about-pillar h4 { margin: 0.75rem 0 0.25rem; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); }
-.about-count { margin-left: auto; font-family: 'Roboto Mono', monospace; font-size: 10px; color: var(--text-dim); font-weight: 400; }
-.about-fa-list a { font-family: 'Roboto Mono', monospace; font-size: 11px; }
+.about-count { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); font-weight: 400; }
+.about-fa-list a { font-family: var(--font-mono); font-size: 11px; }
 .about-roadmap-path { margin-bottom: 1rem; }
 .about-roadmap-path p { margin: 6px 0; color: var(--text-secondary); }
-.about-dl dt { font-weight: 700; color: var(--text-primary); margin-top: 0.75rem; }
+.about-dl dt { font-weight: 600; color: var(--text-primary); margin-top: 0.75rem; }
 .about-dl dd { margin: 0.2rem 0 0; color: var(--text-secondary); font-size: 12px; line-height: 1.55; }
 .solution-modal-footer { gap: 12px; align-items: center; }
 .solution-modal-footer .modal-doc-link { margin-right: auto; font-size: 12px; color: var(--aws); text-decoration: none; }
@@ -1873,7 +1875,7 @@ footer span { color: var(--aws); }
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1;
   padding: 10px 13px;
@@ -1910,9 +1912,9 @@ footer span { color: var(--aws); }
 /* FILTERED tag: clearly separated from the item count, with the reset button right next to it */
 .filtered-tag {
   margin-left: 28px;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--aws);
   vertical-align: middle;
@@ -1926,7 +1928,7 @@ footer span { color: var(--aws); }
   border: 1px solid var(--aws);
   background: var(--aws-dim);
   color: var(--aws);
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.04em;
   cursor: pointer;
@@ -1945,3 +1947,7 @@ footer span { color: var(--aws); }
 /* Page scroll is locked while a content modal (guidance, focus area, About) is open */
 html.modal-open, body.modal-open { overflow: hidden; }
 .solution-modal-body { overscroll-behavior: contain; }
+
+/* Typography: Inter (UI) + JetBrains Mono (codes, labels). Tabular numerals keep percentages aligned. */
+.stat-pct, .progress-pct, .cap-score-val, .cap-nav-count, .toolbar-badge, .font-reset, .rec-id { font-variant-numeric: tabular-nums; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
