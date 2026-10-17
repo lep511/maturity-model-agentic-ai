@@ -35,6 +35,7 @@ assert(toolNames.length === 11, `11 tools registered (${toolNames.length}: ${too
 assert(tools.tools.every(t => t.annotations?.readOnlyHint === true && t.annotations?.openWorldHint === false), 'every tool is annotated read-only and closed-world');
 assert(tools.tools.every(t => t.description && t.inputSchema?.type === 'object'), 'every tool has a description and an object input schema');
 assert(tools.tools.find(t => t.name === 'export_assessment_csv')?.outputSchema?.properties?.csv?.type === 'string', 'export_assessment_csv declares an outputSchema with csv');
+assert(tools.tools.filter(t => t.outputSchema).length === 10 && !tools.tools.find(t => t.name === 'get_implementation_guidance').outputSchema, 'every JSON tool declares an outputSchema; the markdown tool stays text-only');
 
 const pillars = await call('list_pillars');
 assert(pillars.data.count === 6 && pillars.data.items[1].slug === 'security' && pillars.data.items[1].counts.best_practices === 30, 'list_pillars -> 6 pillars, security has 30 practices');
@@ -76,6 +77,13 @@ const rm = await call('search_best_practices', { roadmap: 'first-agent', fields:
 assert(rm.data.total === 14 && Object.keys(rm.data.items[0]).join() === 'id,risk', `roadmap first-agent = 14 with field projection (${rm.data.total})`);
 const q = await call('search_best_practices', { q: 'guardrails', fields: 'id' });
 assert(q.data.total > 0 && q.data.total < 150, `search guardrails -> ${q.data.total}`);
+// Multi-word search: every word must match in any order; title matches first.
+const pi = await call('search_best_practices', { q: 'prompt injection', fields: 'id,title' });
+const ip = await call('search_best_practices', { q: 'injection prompt', fields: 'id' });
+assert(pi.data.total > 1 && pi.data.total === ip.data.total, `word order does not matter (${pi.data.total} vs ${ip.data.total})`);
+assert(pi.data.items[0].id === 'AGENTSEC08-BP01' && /prompt injection/i.test(pi.data.items[0].title), `title match ranks first (${pi.data.items[0].id})`);
+assert((await call('search_best_practices', { q: 'cedar', fields: 'id' })).data.total > 5, 'guidance markdown is searched (Cedar appears mostly in the guidance)');
+assert((await call('search_best_practices', { q: 'no-such-word-anywhere' })).data.total === 0, 'no match -> empty page, not an error');
 assert((await call('search_best_practices', { risk: 'critical' })).isError === true, 'invalid risk -> isError');
 
 const bp = await call('get_best_practice', { id: 'agentops01_bp01', include_guidance: true });
@@ -203,6 +211,7 @@ const review = await client.getPrompt({ name: 'review_focus_area', arguments: { 
 assert(review.messages[0].role === 'user' && review.messages[0].content.text.includes('AGENTSEC03') && review.messages[0].content.text.includes('Maturity levels') && review.messages[0].content.text.includes('export_assessment_csv'), 'review_focus_area prompt ends with the export tool');
 const gap = await client.getPrompt({ name: 'gap_report', arguments: { csv } });
 assert(gap.messages[0].content.text.includes('Overall coverage') && gap.messages[0].content.text.includes('147 in total') && gap.messages[0].content.text.includes('```csv'), 'gap_report prompt embeds the computed summary and the CSV');
+assert(gap.messages[0].content.text.includes('Coverage by focus area') && gap.messages[0].content.text.includes('Assessed rows (3 of 150)') && !gap.messages[0].content.text.includes('Operational excellence,AGENTOPS01 x'), 'gap_report embeds per-focus-area coverage and only the assessed rows (minimal columns), not the raw export');
 const explain = await client.getPrompt({ name: 'explain_best_practice', arguments: { id: 'AGENTOPS01-BP01' } });
 assert(explain.messages[0].content.text.includes('Implementation steps') && explain.messages[0].content.text.includes('agentops01-bp01.html'), 'explain_best_practice prompt embeds guidance and doc link');
 const pcomp = await client.complete({ ref: { type: 'ref/prompt', name: 'explain_best_practice' }, argument: { name: 'id', value: 'AGENTPERF06' } });

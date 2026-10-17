@@ -31,7 +31,7 @@ The same content is exposed as a read-only JSON API implemented as a Vercel Func
 | `GET /api/lens` | Abstract, design principles, pillars, roadmap, definitions |
 | `GET /api/pillars`, `GET /api/pillars/{slug}` | Pillars with counts; detail adds design principles and focus areas (`slug`, name, prefix or abbreviation such as `SEC`) |
 | `GET /api/focus-areas`, `GET /api/focus-areas/{id}` | Focus areas (`?pillar=`, `?roadmap=`, `?expand=1`); detail adds capability intent, 5 maturity levels, common issues and the best practices |
-| `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=`, `?fields=`, `?limit=`, `?offset=` |
+| `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=` (every word must match, any order, guidance included; ordered by relevance), `?fields=`, `?limit=`, `?offset=` |
 | `GET /api/best-practices/{id}` | One best practice (`?include=guidance` embeds the guidance markdown); ids accept `AGENTOPS01-BP01` or `AGENTOPS01_BP01` |
 | `GET /api/best-practices/{id}/guidance` | Condensed implementation guidance as `text/markdown` (`?format=json` for JSON) |
 | `GET /api/roadmap`, `GET /api/roadmap/{id}` | Lens roadmap reading paths (`first-agent`, `production`, `multi-agent`, `hardening`) |
@@ -62,7 +62,7 @@ The server exposes **11 read-only tools**, **6 resources** under the `lens://` s
 | --- | --- |
 | `list_pillars`, `get_pillar` | The six pillars with counts and focus-area ids; detail adds the intro, design principles and focus-area questions (slug, name, prefix or abbreviation such as `SEC`) |
 | `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap (a filter is required when expanding, about 15 KB per focus area); detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
-| `search_best_practices` | Full-text search and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
+| `search_best_practices` | Free-text search (every word must match in any order across the record and its implementation guidance; title matches rank first) and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
 | `get_best_practice` | One best practice (optionally with the guidance markdown embedded) |
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
 | `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
@@ -149,6 +149,7 @@ curl -s https://agentic-ai-lens-assessment.vercel.app/mcp \
     ├── check_lens_updates.py  # Detects new or changed entries in the published Lens (runs on every push)
     ├── api_smoke_test.mjs     # In-process tests for the read-only API (used by CI)
     ├── mcp_smoke_test.mjs     # Tests for the MCP server: in-process client, stdio and the HTTP function (used by CI)
+    ├── mcp_probe.mjs          # Probes a deployed MCP endpoint over real HTTP (after `vercel --prod`, and daily from CI)
     └── csv_sync_test.mjs      # Fails when the browser copies in js/app.js drift from lib/csv.mjs, lib/mcp/scoring.mjs or lib/markdown.mjs (used by CI)
 ```
 
@@ -257,6 +258,7 @@ npm test           # API and MCP smoke tests plus the browser/Node sync test
 npm i -g vercel
 vercel          # preview
 vercel --prod   # production
+npm run probe:mcp   # then check the deployed MCP endpoint (node tools/mcp_probe.mjs [url])
 ```
 
 Vercel installs the dependencies in `package.json` for the MCP function; there is no build step. Production: https://agentic-ai-lens-assessment.vercel.app (API at `/api`, MCP at `/mcp`).
@@ -268,12 +270,12 @@ Vercel installs the dependencies in `package.json` for the MCP function; there i
 1. `tools/validate_content.py` — manifest, schema, counts, risk values, guidance files
 2. `npm ci` (Node 24), then `tools/api_smoke_test.mjs` — the read-only API routed in-process against the repository content
 3. `tools/mcp_smoke_test.mjs` — the MCP server through an in-process client, the stdio entry point and the HTTP function
-4. `tools/csv_sync_test.mjs` — the CSV export, CSV parser and markdown helpers duplicated in `js/app.js` must match their Node copies
+4. `tools/csv_sync_test.mjs` — the CSV export, CSV parser, file-name and markdown helpers duplicated in `js/app.js` must match their Node copies
 5. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
 6. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
 7. `data/check_link_action.sh` — fails on any 4xx/5xx response
 
-A second workflow, `check-lens-updates.yml`, runs on every push to detect new entries in the published Lens (see above).
+A second workflow, `check-lens-updates.yml`, runs on every push to detect new entries in the published Lens (see above). A third, `check-mcp-production.yml`, probes the deployed MCP endpoint daily and on demand with `tools/mcp_probe.mjs` (protocol version, listings, tool calls, legacy handshake, `/api` advertisement).
 
 See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 

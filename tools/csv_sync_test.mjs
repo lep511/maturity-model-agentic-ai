@@ -9,7 +9,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { buildCsvRows, csvText, CSV_COLUMNS } from '../lib/csv.mjs';
+import { buildCsvRows, csvText, csvFilename, CSV_COLUMNS } from '../lib/csv.mjs';
 import { parseCsvRows } from '../lib/mcp/scoring.mjs';
 import { extractMarkdownSection } from '../lib/markdown.mjs';
 import { loadData } from '../lib/api/data.mjs';
@@ -41,8 +41,8 @@ const data = await loadData();
 const FA_BY_ID = Object.fromEntries(data.focusAreas.map(fa => [fa.id, fa]));
 const browser = new Function('FA_BY_ID', [
   constSource('SCORING_OPTIONS'), constSource('CSV_COLUMNS'),
-  ...['scoreStatus', 'alignmentLabel', 'buildCsvRows', 'csvText', 'parseCSVRows', 'extractMarkdownSection'].map(functionSource),
-  'return { CSV_COLUMNS, buildCsvRows, csvText, parseCSVRows, extractMarkdownSection };',
+  ...['scoreStatus', 'alignmentLabel', 'buildCsvRows', 'csvText', 'csvFilename', 'parseCSVRows', 'extractMarkdownSection'].map(functionSource),
+  'return { CSV_COLUMNS, buildCsvRows, csvText, csvFilename, parseCSVRows, extractMarkdownSection };',
 ].join('\n'))(FA_BY_ID);
 
 // 1. CSV export: same bytes for the same session.
@@ -53,6 +53,13 @@ const fromNode = csvText(buildCsvRows(data.items, new Map(Object.entries(scores)
 assert(browser.CSV_COLUMNS.join() === CSV_COLUMNS.join(), 'CSV_COLUMNS match');
 assert(fromBrowser === fromNode, 'buildCsvRows + csvText produce identical CSV in the browser copy and lib/csv.mjs');
 assert(parseCsvRows(fromBrowser).length === 151 && fromBrowser.startsWith('\uFEFF"ID"') && fromBrowser.endsWith('\n'), 'export has header + 150 rows, a BOM and a trailing newline');
+
+// 1b. File name: same slug for names with diacritics, punctuation and spaces.
+const when = new Date('2026-10-17T12:00:00Z');
+for (const name of ['Revisión Seguridad Q4 / 2026', '  Default Session ', 'ñandú & co.', '', '***']) {
+  assert(browser.csvFilename(name, when) === csvFilename(name, when), `csvFilename('${name}') matches: ${csvFilename(name, when)}`);
+}
+assert(csvFilename('Revisión Seguridad Q4 / 2026', when) === 'revision-seguridad-q4-2026-2026-10-17.csv' && csvFilename('***', when) === 'assessment-2026-10-17.csv', 'diacritics folded, punctuation collapsed, empty slug falls back to assessment');
 
 // 2. CSV parser: same rows for tricky input.
 const tricky = '\uFEFFID,Score,Comments\r\n"A-1","100%","multi\nline, ""quoted"""\r\nB-2,,\n\nC-3,N/A,"x"\n';

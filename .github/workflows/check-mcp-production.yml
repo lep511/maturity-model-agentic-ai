@@ -1,0 +1,36 @@
+name: Check the production MCP endpoint
+
+# Probes the deployed MCP server (production by default) with real HTTP
+# requests: protocol version, tool/resource/prompt listings, a few tool calls,
+# the legacy handshake and the /api advertisement. Runs daily and on demand;
+# deployments happen through the Vercel CLI, so run it (or
+# `node tools/mcp_probe.mjs`) after `vercel --prod`.
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Deployment to probe"
+        type: string
+        default: "https://agentic-ai-lens-assessment.vercel.app"
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Probe the MCP endpoint
+        run: node tools/mcp_probe.mjs "${{ inputs.url || 'https://agentic-ai-lens-assessment.vercel.app' }}"

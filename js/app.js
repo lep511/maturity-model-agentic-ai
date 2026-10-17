@@ -1506,14 +1506,21 @@ function csvText(rows) {
   return '\uFEFF' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n') + '\n';
 }
 
+// File name the importer understands: <session-slug>-<YYYY-MM-DD>.csv (words
+// split on '-', Title Case). Diacritics are folded and any run of other
+// characters becomes one hyphen. Keep identical to csvFilename() in lib/csv.mjs
+// (tools/csv_sync_test.mjs checks).
+function csvFilename(sessionName, date = new Date()) {
+  const slug = String(sessionName || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'assessment';
+  return `${slug}-${date.toISOString().slice(0, 10)}.csv`;
+}
+
 function exportCSV() {
   const csv = csvText(buildCsvRows(DATA, scores, comments));
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const session = sessions[currentSessionId];
-  const sessionName = session ? session.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : 'assessment';
-  const today = new Date().toISOString().split('T')[0];
-  const a = document.createElement('a'); a.href = url; a.download = `${sessionName}-${today}.csv`; a.click();
+  const a = document.createElement('a'); a.href = url; a.download = csvFilename(session ? session.name : 'assessment'); a.click();
   URL.revokeObjectURL(url);
 }
 
