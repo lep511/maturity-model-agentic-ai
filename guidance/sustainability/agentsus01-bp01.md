@@ -41,11 +41,11 @@ Budgets stop being useful the moment a delegation crosses a boundary without car
 
 ### Implementation steps
 
-1. **Decompose workflows into single-capability agents:** Identify atomic functions in each workflow and deploy each as its own agent on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) with explicit timeout, memory, and token limits. Common atomic functions include:
-2. **Cascade budgets across delegation boundaries:** Configure the orchestration layer ([AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-nested-workflows.html) or a Strands-based orchestrator) to pass the following into every child invocation so downstream work inherits the parent's cost ceiling:
+1. **Decompose workflows into single-capability agents:** Identify atomic functions in each workflow and deploy each as its own agent on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) with explicit timeout, memory, and token limits. Common atomic functions include: validation, extraction, transformation, decision.
+2. **Cascade budgets across delegation boundaries:** Configure the orchestration layer ([AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-nested-workflows.html) or a Strands-based orchestrator) to pass the following into every child invocation so downstream work inherits the parent's cost ceiling: remaining time, retry count, token budget.
 3. **Expose specialized agents as reusable tools:** Publish agents through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) MCP server capabilities so parent workflows invoke them without each embedding its own copy.
 4. **Enforce limits at the traffic layer:** Apply [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) Cedar rules at the Gateway boundary to reject invocations that exceed declared resource limits before they consume capacity.
-5. **Instrument consumption and review monthly:** Turn on [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) to capture the following for each agent: Review utilization in Amazon CloudWatch each month to right-size boundaries against actual usage.
+5. **Instrument consumption and review monthly:** Turn on [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) to capture the following for each agent: invocation duration, token counts, error rates. Review utilization in Amazon CloudWatch each month to right-size boundaries against actual usage.
 
 ## Resources
 

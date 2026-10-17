@@ -185,9 +185,35 @@ def collect_paragraphs(lines: list[str], start: int, end: int, skip_code: bool =
     return [p.strip() for p in paras if p.strip()]
 
 
+def fold_sub_bullets(text: str, subs: list[str]) -> str:
+    """Append the ``+`` sub-bullets of a numbered item inline, as a comma list.
+
+    The docs nest short phrases under some steps ("Common atomic functions
+    include:" followed by "+ Validation", "+ Extraction", ...). The guidance
+    files keep each step on one line, so the phrases are folded into the step
+    text: "... include: validation, extraction." A leading capital is lowered
+    only when the second character is lowercase, so acronyms keep their case.
+    """
+    if not subs:
+        return text
+
+    def decap(s: str) -> str:
+        return s[0].lower() + s[1:] if len(s) > 1 and s[0].isupper() and s[1].islower() else s
+
+    out = f"{text} {', '.join(decap(s) for s in subs)}"
+    return out if out.endswith((".", "!", "?", ":")) else out + "."
+
+
 def collect_numbered(lines: list[str], start: int, end: int) -> list[str]:
+    """Return the numbered items in ``lines[start:end]`` as single strings.
+
+    Continuation lines are appended; ``+`` sub-bullets are folded into the
+    item with :func:`fold_sub_bullets` (text that follows a sub-list, such as
+    a closing sentence, comes after the folded list).
+    """
     items: list[str] = []
     current: str | None = None
+    subs: list[str] = []
     for line in lines[start:end]:
         if not line:
             continue
@@ -196,12 +222,20 @@ def collect_numbered(lines: list[str], start: int, end: int) -> list[str]:
         m = NUMBERED_RE.match(line)
         if m:
             if current is not None:
-                items.append(current)
-            current = m.group(1).strip()
-        elif current is not None and not line.startswith(("+ ", "|", "```")):
+                items.append(fold_sub_bullets(current, subs))
+            current, subs = m.group(1).strip(), []
+            continue
+        if current is None:
+            continue
+        b = BULLET_RE.match(line)
+        if b:
+            subs.append(b.group(1).strip())
+        elif not line.startswith(("|", "```")):
+            if subs:
+                current, subs = fold_sub_bullets(current, subs), []
             current += " " + line
     if current is not None:
-        items.append(current)
+        items.append(fold_sub_bullets(current, subs))
     return items
 
 

@@ -61,16 +61,16 @@ The server exposes **11 read-only tools**, **6 resources** under the `lens://` s
 | Tool | What it returns |
 | --- | --- |
 | `list_pillars`, `get_pillar` | The six pillars with counts and focus-area ids; detail adds the intro, design principles and focus-area questions (slug, name, prefix or abbreviation such as `SEC`) |
-| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap; detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
-| `search_best_practices` | Full-text search and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` or `fields` for full records; paginated |
+| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap (a filter is required when expanding, about 15 KB per focus area); detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
+| `search_best_practices` | Full-text search and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
 | `get_best_practice` | One best practice (optionally with the guidance markdown embedded) |
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
 | `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
 | `lookup_definition` | Glossary terms |
-| `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments` and the optional `Status`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator) |
-| `export_assessment_csv` | The CSV the app imports, built from a `{id, score}` list and/or an older export (neither gives a blank template); `rows` all / assessed / gaps, `columns` full / review / minimal, optional pillar or focus-area filter; returns the text plus a suggested `<session>-<date>.csv` file name. The server never writes files |
+| `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments` and the optional `Status`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator); scores off the 0/25/50/75/100 % scale are snapped to the nearest step and reported in `off_scale` |
+| `export_assessment_csv` | The CSV the app imports, built from a `{id, score}` list and/or an older export (neither gives a blank template); `rows` all / assessed / gaps, `columns` full / review / minimal, optional pillar or focus-area filter; returns the CSV as the `csv` field of the structured result (and as text content) plus a suggested `<session>-<date>.csv` file name. The server never writes files |
 
-Resources: `lens://lens`, `lens://export/template.csv` (blank 150-row assessment template), `lens://pillars/{slug}`, `lens://focus-areas/{id}`, `lens://best-practices/{id}` (JSON) and `lens://best-practices/{id}/guidance` (markdown), all listable and with id completion. Prompts: `review_focus_area` (guided interview that ends by exporting an importable CSV with `export_assessment_csv`), `gap_report` (prioritized remediation report from an export) and `explain_best_practice`.
+Resources: `lens://lens`, `lens://export/template.csv` (blank 150-row assessment template), `lens://pillars/{slug}`, `lens://focus-areas/{id}`, `lens://best-practices/{id}` (JSON) and `lens://best-practices/{id}/guidance` (markdown), all with id completion; `resources/list` enumerates the statics, pillars and focus areas (49 entries), while best practices are reached through the templates. Prompts: `review_focus_area` (guided interview that ends by exporting an importable CSV with `export_assessment_csv`), `gap_report` (prioritized remediation report from an export) and `explain_best_practice`.
 
 Connect a client:
 

@@ -42,9 +42,9 @@ Spec-driven development tools like Kiro extend the discipline into how agents ge
 
 ### Implementation steps
 
-1. **Set documentation standards:** Require each agent to carry specifications using AgentCore's declarative configuration artifacts. Each specification must cover:
+1. **Set documentation standards:** Require each agent to carry specifications using AgentCore's declarative configuration artifacts. Each specification must cover: business purpose, operational boundaries, decision criteria, escalation paths.
 2. **Adopt spec-driven development:** Use Kiro or similar spec-driven tools so documentation is produced as a natural byproduct of the development process rather than a retrospective task.
-3. **Register agents in a central catalog:** Record each agent in [Amazon Bedrock AgentCore Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with the following metadata:
+3. **Register agents in a central catalog:** Record each agent in [Amazon Bedrock AgentCore Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with the following metadata: purpose, version history, dependencies, operational characteristics.
 4. **Generate runtime documentation:** Use [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) to produce runtime documentation that can be compared against design specifications to detect drift.
 5. **Gate promotion on specification validation:** Require documentation validation as part of the pipeline that promotes agents to production, so production agents always have current specifications.
 

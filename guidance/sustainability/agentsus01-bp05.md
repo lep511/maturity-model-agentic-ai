@@ -41,11 +41,11 @@ Without that contract, the agent runs until it happens to produce something or h
 
 ### Implementation steps
 
-1. **Write specifications before deployment:** For each frontier agent, declare the following and record the success criteria that define done:
+1. **Write specifications before deployment:** For each frontier agent, declare the following and record the success criteria that define done: maximum execution duration, token budget, memory allocation, termination triggers.
 2. **Deliver specifications at invocation time:** Pass specifications into [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) through [Strands Agents](https://strandsagents.com/) as first-class configuration, so the contract is part of the invocation rather than implicit in the agent code.
 3. **Cascade budgets to child agents:** When a parent frontier agent delegates, pass the remaining duration, token budget, and memory budget into the child invocation through [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html) parameters or Strands orchestration, so the ceiling holds across delegation.
 4. **Implement checkpoint-based evaluation:** Structure long-running workflows to pause at defined points, evaluate progress against the specification, and persist state in AgentCore Memory so the agent resumes from the checkpoint after a continue/modify/terminate decision.
-5. **Monitor adherence and refine templates:** Track the following through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and feed the data back into specification templates for common frontier workload patterns:
+5. **Monitor adherence and refine templates:** Track the following through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and feed the data back into specification templates for common frontier workload patterns: specification violations, checkpoint outcomes, budget utilization.
 
 ## Resources
 

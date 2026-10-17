@@ -43,7 +43,7 @@ Not every agent workload has the same latency sensitivity. User-facing interacti
 
 1. **Enable carbon emissions tracking:** Turn on [AWS Sustainability](https://docs.aws.amazon.com/sustainability/latest/userguide/what-is-sustainability.html) and establish environmental baselines for agent infrastructure across a 30-day observation window.
 2. **Instrument resource efficiency per task:** Configure [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) to track tokens per successful completion, compute hours per workflow execution, and cache hit rates.
-3. **Schedule deferrable workloads off-peak:** Identify non-interactive workloads and shift them to off-peak windows:
+3. **Schedule deferrable workloads off-peak:** Identify non-interactive workloads and shift them to off-peak windows: batch processing, knowledge base indexing, periodic AgentCore Evaluations runs, bulk data enrichment.
 4. **Evaluate Region placement for batch work:** For workloads with flexible latency, use [Amazon Bedrock cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) to route requests to Regions with favorable energy profiles.
 5. **Build combined dashboards and review on a cadence:** Create Amazon CloudWatch dashboards pairing operational metrics with sustainability indicators (resource utilization efficiency, waste percentage, and peak compared to off-peak utilization), and review them as part of periodic optimization cycles.
 

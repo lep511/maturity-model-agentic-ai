@@ -41,11 +41,11 @@ Discovery has to work at two different times. At design time, a team evaluating 
 
 ### Implementation steps
 
-1. **Identify and extract recurring patterns:** Audit existing agent workflows for repeated sequences and pull each one out into a parameterized template with a documented interface. Common sequences include:
+1. **Identify and extract recurring patterns:** Audit existing agent workflows for repeated sequences and pull each one out into a parameterized template with a documented interface. Common sequences include: retrieval, validation, transformation, decision.
 2. **Deploy patterns as reusable components:** Implement each pattern on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) and publish it through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) as an MCP tool so orchestrating agents can discover and invoke it at runtime.
-3. **Maintain a design-time catalog:** Keep a documentation repository alongside the Gateway registry where teams can browse the following before writing new code:
+3. **Maintain a design-time catalog:** Keep a documentation repository alongside the Gateway registry where teams can browse the following before writing new code: pattern purpose, parameters, resource profile, usage examples.
 4. **Govern pattern access and versions:** Apply [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) and Gateway policies to control who can invoke each pattern, and publish new versions alongside old ones so consumers migrate deliberately.
-5. **Monitor usage and feed improvements back:** Track the following for each pattern through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html): Use the telemetry to find heavily used patterns worth investing in and stagnant patterns worth retiring.
+5. **Monitor usage and feed improvements back:** Track the following for each pattern through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html): invocation frequency, duration, failure rates. Use the telemetry to find heavily used patterns worth investing in and stagnant patterns worth retiring.
 
 ## Resources
 

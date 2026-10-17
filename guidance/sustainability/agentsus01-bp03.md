@@ -41,12 +41,12 @@ A shared cache that agents call directly by host name creates tight coupling. Sw
 
 ### Implementation steps
 
-1. **Identify common infrastructure needs:** List the plumbing duplicated across current deployments and consolidate each into a shared service layer:
+1. **Identify common infrastructure needs:** List the plumbing duplicated across current deployments and consolidate each into a shared service layer: connection pools, caches, queues, authentication.
 2. **Deploy shared caching:** Provision [Amazon ElastiCache](https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/BestPractices.html) for general-purpose hot data or [Amazon DynamoDB Accelerator (DAX)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html) for DynamoDB-backed state, so frequently accessed data is read from one cache rather than refetched per agent.
 3. **Expose shared services through a stable interface:** Publish shared infrastructure as MCP tools through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) so agents consume it without coupling to the implementation.
 4. **Centralize authentication:** Use [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) to manage credentials once rather than having every agent manage its own.
 5. **Distribute model inference:** Turn on [Amazon Bedrock cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) so foundation model capacity is pooled across Regions for availability.
-6. **Track utilization and scale on data:** Monitor the following through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and adjust capacity based on observed usage rather than worst-case estimates:
+6. **Track utilization and scale on data:** Monitor the following through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and adjust capacity based on observed usage rather than worst-case estimates: cache hit rates, queue depth, invocation patterns.
 
 ## Resources
 

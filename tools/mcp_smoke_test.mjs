@@ -34,6 +34,7 @@ const toolNames = tools.tools.map(t => t.name).sort();
 assert(toolNames.length === 11, `11 tools registered (${toolNames.length}: ${toolNames.join(',')})`);
 assert(tools.tools.every(t => t.annotations?.readOnlyHint === true && t.annotations?.openWorldHint === false), 'every tool is annotated read-only and closed-world');
 assert(tools.tools.every(t => t.description && t.inputSchema?.type === 'object'), 'every tool has a description and an object input schema');
+assert(tools.tools.find(t => t.name === 'export_assessment_csv')?.outputSchema?.properties?.csv?.type === 'string', 'export_assessment_csv declares an outputSchema with csv');
 
 const pillars = await call('list_pillars');
 assert(pillars.data.count === 6 && pillars.data.items[1].slug === 'security' && pillars.data.items[1].counts.best_practices === 30, 'list_pillars -> 6 pillars, security has 30 practices');
@@ -49,6 +50,9 @@ assert(fas.data.count === 7 && !('maturity_levels' in fas.data.items[0]), 'list_
 const fasX = await call('list_focus_areas', { roadmap: 'first-agent', expand: true });
 assert(fasX.data.count === 4 && fasX.data.items[0].maturity_levels.length === 5, 'list_focus_areas by roadmap, expanded');
 assert((await call('list_focus_areas', { pillar: 'zzz' })).isError === true, 'bad filter -> isError');
+const fasNoFilter = await call('list_focus_areas', { expand: true });
+assert(fasNoFilter.isError === true && Array.isArray(fasNoFilter.data.error.valid_pillars), 'expand=true without a filter -> isError (520 KB guard)');
+assert((await call('list_focus_areas', { expand: true, pillar: 'SUS' })).data.count === 3, 'expand=true with a pillar filter works');
 const fa = await call('get_focus_area', { id: 'agentsec03' });
 assert(fa.data.id === 'AGENTSEC03' && fa.data.maturity_levels.length === 5 && fa.data.best_practices_detail.length === 4, 'get_focus_area (lowercase id) with maturity levels and practices');
 assert(Object.keys(fa.data.best_practices_detail[0]).join() === 'id,title,risk,summary,doc_url' && !('links' in fa.data), 'embedded practices are compact and links are dropped');
@@ -59,6 +63,9 @@ assert(Object.keys(all.data.items[0]).join() === 'id,title,risk,focus_area_id,pi
 assert(all.text.length < 30000, `150 compact practices stay under 30 KB (${all.text.length})`);
 const dflt = await call('search_best_practices', {});
 assert(dflt.data.total === 150 && dflt.data.count === 50 && dflt.data.limit === 50, 'default page size is 50');
+const detAll = await call('search_best_practices', { detail: true, limit: 500 });
+assert(detAll.data.total === 150 && detAll.data.count === 25 && detAll.data.limit === 25 && detAll.text.length < 120000, `detail pages are capped at 25 (${detAll.data.count}, ${detAll.text.length} bytes)`);
+assert((await call('search_best_practices', { detail: true, fields: 'id', limit: 500 })).data.count === 150, 'fields projection is not capped');
 const secAll = await call('search_best_practices', { pillar: 'security' });
 assert(secAll.data.total === 30 && secAll.data.count === 30 && secAll.text.length < 8000, `a whole pillar fits in one default call (${secAll.data.count}, ${secAll.text.length} bytes)`);
 const det = await call('search_best_practices', { pillar: 'security', detail: true, limit: 5 });
@@ -123,11 +130,28 @@ const score3 = await call('score_assessment', { csv: csv2, max_gaps: 150 });
 assert(score3.data.counts.assessed === 2 && score3.data.counts.excluded === 1 && score3.data.counts.unassessed === 147 && score3.data.unknown_ids.length === 0, `current export format (BOM, CRLF, Status) -> 2/1/147 (${JSON.stringify(score3.data.counts)})`);
 assert(!score3.data.gaps.some(g => g.id === 'AGENTOPS01-BP02') && score3.data.gaps.find(g => g.id === 'AGENTOPS01-BP03')?.status === 'unassessed', 'Status=Excluded without a score is excluded; unassessed row is a gap');
 assert(score3.data.gaps.find(g => g.id === 'AGENTOPS02-BP01')?.comment === 'line one\nline two, with "quotes"', 'multi-line quoted comment survives parsing');
+assert(score3.data.off_scale.length === 0, 'app exports are on scale: no off_scale entries');
+// Off-scale and hand-edited values: snapped to the 0/25/50/75/100 scale and
+// reported; N/A variants are read case-insensitively in the CSV too.
+const csvHand = 'ID,Score,Comments\nAGENTSEC01-BP01,n/a,lowercase excluded\nAGENTSEC01-BP02,0.75,fraction read as percent\nAGENTSEC01-BP03,75 %,space before percent\nAGENTSEC02-BP01,60%,off scale';
+const scoreHand = await call('score_assessment', { csv: csvHand, scores: [{ id: 'AGENTSEC02-BP02', score: 0.6 }, { id: 'AGENTSEC02-BP03', score: 'Excluded' }], max_gaps: 150 });
+assert(scoreHand.data.counts.excluded === 2 && scoreHand.data.counts.assessed === 4 && scoreHand.data.invalid_scores.length === 0, `n/a and Excluded are excluded case-insensitively (${JSON.stringify(scoreHand.data.counts)})`);
+assert(scoreHand.data.off_scale.length === 3 && scoreHand.data.off_scale.find(o => o.id === 'AGENTSEC02-BP01')?.used_pct === 50 && scoreHand.data.off_scale.find(o => o.id === 'AGENTSEC02-BP02')?.used_pct === 50 && scoreHand.data.off_scale.find(o => o.id === 'AGENTSEC01-BP02')?.used_pct === 0, `off-scale values snapped and reported (${JSON.stringify(scoreHand.data.off_scale)})`);
+const sec02 = scoreHand.data.focus_areas.find(f => f.id === 'AGENTSEC02');
+assert(sec02.coverage_pct === 50 && sec02.counts.excluded === 1, `AGENTSEC02 coverage uses the snapped values: (0.5 + 0.5) / 2 (${sec02.coverage_pct})`);
+assert(!scoreHand.data.gaps.some(g => g.id === 'AGENTSEC02-BP01') && scoreHand.data.gaps.find(g => g.id === 'AGENTSEC01-BP02')?.score_pct === 0, 'snapped 50 % is not a gap, snapped 0 % is');
 
 // export_assessment_csv: template, normalisation of an old export, row and
 // column presets, round trip through score_assessment.
 const tpl = await call('export_assessment_csv', {});
 assert(tpl.text.startsWith('\uFEFF"ID","Focus Area ID","Best Practice","Risk","Status","Score","Comments"') && parseCsv(tpl.text).rows.length === 150 && tpl.data.counts.unassessed === 150 && /^assessment-\d{4}-\d{2}-\d{2}\.csv$/.test(tpl.data.filename), 'export template: review columns, 150 unassessed rows, suggested filename');
+assert(tpl.data.csv === tpl.text && tpl.data.bytes === tpl.text.length, 'the CSV is also carried in structuredContent.csv (clients that only surface structured results still get the file)');
+const expOff = await call('export_assessment_csv', { scores: [{ id: 'AGENTSEC01-BP01', score: 0.6 }, { id: 'AGENTSEC01-BP02', score: 2 }], focus_area: 'AGENTSEC01', columns: 'full' });
+const po = parseCsv(expOff.data.csv);
+const rOff = po.rows.find(r => r[0] === 'AGENTSEC01-BP01');
+const rTwo = po.rows.find(r => r[0] === 'AGENTSEC01-BP02');
+assert(rOff[10] === '50%' && rOff[9] === 'Medium coverage' && rTwo[10] === '0%' && rTwo[9] === 'Not aligned', `off-scale scores export on the app scale with a label (${rOff[10]} ${rOff[9]} / ${rTwo[10]} ${rTwo[9]})`);
+assert(expOff.data.off_scale.length === 2 && expOff.data.off_scale[0].score === 0.6 && expOff.data.off_scale[0].used_pct === 50, 'export reports the snapped values');
 const expFull = await call('export_assessment_csv', { csv, columns: 'full', pillar: 'operational-excellence', session_name: 'Security Review 2' });
 const pf = parseCsv(expFull.text);
 assert(pf.headers.length === 13 && pf.rows.length === 26 && expFull.data.filename.startsWith('security-review-2-') && expFull.data.counts.assessed === 2, `export full columns for one pillar (${pf.rows.length} rows)`);
@@ -150,7 +174,10 @@ assert((await call('score_assessment', { csv: 'Foo,Bar\n1,2' })).isError === tru
 const templates = await client.listResourceTemplates();
 assert(templates.resourceTemplates.length === 4, `4 resource templates (${templates.resourceTemplates.length})`);
 const resources = await client.listResources();
-assert(resources.resources.length === 2 + 6 + 41 + 150 + 150, `resource list enumerates 349 entries (${resources.resources.length})`);
+assert(resources.resources.length === 2 + 6 + 41, `resource list enumerates 49 entries: statics, pillars and focus areas, no per-practice URIs (${resources.resources.length})`);
+assert(!resources.resources.some(r => r.uri.startsWith('lens://best-practices/')), 'best-practice URIs are reached through the templates, not listed');
+const bpComp = await client.complete({ ref: { type: 'ref/resource', uri: 'lens://best-practices/{id}/guidance' }, argument: { name: 'id', value: 'AGENTSEC03-BP' } });
+assert(bpComp.completion.values.length === 4 && bpComp.completion.values[0] === 'AGENTSEC03-BP01', `best-practice templates still complete ids (${bpComp.completion.values.length})`);
 const tplRes = await client.readResource({ uri: 'lens://export/template.csv' });
 assert(tplRes.contents[0].mimeType === 'text/csv' && parseCsv(tplRes.contents[0].text).rows.length === 150 && parseCsv(tplRes.contents[0].text).headers.length === 13, 'lens://export/template.csv is a 150-row, 13-column template');
 const lens = await client.readResource({ uri: 'lens://lens' });

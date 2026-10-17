@@ -41,9 +41,9 @@ Decommissioning becomes routine when it has a defined lifecycle. Active, under r
 
 ### Implementation steps
 
-1. **Register every deployed agent with ownership metadata:** Record each agent in [Amazon Bedrock AgentCore Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with the following:
+1. **Register every deployed agent with ownership metadata:** Record each agent in [Amazon Bedrock AgentCore Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with the following: business purpose, designated owner, deployment date, dependencies.
 2. **Track invocation metrics and flag inactive agents:** Instrument agents with [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html) metrics capturing invocation frequency and last-invocation timestamp, and flag agents that cross a defined inactivity threshold for owner review.
-3. **Define a decommissioning lifecycle:** Establish the following stages with transition criteria and owner responsibilities at each:
+3. **Define a decommissioning lifecycle:** Establish the following stages with transition criteria and owner responsibilities at each: active, under review, deprecated, decommissioned.
 4. **Require registry search before new agent development:** Add a pre-development check to the intake process so teams discover and evaluate existing capabilities before initiating new work.
 5. **Run quarterly portfolio reviews:** Evaluate the full agent inventory against current business priorities, consolidate overlapping capabilities into shared patterns, and retire agents whose business context has changed.
 

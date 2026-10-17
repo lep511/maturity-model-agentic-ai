@@ -41,7 +41,7 @@ Once the documentation exists, the agent is a translation of it. You configure A
 
 ### Implementation steps
 
-1. **Document workflows before automating them:** Capture the following from subject matter experts before approving agent development:
+1. **Document workflows before automating them:** Capture the following from subject matter experts before approving agent development: decision logic, exception handling, success criteria, readiness criteria (inputs, outputs, decision criteria, and metrics).
 2. **Store institutional knowledge as RAG sources:** Load documented expertise into [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) so agent decisions ground in the organization's knowledge rather than foundation model defaults.
 3. **Mirror expert system access:** Configure [Amazon Bedrock AgentCore tools](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/tools.html) to give agents the same external systems and data sources human experts use.
 4. **Route routine vs. complex work:** Use [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) to send routine tasks to full automation and escalate complex or ambiguous work to human experts.
