@@ -284,8 +284,17 @@
     font-size: 1.6rem;
   }
 
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
+
   .hero-sub {
-    font-size: 13px;
+    font-size: 12px;
+    padding-left: 0;
+    border-left: none;
   }
 
   /* Pillar stats: 3×2 grid */
@@ -547,7 +556,7 @@
   .toolbar-badge { font-size: 11px; }
 
   /* Hero */
-  .hero-sub { font-size: 14px; line-height: 1.7; }
+  .hero-sub { font-size: 12px; line-height: 1.65; }
 
   /* Sidebar action buttons */
   .sidebar-action-btn { font-size: 14px; padding: 11px 12px; }
@@ -612,7 +621,7 @@
   }
 
   .hero-sub {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   /* Pillar stats: 2×3 grid with smaller padding */

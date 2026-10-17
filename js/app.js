@@ -453,19 +453,20 @@ function init() {
     });
   }
 
-  ['guidanceModal', 'focusAreaModal', 'aboutModal'].forEach(id => {
+  CONTENT_MODAL_IDS.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener('click', function(e) {
-      if (e.target === this) el.classList.remove('open');
+      if (e.target === this) { el.classList.remove('open'); syncModalScrollLock(); }
     });
   });
   document.addEventListener('keydown', function(e) {
     if (e.key !== 'Escape') return;
-    ['guidanceModal', 'focusAreaModal', 'aboutModal'].forEach(id => {
+    CONTENT_MODAL_IDS.forEach(id => {
       const el = document.getElementById(id);
       if (el && el.classList.contains('open')) el.classList.remove('open');
     });
+    syncModalScrollLock();
   });
 }
 
@@ -1181,6 +1182,15 @@ function closeModal() {
 
 // ─── IMPLEMENTATION GUIDANCE MODAL ───────────────────────────────────────────
 
+const CONTENT_MODAL_IDS = ['guidanceModal', 'focusAreaModal', 'aboutModal'];
+
+// Lock page scrolling while any content modal is open (the modal body keeps its own scroll).
+function syncModalScrollLock() {
+  const anyOpen = CONTENT_MODAL_IDS.some(id => document.getElementById(id)?.classList.contains('open'));
+  document.body.classList.toggle('modal-open', anyOpen);
+  document.documentElement.classList.toggle('modal-open', anyOpen);
+}
+
 const guidanceCache = {};
 
 // Extract one section of a guidance markdown file: from its heading (any level)
@@ -1252,6 +1262,7 @@ async function openGuidanceModal(itemId) {
 
   body.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--text-dim)">Loading...</div>';
   modal.classList.add('open');
+  syncModalScrollLock();
 
   if (!guidanceCache[itemId]) {
     try {
@@ -1271,6 +1282,7 @@ async function openGuidanceModal(itemId) {
 
 function closeGuidanceModal() {
   document.getElementById('guidanceModal').classList.remove('open');
+  syncModalScrollLock();
 }
 
 // ─── FOCUS AREA MODAL (question, intent, maturity levels, common issues) ─────
@@ -1316,11 +1328,13 @@ function openFocusAreaModal(faId) {
   `;
   body.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
   modal.classList.add('open');
+  syncModalScrollLock();
   body.scrollTop = 0;
 }
 
 function closeFocusAreaModal() {
   document.getElementById('focusAreaModal').classList.remove('open');
+  syncModalScrollLock();
 }
 
 // ─── ABOUT THE LENS MODAL ────────────────────────────────────────────────────
@@ -1402,11 +1416,13 @@ function openAboutModal() {
   `;
   body.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener noreferrer'; });
   modal.classList.add('open');
+  syncModalScrollLock();
   body.scrollTop = 0;
 }
 
 function closeAboutModal() {
   document.getElementById('aboutModal').classList.remove('open');
+  syncModalScrollLock();
 }
 
 function confirmReset() {
