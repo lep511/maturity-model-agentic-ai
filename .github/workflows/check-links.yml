@@ -9,6 +9,9 @@ on:
       - "api/**"
       - "lib/**"
       - "vercel.json"
+      - "mcp/**"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/check-links.yml"
   pull_request:
     paths:
@@ -18,6 +21,9 @@ on:
       - "api/**"
       - "lib/**"
       - "vercel.json"
+      - "mcp/**"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/check-links.yml"
 
 jobs:
@@ -41,9 +47,16 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
 
       - name: API smoke test
         run: node tools/api_smoke_test.mjs
+
+      - name: MCP smoke test
+        run: node tools/mcp_smoke_test.mjs
 
       - name: Count characters
         id: count_chars

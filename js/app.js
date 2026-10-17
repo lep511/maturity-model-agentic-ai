@@ -1195,6 +1195,8 @@ const guidanceCache = {};
 
 // Extract one section of a guidance markdown file: from its heading (any level)
 // up to the next heading of the same or a higher level. Returns null if absent.
+// Keep in sync with lib/markdown.mjs (the MCP server uses the same function;
+// this file is a classic script and cannot import it).
 function extractMarkdownSection(markdown, title) {
   const lines = String(markdown || '').split('\n');
   const start = lines.findIndex(l => new RegExp(`^#{1,6}\\s+${title}\\s*$`, 'i').test(l.trim()));

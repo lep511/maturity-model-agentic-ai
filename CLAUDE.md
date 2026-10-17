@@ -18,6 +18,8 @@ npx serve .
 python3 -m http.server 3000
 ```
 
+The static app and the REST API have no dependencies. `npm ci` is only needed for the MCP server and its smoke test.
+
 ## Deployment
 
 ```bash
@@ -40,25 +42,37 @@ python3 -I tools/validate_content.py     # offline consistency checks, also run 
 
 ## Read-only API (Vercel Function)
 
-- `api/index.mjs` is the only function; it exports `{ fetch }` (Web-standard handler) and delegates to `lib/api/router.mjs`. `vercel.json` rewrites `/api/:path*` to `/api/index` and bundles `data/` and `guidance/` with `functions["api/index.mjs"].includeFiles`.
-- `lib/api/data.mjs` loads the generated content once per instance (module-scope cache) and builds indexes; `lib/api/openapi.mjs` builds the OpenAPI 3.1 document served at `/api/openapi.json`.
-- Endpoints: `/api`, `/api/lens`, `/api/pillars[/{slug}]`, `/api/focus-areas[/{id}]`, `/api/best-practices[/{id}[/guidance]]`, `/api/roadmap[/{id}]`, `/api/definitions`. GET/HEAD/OPTIONS only; JSON errors `{error:{code,message}}`; CORS `*`; `Cache-Control: public, max-age=300, s-maxage=86400`.
-- Shared code lives outside `api/` on purpose (Vercel creates one function per file in `api/`). Test with `node tools/api_smoke_test.mjs` (no network needed; also run in CI).
+- `api/index.mjs` exports `{ fetch }` (Web-standard handler) and delegates to `lib/api/router.mjs`. `vercel.json` rewrites `/api/:path*` to `/api/index` and bundles `data/` and `guidance/` with `functions["api/index.mjs"].includeFiles`. The only other function is `api/mcp.mjs` (see the MCP section).
+- `lib/api/data.mjs` loads the generated content once per instance (module-scope cache) and builds indexes; `lib/api/shapes.mjs` holds the lookups (`findPillar`, `findRoadmap`), filters (`filterItems`, `filterFocusAreas`, `paginate`, `project`) and response shapes (`shapeItem`, `shapeFocusArea`, `shapePillar`, `shapeRoadmap`) shared with the MCP server; `lib/api/openapi.mjs` builds the OpenAPI 3.1 document served at `/api/openapi.json`.
+- Endpoints: `/api`, `/api/lens`, `/api/pillars[/{slug}]`, `/api/focus-areas[/{id}]`, `/api/best-practices[/{id}[/guidance]]`, `/api/roadmap[/{id}]`, `/api/definitions`. GET/HEAD/OPTIONS only; JSON errors `{error:{code,message}}`; CORS `*`; `Cache-Control: public, max-age=300, s-maxage=86400`. The index also advertises the MCP endpoint (`mcp.url`).
+- Shared code lives outside `api/` on purpose (Vercel creates one function per file in `api/`). Test with `node tools/api_smoke_test.mjs` (no network or dependencies needed; also run in CI).
+
+## MCP server (Vercel Function + stdio)
+
+- Protocol revision **2026-07-28** (the current one) through the official TypeScript SDK v2: `@modelcontextprotocol/server` (runtime) and `@modelcontextprotocol/client` (smoke test only), `zod` 4 for schemas. Do not add the v1 `@modelcontextprotocol/sdk`. No deprecated features (roots, sampling, MCP logging; the deprecated HTTP+SSE transport is not served). Logs go to `stderr`.
+- `lib/mcp/server.mjs` exports `buildServer({ origin })`, an async factory that registers 10 read-only tools (`list_pillars`, `get_pillar`, `list_focus_areas`, `get_focus_area`, `search_best_practices`, `get_best_practice`, `get_implementation_guidance`, `get_roadmap`, `lookup_definition`, `score_assessment`), 1 static resource plus 4 `ResourceTemplate`s under the `lens://` scheme (with `list`, completions and `cacheHint`), and 3 prompts (`review_focus_area`, `gap_report`, `explain_best_practice`). Tool inputs are `z.object()` schemas; results carry both `content` (JSON text or markdown) and `structuredContent`; errors return `isError: true`. All shapes come from `lib/api/shapes.mjs`, so MCP and REST answers are identical.
+- `lib/mcp/scoring.mjs` scores an assessment from the CSV the web app exports (columns `ID`, `Score`, `Comments`) or a `{id, score}` list, with the same rule as `coveragePct()` in `js/app.js`: unassessed = 0 %, excluded (`N/A`) removed from the denominator. Gaps = score 25 % or less or unassessed, ordered by risk.
+- `lib/markdown.mjs` holds `extractMarkdownSection()`, a copy of the function in `js/app.js` (classic script, cannot import); keep both identical.
+- Entry points: `mcp/stdio.mjs` (`serveStdio`, run with `npm run mcp` or `node mcp/stdio.mjs`) and `api/mcp.mjs` (`createMcpHandler`, stateless: a fresh `McpServer` per request, content cached per instance). `vercel.json` rewrites `/mcp` to `/api/mcp` **before** the `/api/:path*` rule and bundles `data/` and `guidance/` for it too (`/mcp` is the canonical URL; Vercel also resolves `/api/mcp` to the function itself rather than to the API router). Preview deployments are protected by Vercel Authentication: test them with `vercel curl <url> ...` instead of plain `curl`. The function adds CORS headers (`Mcp-Method`, `Mcp-Name`, `MCP-Protocol-Version` allowed). Legacy `initialize`-based clients (2025-11-25 and earlier) are served statelessly by the SDK.
+- Streamable HTTP in 2026-07-28 is POST-only (no GET stream, no sessions) and every request must carry `MCP-Protocol-Version`, `Mcp-Method` and, for `tools/call` / `resources/read` / `prompts/get`, `Mcp-Name` mirroring the body; `server/discover` returns supported versions, capabilities and the server `instructions`.
+- Dependencies: `package.json` + `package-lock.json` (no `build` script, Vercel must not build). Install with `npm ci`. Test with `node tools/mcp_smoke_test.mjs` (in-process client, the real stdio child process, and raw JSON-RPC against the HTTP function; no network).
 
 ## CI / Checks
 
-GitHub Actions workflow (`.github/workflows/check-links.yml`) runs on push/PR to `data/**`, `guidance/**`, `tools/**`, `api/**`, `lib/**`, `vercel.json`:
+GitHub Actions workflow (`.github/workflows/check-links.yml`) runs on push/PR to `data/**`, `guidance/**`, `tools/**`, `api/**`, `lib/**`, `mcp/**`, `vercel.json`, `package.json`, `package-lock.json`:
 1. `tools/validate_content.py` — schema, counts, manifest and guidance-file consistency
-2. `tools/api_smoke_test.mjs` — read-only API routed in-process (Node 24)
-3. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (`data/lens/*` is skipped)
-4. `data/extract_link.sh .` — extracts unique Lens documentation links from JSON and markdown
-5. `data/check_link_action.sh` — verifies extracted links respond with 2xx/3xx
+2. `npm ci` (Node 24), then `tools/api_smoke_test.mjs` — read-only API routed in-process
+3. `tools/mcp_smoke_test.mjs` — MCP server over InMemoryTransport, stdio and the HTTP function
+4. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (`data/lens/*` is skipped)
+5. `data/extract_link.sh .` — extracts unique Lens documentation links from JSON and markdown
+6. `data/check_link_action.sh` — verifies extracted links respond with 2xx/3xx
 
 ## Architecture
 
 Single-page app with no build step — vanilla HTML/CSS/JS served as static files.
 
 - `api/index.mjs` + `lib/api/*.mjs` — read-only JSON API (see section above)
+- `api/mcp.mjs`, `mcp/stdio.mjs` + `lib/mcp/*.mjs`, `lib/markdown.mjs` — MCP server (see section above)
 - `index.html` — app shell (layout, modals, sidebar, header). Pillar-dependent chrome (stats bar, pillar pills, progress rows, print checkboxes) is generated by `renderPillarChrome()` in `js/app.js`, not hard-coded.
 - `js/app.js` — core logic: data loading from manifest, filters (pillar / focus area / roadmap / search), scoring, rendering, radar chart (SVG, 6 pillar axes), session management (localStorage + cookies), CSV import/export, guidance / focus-area / About modals
 - `js/print.js` — print preview modal rendering

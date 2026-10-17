@@ -1,0 +1,23 @@
+{
+  "name": "agentic-ai-lens-assessment",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AWS Well-Architected Agentic AI Lens self-assessment: static web app, read-only JSON API and MCP server",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "mcp": "node mcp/stdio.mjs",
+    "test:api": "node tools/api_smoke_test.mjs",
+    "test:mcp": "node tools/mcp_smoke_test.mjs",
+    "test": "npm run test:api && npm run test:mcp"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.3.1",
+    "zod": "^4.2.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "^2.3.1"
+  }
+}

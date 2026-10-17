@@ -5,9 +5,16 @@
   "functions": {
     "api/index.mjs": {
       "includeFiles": "{data,guidance}/**"
+    },
+    "api/mcp.mjs": {
+      "includeFiles": "{data,guidance}/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/mcp",
+      "destination": "/api/mcp"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api/index"
