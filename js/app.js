@@ -1463,38 +1463,52 @@ function confirmReset() {
   });
 }
 
-function exportCSV() {
-  const rows = [['ID','Pillar','Focus Area','Best Practice','Risk','AWS Services','Alignment','Score','Comments']];
-  DATA.forEach(item => {
-    const s = scores[item.id];
-    // Skip items with no score assigned
-    if (s === null || s === undefined) return;
-    const alignOption = SCORING_OPTIONS.find(o => o.value === s);
-    const alignLabel = alignOption ? alignOption.label : '--';
-    const scoreVal = s === 'na' ? 'N/A' : (s * 100) + '%';
-    rows.push([item.id, item.pillar, `${item.focus_area_id} ${item.focus_area}`, item.recommendation, item.risk || '', item.aws_service || '', alignLabel, scoreVal, comments[item.id]||'']);
-  });
-  if (rows.length === 1) {
-    // No scored items — show error toast
-    const toast = document.getElementById('savedToast');
-    toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#ff4757"/><path d="M3.5 3.5l5 5M8.5 3.5l-5 5" stroke="#ff4757" stroke-width="1.2" stroke-linecap="round"/></svg> No data to export yet`;
-    toast.style.borderColor = 'var(--red)';
-    toast.style.color = 'var(--red)';
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => {
-        toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Session saved`;
-        toast.style.borderColor = 'var(--green)';
-        toast.style.color = 'var(--green)';
-      }, 300);
-    }, 2200);
-    return;
-  }
+// ─── CSV EXPORT ──────────────────────────────────────────────────────────
+// Column order of the export. The importer only reads ID, Score, Comments and
+// the optional Status column (keep those names stable); the other columns make
+// the file self-describing for spreadsheets and external tools. Every best
+// practice is exported, so the file is a complete snapshot of the session.
+const CSV_COLUMNS = ['ID', 'Pillar', 'Focus Area ID', 'Focus Area', 'Best Practice', 'Risk', 'Roadmap', 'AWS Services', 'Status', 'Alignment', 'Score', 'Comments', 'Doc URL'];
 
-  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv'});
+// Status of a stored score value ('na', a number, or nothing).
+function scoreStatus(s) {
+  if (s === 'na') return 'Excluded';
+  return (s === null || s === undefined) ? 'Unassessed' : 'Assessed';
+}
+
+// Alignment label without the percentage prefix (Score carries it), ASCII only.
+function alignmentLabel(s) {
+  if (s === 'na') return 'Excluded';
+  const opt = SCORING_OPTIONS.find(o => o.value === s);
+  return opt && opt.value !== null ? opt.label.replace(/^\d+%\s*\S\s*/, '') : '';
+}
+
+// Export rows (header first) for every item, in Lens order.
+function buildCsvRows(items, scoreMap, commentMap) {
+  const rows = [CSV_COLUMNS];
+  items.forEach(item => {
+    const s = scoreMap[item.id];
+    const status = scoreStatus(s);
+    const scoreVal = status === 'Excluded' ? 'N/A' : status === 'Assessed' ? Math.round(s * 100) + '%' : '';
+    const fa = FA_BY_ID[item.focus_area_id];
+    rows.push([
+      item.id, item.pillar, item.focus_area_id, item.focus_area, item.recommendation, item.risk || '',
+      (fa?.roadmap || []).join('; '), item.aws_service || '', status, alignmentLabel(s), scoreVal,
+      commentMap[item.id] || '', item.doc_url || '',
+    ]);
+  });
+  return rows;
+}
+
+// RFC 4180 text (every field quoted) with a UTF-8 BOM so Excel reads accents
+// and symbols correctly. Keep the field quoting in sync with parseCSVRows().
+function csvText(rows) {
+  return '\uFEFF' + rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n') + '\n';
+}
+
+function exportCSV() {
+  const csv = csvText(buildCsvRows(DATA, scores, comments));
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const session = sessions[currentSessionId];
   const sessionName = session ? session.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') : 'assessment';
@@ -1548,13 +1562,15 @@ function loadCSV(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const lines = e.target.result.split('\n').filter(l => l.trim());
-      // Expected header: ID,Pillar,Focus Area,Best Practice,Risk,AWS Services,Alignment,Score,Comments
-      // Only ID, Score and Comments are read, so older exports still import.
-      const headers     = parseCSVLine(lines[0]);
+      // Quote-aware parse of the whole file (BOM, CRLF and line breaks inside
+      // quoted comments are handled). Only ID, Score, Comments and the optional
+      // Status column are read, so exports from any version of the tool import.
+      const rows        = parseCSVRows(e.target.result).filter(r => r.some(c => c.trim() !== ''));
+      const headers     = (rows[0] || []).map(h => h.trim());
       const idxId       = headers.indexOf('ID');
       const idxScore    = headers.indexOf('Score');
       const idxComments = headers.indexOf('Comments');
+      const idxStatus   = headers.indexOf('Status');
 
       if (idxId === -1 || idxScore === -1) {
         alert('Invalid CSV format. Make sure it was exported from this tool.');
@@ -1564,14 +1580,15 @@ function loadCSV(event) {
       const newScores   = {};
       const newComments = {};
 
-      lines.slice(1).forEach(line => {
-        const cols = parseCSVLine(line);
-        const id   = cols[idxId];
+      rows.slice(1).forEach(cols => {
+        const id   = (cols[idxId] || '').trim();
         if (!id) return;
 
-        // Only store scores that have an actual value (skip empty/unassigned)
+        // Only store scores that have an actual value (skip empty/unassigned);
+        // a Status of Excluded marks the item excluded even without a score.
         const rawScore = cols[idxScore]?.trim();
-        if (rawScore === 'N/A') {
+        const status   = idxStatus === -1 ? '' : (cols[idxStatus] || '').trim().toLowerCase();
+        if (rawScore === 'N/A' || status === 'excluded') {
           newScores[id] = 'na';
         } else if (rawScore !== '' && rawScore !== undefined) {
           const numVal = parseFloat(rawScore) / 100;
@@ -1624,28 +1641,30 @@ function loadCSV(event) {
   reader.readAsText(file);
 }
 
-function parseCSVLine(line) {
-  const result = [];
-  let current = '';
-  let inQuotes = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQuotes && line[i+1] === '"') {
-        current += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += ch;
-    }
+// Quote-aware CSV parser (RFC 4180): handles "" escapes, commas and line breaks
+// inside quoted fields, CRLF line endings and a leading UTF-8 BOM. Returns an
+// array of rows, each an array of strings. Keep in sync with parseCsvRows() in
+// lib/mcp/scoring.mjs.
+function parseCSVRows(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  const src = String(text || '').replace(/^\uFEFF/, '');
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (src[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += ch;
+    } else if (ch === '"') inQuotes = true;
+    else if (ch === ',') { row.push(field); field = ''; }
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && src[i + 1] === '\n') i++;
+      row.push(field); rows.push(row); row = []; field = '';
+    } else field += ch;
   }
-  result.push(current);
-  return result;
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows;
 }
 
 // ─── BOOT ─────────────────────────────────────────────────────────────────────

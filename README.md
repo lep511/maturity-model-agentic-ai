@@ -67,7 +67,7 @@ The server exposes **10 read-only tools**, **5 resources** under the `lens://` s
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
 | `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
 | `lookup_definition` | Glossary terms |
-| `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator) |
+| `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments` and the optional `Status`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator) |
 
 Resources: `lens://lens`, `lens://pillars/{slug}`, `lens://focus-areas/{id}`, `lens://best-practices/{id}` (JSON) and `lens://best-practices/{id}/guidance` (markdown), all listable and with id completion. Prompts: `review_focus_area` (guided interview that ends with an importable CSV), `gap_report` (prioritized remediation report from an export) and `explain_best_practice`.
 
@@ -281,7 +281,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * **Implementation guidance** modal with the official implementation steps of each practice; the full condensed guidance (desired outcome, anti-patterns, benefits, steps, resources) is kept in `guidance/` and served by the API
 * Overall score, pillar progress and a 6-axis radar chart, all computed as coverage over every applicable best practice (unassessed items count as 0%, excluded items are left out)
 * Multi-session management persisted in the browser (localStorage + cookie)
-* CSV export / import (imports read the `ID`, `Score` and `Comments` columns)
+* CSV export of all 150 practices as a complete snapshot (`ID`, `Pillar`, `Focus Area ID`, `Focus Area`, `Best Practice`, `Risk`, `Roadmap`, `AWS Services`, `Status`, `Alignment`, `Score`, `Comments`, `Doc URL`; UTF-8 with BOM so Excel reads it) and import, which reads only `ID`, `Score`, `Comments` and the optional `Status` column so files from any version load
 * Print preview with cards or table layout, color or black & white, risk and AWS services columns
 * Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)
 * Responsive layout for tablets and phones

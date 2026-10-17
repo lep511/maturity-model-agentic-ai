@@ -108,6 +108,20 @@ assert(score2.data.gaps.some(g => g.id === 'AGENTOPS01-BP03' && g.score_pct === 
 assert(!score2.data.gaps.some(g => g.id === 'AGENTOPS01-BP01'), '75 % scored item is not a gap');
 assert((await call('score_assessment', { scores: scoreRows, max_gaps: 5 })).data.gaps.length === 5, 'max_gaps honoured');
 assert((await call('score_assessment', {})).isError === true, 'score_assessment without input -> isError');
+// Current export format: BOM, CRLF, 13 columns with Status, a multi-line quoted
+// comment, unassessed rows with an empty score and an excluded row flagged by
+// Status alone.
+const csv2 = '\uFEFF' + [
+  'ID,Pillar,Focus Area ID,Focus Area,Best Practice,Risk,Roadmap,AWS Services,Status,Alignment,Score,Comments,Doc URL',
+  'AGENTOPS01-BP01,Operational excellence,AGENTOPS01,Ops,Title,High,first-agent; production,Svc,Assessed,Full coverage,100%,,https://x',
+  'AGENTOPS01-BP02,Operational excellence,AGENTOPS01,Ops,Title,High,,Svc,Excluded,Excluded,,,https://x',
+  'AGENTOPS01-BP03,Operational excellence,AGENTOPS01,Ops,Title,High,,Svc,Unassessed,,,,https://x',
+  'AGENTOPS02-BP01,Operational excellence,AGENTOPS02,Prompts,Title,High,,Svc,Assessed,Starting coverage,25%,"line one\nline two, with ""quotes""",https://x',
+].join('\r\n') + '\r\n';
+const score3 = await call('score_assessment', { csv: csv2, max_gaps: 150 });
+assert(score3.data.counts.assessed === 2 && score3.data.counts.excluded === 1 && score3.data.counts.unassessed === 147 && score3.data.unknown_ids.length === 0, `current export format (BOM, CRLF, Status) -> 2/1/147 (${JSON.stringify(score3.data.counts)})`);
+assert(!score3.data.gaps.some(g => g.id === 'AGENTOPS01-BP02') && score3.data.gaps.find(g => g.id === 'AGENTOPS01-BP03')?.status === 'unassessed', 'Status=Excluded without a score is excluded; unassessed row is a gap');
+assert(score3.data.gaps.find(g => g.id === 'AGENTOPS02-BP01')?.comment === 'line one\nline two, with "quotes"', 'multi-line quoted comment survives parsing');
 assert((await call('score_assessment', { csv: 'Foo,Bar\n1,2' })).isError === true, 'CSV without ID/Score columns -> isError');
 
 // resources
