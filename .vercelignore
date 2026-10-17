@@ -1,0 +1,7 @@
+# Files the Vercel CLI must not upload (node_modules, .git, .cache are ignored by default).
+# Local artifacts: assessment exports saved by test agents and CI link-check output.
+output-csv/
+large_files.json
+links_output.json
+links_checked.json
+*.log
