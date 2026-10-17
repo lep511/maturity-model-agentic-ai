@@ -56,7 +56,7 @@ The Lens is also available to AI assistants through a [Model Context Protocol](h
 | Streamable HTTP | `https://agentic-ai-lens-assessment.vercel.app/mcp` | Vercel Function `api/mcp.mjs`; stateless, public, no authentication, CORS enabled |
 | stdio | `node mcp/stdio.mjs` (or `npm run mcp`) after `npm ci` | For local clients; logs go to stderr |
 
-The server exposes **10 read-only tools**, **5 resources** under the `lens://` scheme and **3 prompts**. Answers derive from the REST API shapes but are trimmed for a model's context: listings are compact (id, title, risk, focus area) unless `detail: true` or `fields` ask for more, hypermedia links are dropped, every record keeps its `doc_url`, and the tool descriptions state approximate sizes.
+The server exposes **11 read-only tools**, **6 resources** under the `lens://` scheme and **3 prompts**. Answers derive from the REST API shapes but are trimmed for a model's context: listings are compact (id, title, risk, focus area) unless `detail: true` or `fields` ask for more, hypermedia links are dropped, every record keeps its `doc_url`, and the tool descriptions state approximate sizes.
 
 | Tool | What it returns |
 | --- | --- |
@@ -68,8 +68,9 @@ The server exposes **10 read-only tools**, **5 resources** under the `lens://` s
 | `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
 | `lookup_definition` | Glossary terms |
 | `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments` and the optional `Status`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator) |
+| `export_assessment_csv` | The CSV the app imports, built from a `{id, score}` list and/or an older export (neither gives a blank template); `rows` all / assessed / gaps, `columns` full / review / minimal, optional pillar or focus-area filter; returns the text plus a suggested `<session>-<date>.csv` file name. The server never writes files |
 
-Resources: `lens://lens`, `lens://pillars/{slug}`, `lens://focus-areas/{id}`, `lens://best-practices/{id}` (JSON) and `lens://best-practices/{id}/guidance` (markdown), all listable and with id completion. Prompts: `review_focus_area` (guided interview that ends with an importable CSV), `gap_report` (prioritized remediation report from an export) and `explain_best_practice`.
+Resources: `lens://lens`, `lens://export/template.csv` (blank 150-row assessment template), `lens://pillars/{slug}`, `lens://focus-areas/{id}`, `lens://best-practices/{id}` (JSON) and `lens://best-practices/{id}/guidance` (markdown), all listable and with id completion. Prompts: `review_focus_area` (guided interview that ends by exporting an importable CSV with `export_assessment_csv`), `gap_report` (prioritized remediation report from an export) and `explain_best_practice`.
 
 Connect a client:
 
@@ -114,7 +115,8 @@ curl -s https://agentic-ai-lens-assessment.vercel.app/mcp \
 │   │   └── openapi.mjs        # OpenAPI 3.1 document builder
 │   ├── mcp/
 │   │   ├── server.mjs         # buildServer(): MCP tools, resources and prompts
-│   │   └── scoring.mjs        # Assessment scoring from the exported CSV (same rule as the app)
+│   │   └── scoring.mjs        # Assessment scoring and CSV parsing (same rules as the app)
+│   ├── csv.mjs                # Canonical CSV export (Node copy of the app's buildCsvRows/csvText)
 │   └── markdown.mjs           # extractMarkdownSection() (kept identical to js/app.js)
 ├── css/
 │   ├── fonts.css              # @font-face for the self-hosted Inter + JetBrains Mono variable fonts
@@ -146,7 +148,8 @@ curl -s https://agentic-ai-lens-assessment.vercel.app/mcp \
     ├── validate_content.py    # Offline consistency checks (used by CI)
     ├── check_lens_updates.py  # Detects new or changed entries in the published Lens (runs on every push)
     ├── api_smoke_test.mjs     # In-process tests for the read-only API (used by CI)
-    └── mcp_smoke_test.mjs     # Tests for the MCP server: in-process client, stdio and the HTTP function (used by CI)
+    ├── mcp_smoke_test.mjs     # Tests for the MCP server: in-process client, stdio and the HTTP function (used by CI)
+    └── csv_sync_test.mjs      # Fails when the browser copies in js/app.js drift from lib/csv.mjs, lib/mcp/scoring.mjs or lib/markdown.mjs (used by CI)
 ```
 
 ### Item schema
@@ -245,7 +248,7 @@ The app and the REST API have no dependencies. The MCP server and the test scrip
 ```bash
 npm ci
 npm run mcp        # MCP server over stdio
-npm test           # API and MCP smoke tests
+npm test           # API and MCP smoke tests plus the browser/Node sync test
 ```
 
 ## Deploy to Vercel
@@ -265,9 +268,10 @@ Vercel installs the dependencies in `package.json` for the MCP function; there i
 1. `tools/validate_content.py` — manifest, schema, counts, risk values, guidance files
 2. `npm ci` (Node 24), then `tools/api_smoke_test.mjs` — the read-only API routed in-process against the repository content
 3. `tools/mcp_smoke_test.mjs` — the MCP server through an in-process client, the stdio entry point and the HTTP function
-4. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
-5. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
-6. `data/check_link_action.sh` — fails on any 4xx/5xx response
+4. `tools/csv_sync_test.mjs` — the CSV export, CSV parser and markdown helpers duplicated in `js/app.js` must match their Node copies
+5. `data/count_chars.sh data` — fails if any item JSON exceeds 2500 characters (the `data/lens/` metadata files are skipped)
+6. `data/extract_link.sh .` — collects every unique `https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/...` link
+7. `data/check_link_action.sh` — fails on any 4xx/5xx response
 
 A second workflow, `check-lens-updates.yml`, runs on every push to detect new entries in the published Lens (see above).
 

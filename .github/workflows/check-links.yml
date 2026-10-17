@@ -58,6 +58,9 @@ jobs:
       - name: MCP smoke test
         run: node tools/mcp_smoke_test.mjs
 
+      - name: Browser/Node helper sync test
+        run: node tools/csv_sync_test.mjs
+
       - name: Count characters
         id: count_chars
         run: |

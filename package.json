@@ -11,7 +11,8 @@
     "mcp": "node mcp/stdio.mjs",
     "test:api": "node tools/api_smoke_test.mjs",
     "test:mcp": "node tools/mcp_smoke_test.mjs",
-    "test": "npm run test:api && npm run test:mcp"
+    "test": "npm run test:api && npm run test:mcp && npm run test:csv",
+    "test:csv": "node tools/csv_sync_test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.3.1",

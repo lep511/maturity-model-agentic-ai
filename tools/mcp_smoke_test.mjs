@@ -10,6 +10,7 @@ import { Client, InMemoryTransport } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 import { buildServer, SERVER_NAME } from '../lib/mcp/server.mjs';
 import { handleMcpRequest } from '../api/mcp.mjs';
+import { parseCsv } from '../lib/mcp/scoring.mjs';
 
 let passes = 0, failures = 0;
 const assert = (cond, msg) => { if (cond) passes++; else { failures++; console.error('ASSERT FAIL:', msg); } };
@@ -30,7 +31,7 @@ const call = async (name, args = {}) => {
 
 const tools = await client.listTools();
 const toolNames = tools.tools.map(t => t.name).sort();
-assert(toolNames.length === 10, `10 tools registered (${toolNames.length}: ${toolNames.join(',')})`);
+assert(toolNames.length === 11, `11 tools registered (${toolNames.length}: ${toolNames.join(',')})`);
 assert(tools.tools.every(t => t.annotations?.readOnlyHint === true && t.annotations?.openWorldHint === false), 'every tool is annotated read-only and closed-world');
 assert(tools.tools.every(t => t.description && t.inputSchema?.type === 'object'), 'every tool has a description and an object input schema');
 
@@ -122,13 +123,36 @@ const score3 = await call('score_assessment', { csv: csv2, max_gaps: 150 });
 assert(score3.data.counts.assessed === 2 && score3.data.counts.excluded === 1 && score3.data.counts.unassessed === 147 && score3.data.unknown_ids.length === 0, `current export format (BOM, CRLF, Status) -> 2/1/147 (${JSON.stringify(score3.data.counts)})`);
 assert(!score3.data.gaps.some(g => g.id === 'AGENTOPS01-BP02') && score3.data.gaps.find(g => g.id === 'AGENTOPS01-BP03')?.status === 'unassessed', 'Status=Excluded without a score is excluded; unassessed row is a gap');
 assert(score3.data.gaps.find(g => g.id === 'AGENTOPS02-BP01')?.comment === 'line one\nline two, with "quotes"', 'multi-line quoted comment survives parsing');
+
+// export_assessment_csv: template, normalisation of an old export, row and
+// column presets, round trip through score_assessment.
+const tpl = await call('export_assessment_csv', {});
+assert(tpl.text.startsWith('\uFEFF"ID","Focus Area ID","Best Practice","Risk","Status","Score","Comments"') && parseCsv(tpl.text).rows.length === 150 && tpl.data.counts.unassessed === 150 && /^assessment-\d{4}-\d{2}-\d{2}\.csv$/.test(tpl.data.filename), 'export template: review columns, 150 unassessed rows, suggested filename');
+const expFull = await call('export_assessment_csv', { csv, columns: 'full', pillar: 'operational-excellence', session_name: 'Security Review 2' });
+const pf = parseCsv(expFull.text);
+assert(pf.headers.length === 13 && pf.rows.length === 26 && expFull.data.filename.startsWith('security-review-2-') && expFull.data.counts.assessed === 2, `export full columns for one pillar (${pf.rows.length} rows)`);
+const r01 = pf.rows.find(r => r[0] === 'AGENTOPS01-BP01');
+assert(r01 && r01[8] === 'Assessed' && r01[9] === 'Full coverage' && r01[10] === '100%' && r01[11] === 'done, with "quotes"' && r01[12].endsWith('/agentops01-bp01.html'), 'old export normalised: status, label, score, comment and doc url');
+const r02 = pf.rows.find(r => r[0] === 'AGENTOPS01-BP02');
+assert(r02 && r02[8] === 'Excluded' && r02[9] === 'Excluded' && r02[10] === 'N/A', 'excluded row in the export');
+const expAssessed = await call('export_assessment_csv', { csv, rows: 'assessed', columns: 'minimal' });
+const pa = parseCsv(expAssessed.text);
+assert(pa.rows.length === 3 && pa.headers.join() === 'ID,Status,Score,Comments' && expAssessed.text.length < 400, 'rows=assessed with minimal columns');
+const expGaps = await call('export_assessment_csv', { csv, rows: 'gaps' });
+assert(expGaps.data.counts.rows === 147 && expGaps.data.counts.unassessed === 147, 'rows=gaps lists the 147 unassessed practices');
+const expScores = await call('export_assessment_csv', { scores: scoreRows, columns: 'minimal' });
+const back = await call('score_assessment', { csv: expScores.text });
+assert(back.data.counts.assessed === 2 && back.data.unknown_ids.length === 0 && expScores.data.unknown_ids.includes('NOPE-BP01') && expScores.data.invalid_scores.length === 1, 'export from a scores list round-trips through score_assessment');
+assert((await call('export_assessment_csv', { pillar: 'zzz' })).isError === true, 'export with an unknown pillar -> isError');
 assert((await call('score_assessment', { csv: 'Foo,Bar\n1,2' })).isError === true, 'CSV without ID/Score columns -> isError');
 
 // resources
 const templates = await client.listResourceTemplates();
 assert(templates.resourceTemplates.length === 4, `4 resource templates (${templates.resourceTemplates.length})`);
 const resources = await client.listResources();
-assert(resources.resources.length === 1 + 6 + 41 + 150 + 150, `resource list enumerates 348 entries (${resources.resources.length})`);
+assert(resources.resources.length === 2 + 6 + 41 + 150 + 150, `resource list enumerates 349 entries (${resources.resources.length})`);
+const tplRes = await client.readResource({ uri: 'lens://export/template.csv' });
+assert(tplRes.contents[0].mimeType === 'text/csv' && parseCsv(tplRes.contents[0].text).rows.length === 150 && parseCsv(tplRes.contents[0].text).headers.length === 13, 'lens://export/template.csv is a 150-row, 13-column template');
 const lens = await client.readResource({ uri: 'lens://lens' });
 assert(JSON.parse(lens.contents[0].text).counts.best_practices === 150 && lens.contents[0].mimeType === 'application/json', 'lens://lens');
 const pil = await client.readResource({ uri: 'lens://pillars/security' });
@@ -149,7 +173,7 @@ assert(comp.completion.values.length === 9 && comp.completion.values[0] === 'AGE
 const prompts = await client.listPrompts();
 assert(prompts.prompts.map(p => p.name).sort().join() === 'explain_best_practice,gap_report,review_focus_area', 'three prompts');
 const review = await client.getPrompt({ name: 'review_focus_area', arguments: { focus_area_id: 'agentsec03' } });
-assert(review.messages[0].role === 'user' && review.messages[0].content.text.includes('AGENTSEC03') && review.messages[0].content.text.includes('Maturity levels'), 'review_focus_area prompt');
+assert(review.messages[0].role === 'user' && review.messages[0].content.text.includes('AGENTSEC03') && review.messages[0].content.text.includes('Maturity levels') && review.messages[0].content.text.includes('export_assessment_csv'), 'review_focus_area prompt ends with the export tool');
 const gap = await client.getPrompt({ name: 'gap_report', arguments: { csv } });
 assert(gap.messages[0].content.text.includes('Overall coverage') && gap.messages[0].content.text.includes('147 in total') && gap.messages[0].content.text.includes('```csv'), 'gap_report prompt embeds the computed summary and the CSV');
 const explain = await client.getPrompt({ name: 'explain_best_practice', arguments: { id: 'AGENTOPS01-BP01' } });
@@ -162,7 +186,7 @@ await client.close();
 const stdioClient = new Client({ name: 'lens-smoke-test-stdio', version: '0.0.0' }, { capabilities: {} });
 await stdioClient.connect(new StdioClientTransport({ command: process.execPath, args: ['mcp/stdio.mjs'], stderr: 'pipe' }));
 const stdioTools = await stdioClient.listTools();
-assert(stdioTools.tools.length === 10, 'stdio server lists 10 tools');
+assert(stdioTools.tools.length === 11, 'stdio server lists 11 tools');
 const stdioCall = await stdioClient.callTool({ name: 'lookup_definition', arguments: { q: 'guardrail' } });
 assert(stdioCall.structuredContent.count >= 1, 'stdio tool call works');
 await stdioClient.close();
@@ -206,7 +230,7 @@ assert(discover.msg?.result?._meta?.['io.modelcontextprotocol/serverInfo']?.name
 assert(discover.headers.get('access-control-allow-origin') === '*', 'CORS header on HTTP responses');
 
 const httpTools = await rpc({ jsonrpc: '2.0', id: 't1', method: 'tools/list', params: { _meta: modernMeta } }, modernHeaders);
-assert(httpTools.status === 200 && httpTools.msg?.result?.tools?.length === 10, `modern tools/list over HTTP -> 10 tools (${httpTools.status})`);
+assert(httpTools.status === 200 && httpTools.msg?.result?.tools?.length === 11, `modern tools/list over HTTP -> 11 tools (${httpTools.status})`);
 const httpCall = await rpc({ jsonrpc: '2.0', id: 'c1', method: 'tools/call', params: { name: 'list_pillars', arguments: {}, _meta: modernMeta } }, modernHeaders);
 assert(httpCall.status === 200 && httpCall.msg?.result?.structuredContent?.count === 6, 'modern tools/call over HTTP');
 const httpRead = await rpc({ jsonrpc: '2.0', id: 'r1', method: 'resources/read', params: { uri: 'lens://pillars/security', _meta: modernMeta } }, modernHeaders);
