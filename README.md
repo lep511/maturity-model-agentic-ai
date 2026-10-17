@@ -56,16 +56,16 @@ The Lens is also available to AI assistants through a [Model Context Protocol](h
 | Streamable HTTP | `https://agentic-ai-lens-assessment.vercel.app/mcp` | Vercel Function `api/mcp.mjs`; stateless, public, no authentication, CORS enabled |
 | stdio | `node mcp/stdio.mjs` (or `npm run mcp`) after `npm ci` | For local clients; logs go to stderr |
 
-The server exposes **10 read-only tools**, **5 resources** under the `lens://` scheme and **3 prompts**; every answer uses the same shapes as the REST API and carries `doc_url` links to the official pages.
+The server exposes **10 read-only tools**, **5 resources** under the `lens://` scheme and **3 prompts**. Answers derive from the REST API shapes but are trimmed for a model's context: listings are compact (id, title, risk, focus area) unless `detail: true` or `fields` ask for more, hypermedia links are dropped, every record keeps its `doc_url`, and the tool descriptions state approximate sizes.
 
 | Tool | What it returns |
 | --- | --- |
-| `list_pillars`, `get_pillar` | The six pillars; detail adds design principles and focus areas (slug, name, prefix or abbreviation such as `SEC`) |
-| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap; detail adds capability intent, the 5 maturity levels, common issues and the best practices |
-| `search_best_practices` | Full-text search and filters (`pillar`, `focus_area`, `risk`, `roadmap`) with pagination and field projection |
+| `list_pillars`, `get_pillar` | The six pillars with counts and focus-area ids; detail adds the intro, design principles and focus-area questions (slug, name, prefix or abbreviation such as `SEC`) |
+| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap; detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
+| `search_best_practices` | Full-text search and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` or `fields` for full records; paginated |
 | `get_best_practice` | One best practice (optionally with the guidance markdown embedded) |
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
-| `get_roadmap` | The Lens reading paths, one of them with its best practices in full |
+| `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
 | `lookup_definition` | Glossary terms |
 | `score_assessment` | Coverage per pillar and focus area plus the gap list, computed from the CSV exported by this app (columns `ID`, `Score`, `Comments`) or from a `{id, score}` list, with the app's rule (unassessed = 0 %, excluded items leave the denominator) |
 

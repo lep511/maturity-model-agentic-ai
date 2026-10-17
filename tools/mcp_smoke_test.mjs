@@ -36,9 +36,10 @@ assert(tools.tools.every(t => t.description && t.inputSchema?.type === 'object')
 
 const pillars = await call('list_pillars');
 assert(pillars.data.count === 6 && pillars.data.items[1].slug === 'security' && pillars.data.items[1].counts.best_practices === 30, 'list_pillars -> 6 pillars, security has 30 practices');
-assert(pillars.data.items[0].links.self === `${ORIGIN}/api/pillars/operational-excellence`, 'links use the configured origin');
+assert(!('links' in pillars.data.items[0]) && !('intro' in pillars.data.items[0]) && Object.keys(pillars.data.items[0].focus_areas[0]).join() === 'id,name', 'list_pillars is compact: no links, no intro, focus areas as id/name');
+assert(pillars.text.length < 8000, `list_pillars payload under 8 KB (${pillars.text.length})`);
 const sec = await call('get_pillar', { pillar: 'SEC' });
-assert(sec.data.slug === 'security' && sec.data.focus_areas.length === 9 && sec.data.design_principles.length > 0, 'get_pillar by abbreviation with design principles');
+assert(sec.data.slug === 'security' && sec.data.focus_areas.length === 9 && sec.data.design_principles.length > 0 && typeof sec.data.intro === 'string' && !('links' in sec.data), 'get_pillar by abbreviation with intro and design principles, no links');
 const badPillar = await call('get_pillar', { pillar: 'nope' });
 assert(badPillar.isError === true && Array.isArray(badPillar.data.error.valid), 'unknown pillar -> isError with valid slugs');
 
@@ -49,11 +50,18 @@ assert(fasX.data.count === 4 && fasX.data.items[0].maturity_levels.length === 5,
 assert((await call('list_focus_areas', { pillar: 'zzz' })).isError === true, 'bad filter -> isError');
 const fa = await call('get_focus_area', { id: 'agentsec03' });
 assert(fa.data.id === 'AGENTSEC03' && fa.data.maturity_levels.length === 5 && fa.data.best_practices_detail.length === 4, 'get_focus_area (lowercase id) with maturity levels and practices');
+assert(Object.keys(fa.data.best_practices_detail[0]).join() === 'id,title,risk,summary,doc_url' && !('links' in fa.data), 'embedded practices are compact and links are dropped');
 
 const all = await call('search_best_practices', { limit: 500 });
 assert(all.data.total === 150 && all.data.count === 150 && all.data.items[0].id === 'AGENTOPS01-BP01', 'search_best_practices without filters -> 150');
+assert(Object.keys(all.data.items[0]).join() === 'id,title,risk,focus_area_id,pillar_slug', 'listings are compact by default');
+assert(all.text.length < 30000, `150 compact practices stay under 30 KB (${all.text.length})`);
 const dflt = await call('search_best_practices', {});
-assert(dflt.data.total === 150 && dflt.data.count === 25 && dflt.data.limit === 25, 'default page size is 25');
+assert(dflt.data.total === 150 && dflt.data.count === 50 && dflt.data.limit === 50, 'default page size is 50');
+const secAll = await call('search_best_practices', { pillar: 'security' });
+assert(secAll.data.total === 30 && secAll.data.count === 30 && secAll.text.length < 8000, `a whole pillar fits in one default call (${secAll.data.count}, ${secAll.text.length} bytes)`);
+const det = await call('search_best_practices', { pillar: 'security', detail: true, limit: 5 });
+assert(det.data.count === 5 && Array.isArray(det.data.items[0].desired_outcome) && typeof det.data.items[0].summary === 'string' && !('links' in det.data.items[0]), 'detail=true returns full records without links');
 const high = await call('search_best_practices', { pillar: 'Security', risk: 'high', limit: 100 });
 assert(high.data.total === 19 && high.data.items.every(i => i.risk === 'High'), `security high-risk = 19 (${high.data.total})`);
 const rm = await call('search_best_practices', { roadmap: 'first-agent', fields: 'id,risk', limit: 100 });
@@ -63,7 +71,7 @@ assert(q.data.total > 0 && q.data.total < 150, `search guardrails -> ${q.data.to
 assert((await call('search_best_practices', { risk: 'critical' })).isError === true, 'invalid risk -> isError');
 
 const bp = await call('get_best_practice', { id: 'agentops01_bp01', include_guidance: true });
-assert(bp.data.id === 'AGENTOPS01-BP01' && bp.data.desired_outcome.length === 4 && bp.data.aws_services.length === 4 && bp.data.guidance_markdown.startsWith('# AGENTOPS01-BP01') && !bp.data.summary.includes('&amp;'), 'get_best_practice normalises the id and embeds guidance');
+assert(bp.data.id === 'AGENTOPS01-BP01' && bp.data.desired_outcome.length === 4 && bp.data.aws_services.length === 4 && bp.data.guidance_markdown.startsWith('# AGENTOPS01-BP01') && !bp.data.summary.includes('&amp;') && !('links' in bp.data) && bp.data.doc_url.endsWith('/agentops01-bp01.html'), 'get_best_practice normalises the id, embeds guidance, keeps doc_url and drops links');
 assert((await call('get_best_practice', { id: 'AGENTOPS99-BP01' })).isError === true, 'unknown best practice -> isError');
 const steps = await call('get_implementation_guidance', { id: 'AGENTOPS01-BP01' });
 assert(steps.text.startsWith('**AGENTOPS01-BP01**') && steps.text.includes('## Implementation steps') && !steps.text.includes('Desired outcome'), 'implementation steps section only');
@@ -73,7 +81,7 @@ assert(full.text.startsWith('# AGENTOPS01-BP01') && full.text.includes('Desired 
 const road = await call('get_roadmap');
 assert(road.data.count === 4 && road.data.items[0].counts.best_practices === 14, 'get_roadmap lists 4 paths');
 const road1 = await call('get_roadmap', { roadmap: 'Moving to production' });
-assert(road1.data.id === 'production' && road1.data.focus_areas[0].best_practices_detail.length > 0, 'get_roadmap by label with detail');
+assert(road1.data.id === 'production' && road1.data.focus_areas[0].best_practices_detail.length > 0 && Object.keys(road1.data.focus_areas[0].best_practices_detail[0]).join() === 'id,title,risk,summary,doc_url' && !('links' in road1.data), 'get_roadmap by label with compact detail');
 const defs = await call('lookup_definition', { q: 'memory' });
 assert(defs.data.count >= 1 && defs.data.items.some(d => d.term === 'Agent memory'), 'lookup_definition');
 
@@ -114,7 +122,7 @@ assert(JSON.parse(pil.contents[0].text).focus_areas.length === 9, 'lens://pillar
 const faRes = await client.readResource({ uri: 'lens://focus-areas/AGENTSEC03' });
 assert(JSON.parse(faRes.contents[0].text).best_practices_detail.length === 4, 'lens://focus-areas/{id}');
 const bpRes = await client.readResource({ uri: 'lens://best-practices/AGENTOPS01-BP01' });
-assert(JSON.parse(bpRes.contents[0].text).title.length > 0 && bpRes.contents[0].mimeType === 'application/json', 'lens://best-practices/{id} is JSON');
+assert(JSON.parse(bpRes.contents[0].text).title.length > 0 && !('links' in JSON.parse(bpRes.contents[0].text)) && bpRes.contents[0].mimeType === 'application/json', 'lens://best-practices/{id} is JSON without links');
 const gRes = await client.readResource({ uri: 'lens://best-practices/AGENTOPS01-BP01/guidance' });
 assert(gRes.contents[0].mimeType === 'text/markdown' && gRes.contents[0].text.includes('## Implementation steps'), 'lens://best-practices/{id}/guidance is markdown');
 let notFound = false;
