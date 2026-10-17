@@ -23,7 +23,7 @@ Scoring uses a 6-point coverage scale per best practice: 0%, 25%, 50%, 75%, 100%
 
 ## Read-only API
 
-The same content is exposed as a read-only JSON API implemented as a Vercel Function (`api/index.mjs`, routed by `lib/api/router.mjs`; the response shapes in `lib/api/shapes.mjs` are shared with the MCP server below). All endpoints are `GET`, public, CORS-enabled (`Access-Control-Allow-Origin: *`) and cached at the CDN per deployment. An OpenAPI 3.1 description is served at `/api/openapi.json`.
+The same content is exposed as a read-only JSON API implemented as a Vercel Function (`api/index.mjs`, routed by `lib/api/router.mjs`; the response shapes in `lib/api/shapes.mjs` are shared with the MCP server below). All endpoints are `GET`, public, CORS-enabled (`Access-Control-Allow-Origin: *`) and cached at the CDN per deployment. An OpenAPI 3.1 description is served at `/api/openapi.json`; it is built at request time by `lib/api/openapi.mjs`, so there is no `api/openapi.json` file in the repository.
 
 | Endpoint | Description |
 | --- | --- |
@@ -243,6 +243,8 @@ npx serve .
 # or
 python3 -m http.server 3000
 ```
+
+These static servers only serve the web app. The REST API (`/api/*`, including `/api/openapi.json`) and the MCP endpoint (`/mcp`) are Vercel Functions, so they return 404 there; to exercise them locally run `vercel dev` (Vercel CLI, project linked), which serves the static files and both functions together.
 
 The app and the REST API have no dependencies. The MCP server and the test scripts need Node 24 and `npm ci`:
 
