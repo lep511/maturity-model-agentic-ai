@@ -290,7 +290,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * Overall score, pillar progress and a 6-axis radar chart, all computed as coverage over every applicable best practice (unassessed items count as 0%, excluded items are left out)
 * Multi-session management persisted in the browser (localStorage + cookie): create, switch, rename (pencil next to each session) and delete sessions
 * CSV export of all 150 practices as a complete snapshot (`ID`, `Pillar`, `Focus Area ID`, `Focus Area`, `Best Practice`, `Risk`, `Roadmap`, `AWS Services`, `Status`, `Alignment`, `Score`, `Comments`, `Doc URL`; UTF-8 with BOM so Excel reads it) and import, which reads only `ID`, `Score`, `Comments` and the optional `Status` column so files from any version load
-* Print preview with cards or table layout, color or black & white, risk and AWS services columns
+* Print preview with cards or table layout, color or black & white, filtered by pillar and assessment status, with optional risk level and AWS services (printed under each practice, so long service lists wrap inside the page)
 * Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls on desktop to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)
 * Responsive layout for tablets and phones: filter drawer, stacked cards with a full-width score selector, compact score summary, bottom-sheet modals, touch-sized controls and 16px form fields (no zoom on iOS), and a landscape layout for phones
 * Read-only JSON API (`/api`, OpenAPI at `/api/openapi.json`) over the same content

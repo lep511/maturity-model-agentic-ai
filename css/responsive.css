@@ -889,6 +889,9 @@
   .print-summary-box .psb-label { font-size: 9px; letter-spacing: 0.04em; }
   .print-doc-header { flex-direction: column; gap: 10px; }
   .print-doc-meta { text-align: left; }
+  /* The compact table is laid out for an A4 page: on a phone the preview keeps
+     a page-like width and scrolls sideways instead of squeezing every column */
+  #previewDoc:has(.print-table) { min-width: 640px; }
 }
 
 

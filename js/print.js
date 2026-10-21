@@ -6,18 +6,6 @@
 function openPrintPreview() {
   // Pillar checkboxes are rendered by renderPillarChrome(); make sure they exist
   if (!document.querySelector('.phase-chk') && typeof renderPillarChrome === 'function') renderPillarChrome();
-
-  // Build focus-area checkboxes
-  const capBox = document.getElementById('capCheckboxes');
-  capBox.innerHTML = '';
-  FOCUS_AREAS.forEach(fa => {
-    const lbl = document.createElement('label');
-    lbl.className = 'print-checkbox-row';
-    lbl.title = `${fa.id}: ${fa.question}`;
-    lbl.innerHTML = `<input type="checkbox" class="cap-chk" value="${escapeHtml(fa.id)}" checked onchange="refreshPreview()">
-      <span class="print-checkbox-label" style="font-size:11px"><span style="font-family:var(--font-mono);font-size:9px;color:var(--text-dim)">${faShort(fa.id)}</span> ${escapeHtml(fa.name)}</span>`;
-    capBox.appendChild(lbl);
-  });
   document.getElementById('printModal').classList.add('open');
   refreshPreview();
 }
@@ -28,11 +16,6 @@ function closePrintModal() {
 
 function toggleAllPhases(state) {
   document.querySelectorAll('.phase-chk').forEach(c => { c.checked = state; });
-  refreshPreview();
-}
-
-function toggleAllCaps(state) {
-  document.querySelectorAll('.cap-chk').forEach(c => { c.checked = state; });
   refreshPreview();
 }
 
@@ -51,21 +34,20 @@ function getPrintOptions() {
   const items    = document.querySelector('input[name="printItems"]:checked').value;
   const color    = document.querySelector('input[name="printColor"]:checked').value;
   const phases   = [...document.querySelectorAll('.phase-chk:checked')].map(c => parseInt(c.value));
-  const caps     = [...document.querySelectorAll('.cap-chk:checked')].map(c => c.value);
   const guidance = document.getElementById('tog-guidance').checked;
   const howto    = document.getElementById('tog-howto').checked;
   const cmts     = document.getElementById('tog-comments').checked;
   const risk     = document.getElementById('tog-risk') ? document.getElementById('tog-risk').checked : true;
   const service  = document.getElementById('tog-service').checked;
   const summary  = document.getElementById('tog-summary').checked;
-  return { format, items, color, phases, caps, guidance, howto, cmts, risk, service, summary };
+  return { format, items, color, phases, guidance, howto, cmts, risk, service, summary };
 }
 
+// Every focus area of the selected pillars is printed (the report has no per-focus-area filter)
 function getPrintData(opts) {
   return DATA.filter(d => {
     const pi = PILLARS.indexOf(d.pillar);
     if (!opts.phases.includes(pi)) return false;
-    if (!opts.caps.includes(d.focus_area_id)) return false;
     const s = scores[d.id];
     const hasScore = s !== null && s !== undefined && s !== 'na';
     const isExcluded = s === 'na';
@@ -99,6 +81,14 @@ function riskChipHtml(risk, bw) {
   if (!risk) return '';
   const cls = bw ? 'print-risk' : `print-risk print-risk-${String(risk).toLowerCase()}`;
   return `<span class="${cls}" title="Level of risk exposed if this best practice is not established">${escapeHtml(risk)} risk</span>`;
+}
+
+// AWS services of a practice, on their own line under its title (cards) or its
+// text (table): a long list wraps there instead of squeezing the title or
+// running off the page.
+function serviceChipHtml(item, bw) {
+  if (!item.aws_service || item.aws_service === 'N/A') return '';
+  return `<span class="print-card-service"${bw ? ' style="background:#f0f0f0;border-color:#ccc;color:#333"' : ''}>${escapeHtml(item.aws_service)}</span>`;
 }
 
 function buildSummaryGrid(data, accent) {
@@ -212,16 +202,14 @@ function buildPrintDoc(opts, data) {
           <th style="width:92px;border-bottom-color:${accent}">ID</th>
           <th style="border-bottom-color:${accent}">Best practice</th>
           ${opts.risk ? `<th style="width:64px;border-bottom-color:${accent}">Risk</th>` : ''}
-          ${opts.service ? `<th style="border-bottom-color:${accent}">AWS services</th>` : ''}
           <th style="width:110px;border-bottom-color:${accent}">Alignment</th>
           ${opts.cmts ? `<th style="border-bottom-color:${accent}">Comments</th>` : ''}
         </tr></thead><tbody>`;
         items.forEach(item => {
           html += `<tr>
             <td style="font-family:monospace;color:#888;white-space:nowrap;font-size:9px">${escapeHtml(item.id)}</td>
-            <td>${escapeHtml(item.recommendation)}</td>
+            <td>${escapeHtml(item.recommendation)}${opts.service ? serviceChipHtml(item, bw) : ''}</td>
             ${opts.risk ? `<td>${riskChipHtml(item.risk, bw)}</td>` : ''}
-            ${opts.service ? `<td style="font-size:9px">${item.aws_service && item.aws_service !== 'N/A' ? escapeHtml(item.aws_service) : '—'}</td>` : ''}
             <td>${scoreChipHtml(item.id, bw)}</td>
             ${opts.cmts ? `<td style="color:#555;font-size:9px">${escapeHtml(comments[item.id]||'')}</td>` : ''}
           </tr>`;
@@ -231,14 +219,14 @@ function buildPrintDoc(opts, data) {
         const guidBorder  = bw ? '#999' : '#FF9900';
         const howtoBorder = bw ? '#999' : '#4da6ff';
         items.forEach(item => {
-          const svc = opts.service && item.aws_service && item.aws_service !== 'N/A'
-            ? `<span class="print-card-service" style="${bw?'background:#f0f0f0;border-color:#ccc;color:#333':''}">${escapeHtml(item.aws_service)}</span>` : '';
           html += `<div class="print-card">
             <div class="print-card-header">
               <span class="print-card-id">${escapeHtml(item.id)}</span>
-              <span class="print-card-title">${escapeHtml(item.recommendation)}</span>
+              <div class="print-card-main">
+                <span class="print-card-title">${escapeHtml(item.recommendation)}</span>
+                ${opts.service ? serviceChipHtml(item, bw) : ''}
+              </div>
               ${opts.risk ? riskChipHtml(item.risk, bw) : ''}
-              ${svc}
             </div>
             <div class="print-card-footer">
               ${scoreChipHtml(item.id, bw)}

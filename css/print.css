@@ -394,15 +394,25 @@
   flex-shrink: 0;
   margin-top: 1px;
 }
-.print-card-title { font-weight: 600; font-size: 11px; color: #1a1a2e; flex: 1; }
+/* Title column of the card header: the title, then the AWS services below it */
+.print-card-main { flex: 1; min-width: 0; }
+.print-card-title { display: block; font-weight: 600; font-size: 11px; color: #1a1a2e; }
+/* AWS services chip, on its own line under the title (cards) or the practice
+   text (table). It shrinks to short lists and wraps long ones within the
+   column, so it never squeezes the title or runs off the page. */
 .print-card-service {
-  font-size: 10px;
-  color: #4da6ff;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 4px;
+  font-size: 9px;
+  line-height: 1.45;
+  color: #1f5fa8;
   background: #f0f6ff;
   padding: 1px 6px;
   border-radius: 3px;
   border: 1px solid #d0e4ff;
-  flex-shrink: 0;
+  overflow-wrap: anywhere;
 }
 .print-card-guidance {
   font-size: 10px;
