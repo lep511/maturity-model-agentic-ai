@@ -334,8 +334,17 @@ header {
   color: var(--text-dim);
 }
 
+/* Rename (pencil) and delete (X) buttons at the end of each session row */
+.session-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.session-item-rename,
 .session-item-delete {
-  opacity: 0.85;                     
+  opacity: 0.85;
   background: rgba(36, 36, 36, 0.08);
   border: 1px solid rgba(136, 136, 136, 0.25);
   width: 24px;
@@ -360,6 +369,17 @@ header {
   border-color: var(--red);
   color: #fff;
 }
+.session-item:hover .session-item-rename {
+  opacity: 1;
+  color: var(--text-secondary);
+  background: var(--aws-dim);
+  border-color: rgba(255, 153, 0, 0.25);
+}
+.session-item-rename:hover {
+  background: var(--aws);
+  border-color: var(--aws);
+  color: #000;
+}
 
 .session-name-input {
   width: 100%;
@@ -381,7 +401,8 @@ header {
   color: var(--text-dim);
 }
 
-#newSessionModal {
+#newSessionModal,
+#renameSessionModal {
   position: fixed;
   inset: 0;
   z-index: 2000;
@@ -394,9 +415,13 @@ header {
   pointer-events: none;
   transition: opacity 0.2s;
 }
-#newSessionModal.open {
+#newSessionModal.open,
+#renameSessionModal.open {
   opacity: 1;
   pointer-events: all;
+}
+#renameSessionModal.open .modal-box {
+  transform: translateY(0) scale(1);
 }
 
 /* DELETE SESSION MODAL */

@@ -248,17 +248,25 @@ function renderSessionList() {
     const div = document.createElement('div');
     const canDelete = sortedSessions.length > 1 && !session.isDefault;
     div.className = 'session-item' + (session.id === currentSessionId ? ' active' : '');
+    // Every session can be renamed (pencil); only non-default ones can be deleted (X)
     div.innerHTML = `
       <div class="session-item-icon">📊</div>
         <div class="session-item-info">
         <div class="session-item-name">${escapeHtml(session.name)}</div>
         <div class="session-item-date">${formatDate(session.date)}</div>
       </div>
-      ${canDelete ? `<button class="session-item-delete" onclick="deleteSession('${session.id}', event)">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-          <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </button>` : ''}
+      <div class="session-item-actions">
+        <button class="session-item-rename" onclick="openRenameSessionModal('${session.id}', event)" title="Rename session" aria-label="Rename session">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
+            <path d="M7.6 2.4l2 2M1.5 10.5l.6-2.6 6.5-6.5a1.1 1.1 0 0 1 1.6 0l.4.4a1.1 1.1 0 0 1 0 1.6L4.1 9.9z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        ${canDelete ? `<button class="session-item-delete" onclick="deleteSession('${session.id}', event)" title="Delete session" aria-label="Delete session">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M2 2l6 6M8 2l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>` : ''}
+      </div>
     `;
     div.onclick = () => switchSession(session.id);
     list.appendChild(div);
@@ -405,6 +413,56 @@ function confirmDeleteSession() {
   });
 }
 
+// ─── RENAME SESSION ───────────────────────────────────────────────────────────
+// Only the name changes: scores, comments, date and the default flag are kept.
+// CSV exports and printed reports pick up the new name.
+let pendingRenameSessionId = null;
+
+function openRenameSessionModal(sessionId, event) {
+  if (event) event.stopPropagation(); // the row itself switches to the session
+  const session = sessions[sessionId];
+  if (!session) return;
+
+  pendingRenameSessionId = sessionId;
+  const input = document.getElementById('renameSessionNameInput');
+  input.value = session.name;
+  document.getElementById('renameSessionModal').classList.add('open');
+  setTimeout(() => { input.focus(); input.select(); }, 100);
+}
+
+function closeRenameSessionModal() {
+  document.getElementById('renameSessionModal').classList.remove('open');
+  pendingRenameSessionId = null;
+}
+
+function confirmRenameSession() {
+  const session = sessions[pendingRenameSessionId];
+  if (!session) { closeRenameSessionModal(); return; }
+
+  const name = document.getElementById('renameSessionNameInput').value.trim();
+  if (!name) {
+    alert('Please enter a session name');
+    return;
+  }
+  closeRenameSessionModal();
+  if (name === session.name) return;
+
+  session.name = name;
+  saveSessions();
+  updateSessionUI();
+
+  const toast = document.getElementById('savedToast');
+  toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Session renamed`;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => {
+      toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Session saved`;
+    }, 300);
+  }, 1800);
+}
+
 // Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
   const dropdown = document.getElementById('sessionDropdown');
@@ -450,6 +508,18 @@ function init() {
   if (deleteModal) {
     deleteModal.addEventListener('click', function(e) {
       if (e.target === this) closeDeleteSessionModal();
+    });
+  }
+
+  // Rename modal: backdrop click cancels, Enter saves, Escape cancels
+  const renameModal = document.getElementById('renameSessionModal');
+  if (renameModal) {
+    renameModal.addEventListener('click', function(e) {
+      if (e.target === this) closeRenameSessionModal();
+    });
+    document.getElementById('renameSessionNameInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); confirmRenameSession(); }
+      else if (e.key === 'Escape') closeRenameSessionModal();
     });
   }
 

@@ -288,7 +288,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * Official 5-level maturity table, capability intent and common issues for every focus area
 * **Implementation guidance** modal with the official implementation steps of each practice; the full condensed guidance (desired outcome, anti-patterns, benefits, steps, resources) is kept in `guidance/` and served by the API
 * Overall score, pillar progress and a 6-axis radar chart, all computed as coverage over every applicable best practice (unassessed items count as 0%, excluded items are left out)
-* Multi-session management persisted in the browser (localStorage + cookie)
+* Multi-session management persisted in the browser (localStorage + cookie): create, switch, rename (pencil next to each session) and delete sessions
 * CSV export of all 150 practices as a complete snapshot (`ID`, `Pillar`, `Focus Area ID`, `Focus Area`, `Best Practice`, `Risk`, `Roadmap`, `AWS Services`, `Status`, `Alignment`, `Score`, `Comments`, `Doc URL`; UTF-8 with BOM so Excel reads it) and import, which reads only `ID`, `Score`, `Comments` and the optional `Status` column so files from any version load
 * Print preview with cards or table layout, color or black & white, risk and AWS services columns
 * Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls on desktop to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)

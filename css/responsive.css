@@ -498,6 +498,7 @@
   /* Confirm / session modals: slide up from bottom like a sheet */
   #confirmModal,
   #newSessionModal,
+  #renameSessionModal,
   #deleteSessionModal {
     align-items: flex-end;
     backdrop-filter: none; /* avoid blur stacking bug on Android */
@@ -515,6 +516,7 @@
 
   #confirmModal.open .modal-box,
   #newSessionModal.open .modal-box,
+  #renameSessionModal.open .modal-box,
   #deleteSessionModal.open .modal-box {
     transform: translateY(0);
   }
@@ -970,6 +972,7 @@
   .print-modal-close { width: 40px; height: 40px; }
 
   .session-close-dropdown { width: 36px; height: 36px; }
+  .session-item-rename,
   .session-item-delete { width: 32px; height: 32px; }
 
   .print-radio-row,
