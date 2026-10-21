@@ -501,6 +501,9 @@
 
 @media print {
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  /* The app's dark page background would print too (colors are forced above)
+     and show as a black block below the end of the report on its last page */
+  html, body { background: #fff !important; }
   body > *:not(#printArea) { display: none !important; }
 
   .header-actions::before { display: none !important; }
