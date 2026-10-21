@@ -17,7 +17,17 @@
                   phones in landscape: iPhone 14 = 844px,
                   Pixel 7 = 915px, iPhone Pro Max = 932px)
      ≤  480px  Mobile portrait — aggressive compression
-                 (all current phones in portrait: 360–430px)
+                 (all current phones in portrait: 360–430px): stacked
+                 card header, compact score strip and pillar stats,
+                 content modals as bottom sheets
+     ≤ 1024px and ≤ 500px tall, landscape — phones in landscape
+                 (shorter header, hero and stats so cards come sooner)
+     pointer: coarse — touch devices of any width: larger tap targets
+                 and 16px form fields (smaller ones make iOS zoom in)
+
+   The card text-size control (A− / A+) is desktop-only: it is hidden in drawer
+   mode (≤ 1024px), where --card-scale is pinned to 1 and the card typography
+   below is fixed.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 
@@ -90,6 +100,11 @@
     max-width: 200px;
   }
 
+  /* Axis labels are drawn at 12 viewBox units (the empty-state text at 11); the
+     strip draws the radar at well under its 264px size, so they are enlarged */
+  #mobileScoreStrip .radar-axis { font-size: 17px; }
+  #mobileScoreStrip .radar-empty { font-size: 15px; }
+
   #mobileScoreStrip .panel-title {
     font-size: 11px;
     margin-bottom: 0.5rem;
@@ -112,9 +127,10 @@
 @media (max-width: 1100px) {
 
   /* Header */
+  :root { --header-h: 60px; }
+
   header {
     padding: 0 1.25rem;
-    height: 60px;
     gap: 10px;
   }
 
@@ -200,12 +216,19 @@
 @media (max-width: 1024px) {
 
   /* Header */
+  :root { --header-h: 56px; }
+
   header {
     padding: 0 1rem;
-    height: 56px;
     flex-wrap: nowrap;
     gap: 8px;
   }
+
+  /* Card text-size control (A− / A+): desktop only. --card-scale is pinned so a
+     size chosen before cannot linger here without a control to reset it
+     (!important beats the inline value set by applyCardFontScale()). */
+  .font-controls { display: none; }
+  :root { --card-scale: 1 !important; }
 
   /* Hide brand text label (keep icon) */
   .brand-label {
@@ -215,6 +238,7 @@
   .brand-title {
     font-size: 12px;
     letter-spacing: 0;
+    text-wrap: balance; /* "Agentic AI Lens / Self-Assessment" rather than a break at the hyphen */
   }
 
   /* Session manager: hide date, shrink */
@@ -237,9 +261,10 @@
     margin-right: 0.5rem;
   }
 
-  /* ── Auth: hide header buttons — they move to the hamburger menu ── */
+  /* ── Header buttons move to the hamburger menu; the empty group would still
+     take a gap of the header row, so it goes too ── */
   .header-actions {
-    gap: 6px;
+    display: none;
   }
 
   /* Print and About buttons hidden — they move to the sidebar menu */
@@ -309,13 +334,13 @@
     margin: 0 1rem 2rem;
   }
 
-  /* Sidebar: overlay drawer */
+  /* Sidebar: overlay drawer (leaves a 56px strip of the page visible on phones) */
   .sidebar {
     position: fixed;
-    top: 56px;
+    top: var(--header-h);
     left: 0;
     bottom: 0;
-    width: 280px;
+    width: min(320px, calc(100vw - 56px));
     z-index: 1100;
     background: var(--bg-panel);
     border-right: 1px solid var(--border-bright);
@@ -324,6 +349,8 @@
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
     max-height: none;
     pointer-events: none;
   }
@@ -333,6 +360,15 @@
     transform: translateX(0);
     pointer-events: all;
   }
+
+  /* The page behind the open drawer does not scroll (class mirrored on <html> by JS) */
+  html.sidebar-open,
+  body.sidebar-open { overflow: hidden; }
+
+  /* No tooltips on touch screens: long pill and focus-area names wrap instead of being cut */
+  .sidebar .phase-pill { white-space: normal; }
+  .sidebar .cap-nav-label,
+  .sidebar .fa-nav-pillar-name { white-space: normal; line-height: 1.35; }
 
   /* Scrim: injected as a real div by mobile-sidebar-toggle.js */
   .sidebar-scrim {
@@ -344,6 +380,7 @@
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.25s ease;
+    touch-action: none;
   }
 
   body.sidebar-open .sidebar-scrim {
@@ -352,22 +389,32 @@
     opacity: 1;
   }
 
-  /* Main content: full width */
+  /* Main content: full width. The page scrolls (not the panel), so scrolling to it
+     from a filter stops below the sticky header instead of under it. */
   .main-content {
     max-height: none;
     min-height: 70vh;
     border-radius: 0;
+    scroll-margin-top: var(--header-h);
   }
 
-  /* Content toolbar: allow wrapping on small screens */
+  /* Content toolbar: allow wrapping on small screens; the search box takes the free width */
   .content-toolbar {
     flex-wrap: wrap;
     gap: 8px;
     padding: 0.75rem 1rem;
   }
 
+  .toolbar-tools { flex: 1 1 240px; }
+
+  .filter-search {
+    flex: 1 1 auto;
+    max-width: 420px;
+  }
+
   .filter-search input {
-    width: 150px;
+    width: 100%;
+    min-width: 0;
   }
 
   /* Cards: reduce padding */
@@ -540,6 +587,12 @@
   /* AWS service badge */
   .rec-service { font-size: 11px; }
 
+  /* Risk and roadmap badges, focus-area header chips and card actions */
+  .rec-risk, .roadmap-tag { font-size: 11px; }
+  .cap-group-phase-badge, .fa-info-btn { font-size: 11px; }
+  .fa-group-question { font-size: 13px; }
+  .rec-doc-link, .btn-solution { font-size: 12px; }
+
   /* Sidebar nav labels */
   .cap-nav-label  { font-size: 13px; }
   .cap-nav-count  { font-size: 11px; }
@@ -584,9 +637,10 @@
 @media (max-width: 480px) {
 
   /* Header: minimal */
+  :root { --header-h: 52px; }
+
   header {
     padding: 0 0.75rem;
-    height: 52px;
   }
 
   /* Hide brand icon on very small screens */
@@ -606,94 +660,216 @@
   }
 
   .session-name {
-    font-size: 11px;
+    font-size: 12px;
     max-width: 90px;
   }
 
-  /* Hero */
+  .session-manager { margin-right: 0; }
+
+  /* Hero: the eyebrow repeats the title, so it goes */
   .hero {
-    padding: 1.25rem 0.75rem 1rem;
+    padding: 1rem 0.75rem 0.75rem;
   }
 
+  .hero-eyebrow { display: none; }
+
+  /* Scales with the width so the title stays on one line down to 320px */
   h1 {
-    font-size: 1.35rem;
-    margin-bottom: 0.75rem;
+    font-size: clamp(1.1rem, 5.6vw, 1.35rem);
+    margin-bottom: 0.5rem;
+    text-wrap: balance;
   }
 
   .hero-sub {
-    font-size: 11px;
+    font-size: 12px;
   }
 
-  /* Pillar stats: 2×3 grid with smaller padding */
+  /* Score strip: tighter, so the ring and the radar get more of their half */
+  #mobileScoreStrip {
+    margin: 0 0.75rem 0.75rem;
+  }
+
+  #mobileScoreStrip .panel-section {
+    padding: 0.75rem 0.6rem;
+  }
+
+  #mobileScoreStrip .panel-title {
+    margin-bottom: 0.25rem;
+    text-align: center;
+    letter-spacing: 0.06em;
+  }
+
+  #mobileScoreStrip .panel-title-extra { display: none; }
+
+  #mobileScoreStrip .score-ring-svg { max-width: 116px; }
+
+  #mobileScoreStrip .radar { max-width: 180px; }
+
+  #mobileScoreStrip .radar-axis { font-size: 18px; }
+
+  #mobileScoreStrip .score-ring-label {
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* Pillar stats: compact 3×2 grid. The AGENTxxx prefix repeats the name and the
+     colour, so it goes; names wrap to two lines instead of being cut */
   .phase-stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin: 0 0.75rem 1rem;
   }
 
   .phase-stat {
-    padding: 0.9rem 1rem;
+    padding: 0.65rem 0.6rem;
   }
+
+  .stat-label { display: none; }
 
   .stat-name {
     font-size: 12px;
+    line-height: 1.25;
+    white-space: normal;
+    min-height: 2.5em; /* two lines, so the bars line up */
+    margin-bottom: 0.5rem;
   }
 
-  /* Layout */
+  .stat-bar-track { margin-bottom: 0.4rem; }
+
+  .stat-pct,
+  .stat-count { display: inline; }
+
+  .stat-count { margin-left: 4px; font-size: 11px; }
+
+  /* Layout: edge to edge, the cards get the full width */
   .layout {
-    margin: 0 0.75rem 1.5rem;
-    border-radius: 8px;
+    margin: 0 0 1.5rem;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
 
-  /* Sidebar drawer width */
-  .sidebar {
-    width: 260px;
-  }
-
-  /* Toolbar: icon-only search */
+  /* Toolbar: title row, then the search box on its own full-width row */
   .content-toolbar {
     padding: 0.6rem 0.75rem;
   }
 
-  .filter-search input {
-    width: 100px;
-    font-size: 11px;
-  }
+  .toolbar-tools { flex-basis: 100%; }
 
-  .toolbar-tools { gap: 6px; }
-  .font-btn { padding: 8px 9px; font-size: 11px; }
-  .font-reset { min-width: 46px; }
+  .filter-search { max-width: none; }
+
+  .filtered-tag { margin-left: 8px; }
 
   /* Cards padding */
   .cards-container {
     padding: 0.75rem;
   }
 
+  /* Card header stacked: id and chevron, then the full-width title and badges,
+     then the score select across the card */
   .rec-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "id     expand"
+      "info   info"
+      "select select";
+    align-items: center;
     gap: 8px;
-    padding: 10px 10px;
+    padding: 12px;
   }
 
-  .rec-title {
-    font-size: 12px;
-  }
+  .rec-id { grid-area: id; justify-self: start; margin-top: 0; }
+  .rec-info { grid-area: info; }
+  .rec-select-wrapper { grid-area: select; }
+  .rec-expand-btn { grid-area: expand; }
 
-  .rec-id {
-    font-size: 9px;
-    padding: 2px 5px;
-  }
+  .rec-title { margin-bottom: 6px; }
 
-  /* Score select: minimal */
+  .rec-meta { gap: 6px; }
+
+  /* Score select: full width, the whole label stays readable */
   .rec-select {
-    min-width: 95px;
-    max-width: 95px;
-    font-size: 10px;
-    padding: 5px 20px 5px 8px;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 9px 32px 9px 12px;
   }
 
-  /* Print modal options panel: compact */
+  .rec-select-wrapper::after { right: 14px; }
+
+  .rec-detail-body { padding: 0 12px; }
+  .rec-detail.open .rec-detail-body { padding: 0 12px 12px; }
+
+  /* Focus-area header: icon + name/question on the first row, the pillar badge
+     and the Maturity levels button below, aligned with the text */
+  .fa-group-header {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    grid-template-areas:
+      "icon text  text"
+      ".    badge info";
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 8px;
+  }
+
+  .fa-group-header .cap-icon { grid-area: icon; align-self: start; }
+  .fa-group-header .fa-group-text { grid-area: text; }
+  .fa-group-header .cap-group-phase-badge { grid-area: badge; }
+  .fa-group-header .fa-info-btn { grid-area: info; justify-self: start; }
+
+  /* Content modals (guidance, focus area, About): bottom sheets across the full width */
+  #guidanceModal, #focusAreaModal, #aboutModal {
+    align-items: flex-end;
+  }
+
+  .solution-modal-inner {
+    margin: 0;
+    max-width: 100%;
+    max-height: calc(100vh - 12px);
+    max-height: calc(100dvh - 12px);
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .solution-modal-header { padding: 0.75rem 1rem; }
+  .solution-modal-body { padding: 1rem; }
+
+  .solution-modal-footer {
+    padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
+  /* Maturity levels: one block per level (level and name, then the description) */
+  .maturity-table,
+  .maturity-table tbody { display: block; }
+
+  .maturity-table thead { display: none; }
+
+  .maturity-table tr {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  .maturity-table td { border: none; }
+  .maturity-table .ml-level { width: auto; padding-right: 2px; background: var(--bg-card); }
+  .maturity-table .ml-name { background: var(--bg-card); }
+  .maturity-table td:last-child { grid-column: 1 / -1; }
+
+  /* Print modal options panel: compact; the footer keeps only the two buttons */
   .print-options-panel {
     max-height: 180px;
   }
+
+  .print-footer-info { display: none; }
+
+  .print-modal-actions { width: 100%; }
+  .print-modal-actions > * { flex: 1; justify-content: center; }
 
   /* Toast */
   #savedToast {
@@ -701,4 +877,103 @@
     right: 16px;
     font-size: 11px;
   }
+}
+
+/* Print preview on a phone: the summary boxes wrap and the document header stacks.
+   Screen only, so the printed report keeps its own layout. */
+@media screen and (max-width: 480px) {
+  .print-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .print-summary-box { padding: 8px 4px; }
+  .print-summary-box .psb-label { font-size: 9px; letter-spacing: 0.04em; }
+  .print-doc-header { flex-direction: column; gap: 10px; }
+  .print-doc-meta { text-align: left; }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Phones in landscape (≤ 1024px wide, ≤ 500px tall): the chrome above the
+   cards is squeezed so the first best practices come sooner
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) and (max-height: 500px) and (orientation: landscape) {
+  :root { --header-h: 48px; }
+
+  .hero { padding: 0.75rem 1rem 0.6rem; }
+  .hero-eyebrow { display: none; }
+  h1 { font-size: 1.3rem; margin-bottom: 0.35rem; }
+  .hero-content { gap: 0.35rem; }
+  .hero-sub { max-width: none; }
+
+  #mobileScoreStrip { margin-bottom: 0.75rem; }
+  #mobileScoreStrip .panel-section { padding: 0.6rem 1rem; }
+  #mobileScoreStrip .panel-title { margin-bottom: 0.25rem; }
+  #mobileScoreStrip .overall-score-ring { padding-top: 0.25rem; }
+  #mobileScoreStrip .score-ring-svg { max-width: 96px; }
+  #mobileScoreStrip .radar { max-width: 150px; }
+  #mobileScoreStrip .radar-axis { font-size: 19px; }
+
+  /* All six pillars on one row */
+  .phase-stats { grid-template-columns: repeat(6, 1fr); margin-bottom: 0.75rem; }
+  .phase-stat { padding: 0.6rem 0.7rem; }
+  .stat-label { display: none; }
+  .stat-name { font-size: 13px; line-height: 1.25; white-space: normal; min-height: 2.5em; margin-bottom: 0.45rem; }
+
+  /* Content modals use the full height */
+  .solution-modal-inner {
+    max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
+    margin: 8px;
+  }
+
+  .print-options-panel { max-height: 120px; }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Touch devices (pointer: coarse), any width: comfortable tap targets, and
+   16px form fields (iOS zooms the page into fields with smaller text)
+   ────────────────────────────────────────────────────────────────────────── */
+@media (pointer: coarse) {
+  #searchInput,
+  .comments-input,
+  .session-name-input,
+  .rec-select { font-size: 16px; }
+
+  .rec-select { min-height: 40px; }
+
+  /* The search field itself fills the box, so a tap anywhere on it focuses it */
+  .filter-search { padding-top: 0; padding-bottom: 0; }
+  .filter-search input { padding: 11px 0; }
+
+  .session-selector { min-height: 36px; }
+  .btn-new-session { width: 36px; height: 36px; }
+  .btn-sidebar-toggle { width: 40px; height: 40px; }
+
+  .phase-pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 6px 12px;
+  }
+
+  .cap-nav-item { min-height: 40px; }
+  .fa-nav-pillar { min-height: 40px; padding: 8px 10px; }
+
+  .fa-info-btn { min-height: 32px; padding: 6px 12px; }
+  .btn-reset-filters { min-height: 30px; padding: 6px 12px; }
+  .btn-solution { min-height: 40px; padding: 9px 14px; }
+
+  /* Larger hit area for the documentation link without moving its dotted underline */
+  .rec-doc-link { position: relative; }
+  .rec-doc-link::before { content: ''; position: absolute; inset: -12px -4px; }
+
+  .solution-modal-close,
+  .print-modal-close { width: 40px; height: 40px; }
+
+  .session-close-dropdown { width: 36px; height: 36px; }
+  .session-item-delete { width: 32px; height: 32px; }
+
+  .print-radio-row,
+  .print-checkbox-row { min-height: 36px; }
+
+  .print-sel-all { padding: 6px 4px; }
 }

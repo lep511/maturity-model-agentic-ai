@@ -782,14 +782,16 @@ function renderCards() {
           ${hasGuidance ? `<button class="rec-expand-btn" id="btn-${item.id}"></button>` : ''}
         </div>
         <div class="rec-detail" id="detail-${item.id}">
-          <div class="rec-detail-inner">
-            ${item.guidance ? `<div class="rec-detail-block"><div class="detail-label">Summary</div><div class="detail-text">${item.guidance.trim()}</div></div>` : ''}
-            ${item.how_to_check ? `<div class="rec-detail-block"><div class="detail-label">Desired outcome</div><div class="detail-text">${item.how_to_check.trim()}</div></div>` : ''}
-          </div>
-          <textarea class="comments-input" id="cmt-${item.id}" placeholder="Add comments, owner, evidence, or notes..." oninput="setComment('${item.id}', this.value)">${escapeHtml(comments[item.id] || '')}</textarea>
-          <div class="rec-actions">
-            ${item._hasGuidance ? `<button class="btn-solution" onclick="openGuidanceModal('${item.id}')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Implementation guidance</button>` : ''}
-            ${item.doc_url ? `<a class="rec-doc-link" href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">View in AWS documentation ↗</a>` : ''}
+          <div class="rec-detail-body">
+            <div class="rec-detail-inner">
+              ${item.guidance ? `<div class="rec-detail-block"><div class="detail-label">Summary</div><div class="detail-text">${item.guidance.trim()}</div></div>` : ''}
+              ${item.how_to_check ? `<div class="rec-detail-block"><div class="detail-label">Desired outcome</div><div class="detail-text">${item.how_to_check.trim()}</div></div>` : ''}
+            </div>
+            <textarea class="comments-input" id="cmt-${item.id}" placeholder="Add comments, owner, evidence, or notes..." oninput="setComment('${item.id}', this.value)">${escapeHtml(comments[item.id] || '')}</textarea>
+            <div class="rec-actions">
+              ${item._hasGuidance ? `<button class="btn-solution" onclick="openGuidanceModal('${item.id}')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>Implementation guidance</button>` : ''}
+              ${item.doc_url ? `<a class="rec-doc-link" href="${escapeHtml(item.doc_url)}" target="_blank" rel="noopener noreferrer">View in AWS documentation ↗</a>` : ''}
+            </div>
           </div>
         </div>
       `;
@@ -1034,6 +1036,7 @@ function renderRadar() {
     });
   } else {
     const text = document.createElementNS(NS, 'text');
+    text.setAttribute('class', 'radar-empty');
     text.setAttribute('x', cx);
     text.setAttribute('y', cy);
     text.setAttribute('text-anchor', 'middle');
@@ -1052,6 +1055,7 @@ function renderRadar() {
     const x = cx + Math.cos(angle) * labelR;
     const y = cy + Math.sin(angle) * labelR;
     const text = document.createElementNS(NS, 'text');
+    text.setAttribute('class', 'radar-axis'); // enlarged by responsive.css in the small mobile radar, like .radar-empty
     text.setAttribute('x', x);
     text.setAttribute('y', y);
     text.setAttribute('text-anchor', 'middle');
@@ -1731,9 +1735,11 @@ loadData().then(() => {
     const layoutEl   = document.querySelector('.layout');
     const mainContent = document.querySelector('.main-content');
 
-    // Defined here so reparentSidebar can call it
+    // Defined here so reparentSidebar can call it. The class is mirrored on <html>
+    // so responsive.css can stop the page behind the open drawer from scrolling.
     function closeSidebar() {
       document.body.classList.remove('sidebar-open');
+      document.documentElement.classList.remove('sidebar-open');
     }
 
     function reparentSidebar() {
@@ -1773,6 +1779,7 @@ loadData().then(() => {
     // ── Open / close helpers ──────────────────────────────────────────────────
     function openSidebar() {
       document.body.classList.add('sidebar-open');
+      document.documentElement.classList.add('sidebar-open');
     }
 
 
@@ -1867,7 +1874,6 @@ loadData().then(() => {
     const resetSection = document.createElement('div');
     resetSection.className = 'sidebar-section sidebar-reset-section';
     resetSection.appendChild(resetBtn);
-    sidebar.appendChild(resetSection);
 
     // ── Print Report button ──────────────────────────────────────────────────────
     const printBtn = document.createElement('button');
@@ -1886,7 +1892,8 @@ loadData().then(() => {
     });
     bottomSection.appendChild(printBtn);
 
-    sidebar.appendChild(bottomSection);
+    // The destructive action goes last, below the regular actions
+    sidebar.appendChild(resetSection);
   }
 
   // ── Mobile Score Strip ───────────────────────────────────────────────────────

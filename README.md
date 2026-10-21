@@ -291,8 +291,8 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * Multi-session management persisted in the browser (localStorage + cookie)
 * CSV export of all 150 practices as a complete snapshot (`ID`, `Pillar`, `Focus Area ID`, `Focus Area`, `Best Practice`, `Risk`, `Roadmap`, `AWS Services`, `Status`, `Alignment`, `Score`, `Comments`, `Doc URL`; UTF-8 with BOM so Excel reads it) and import, which reads only `ID`, `Score`, `Comments` and the optional `Status` column so files from any version load
 * Print preview with cards or table layout, color or black & white, risk and AWS services columns
-* Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)
-* Responsive layout for tablets and phones
+* Accordion cards and sidebar (one open card and one expanded pillar group at a time, animated), and A- / A+ controls on desktop to resize the card text and the Implementation guidance modal between 80% and 140% (remembered in the browser)
+* Responsive layout for tablets and phones: filter drawer, stacked cards with a full-width score selector, compact score summary, bottom-sheet modals, touch-sized controls and 16px form fields (no zoom on iOS), and a landscape layout for phones
 * Read-only JSON API (`/api`, OpenAPI at `/api/openapi.json`) over the same content
 * MCP server (revision 2026-07-28) at `/mcp` and over stdio: tools, `lens://` resources and prompts, including assessment scoring from the exported CSV
 

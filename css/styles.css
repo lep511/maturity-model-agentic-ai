@@ -25,11 +25,18 @@
   --r5: #ffd93d; /* Cost optimization */
   --r6: #3ecf8e; /* Sustainability */
   --card-scale: 1; /* card text size multiplier, set by adjustCardFontScale() */
+  --header-h: 72px; /* sticky header height; responsive.css lowers it per breakpoint */
   --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
+/* Dark native controls (select pickers, scrollbars) on screen; printing keeps the light defaults */
+@media screen { :root { color-scheme: dark; } }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* No automatic text inflation in landscape on iOS; a subtle orange tap flash instead of the grey default */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; -webkit-tap-highlight-color: rgba(255,153,0,0.12); }
 
 body {
   background: var(--bg-deep);
@@ -59,7 +66,7 @@ header {
   top: 0;
   z-index: 100;
   padding: 0 2.5rem;
-  height: 72px;
+  height: var(--header-h);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -771,22 +778,30 @@ h1 span { color: var(--aws); }
   background: rgba(255,153,0,0.03);
 }
 
+/* Collapsible detail: grid-row 0fr -> 1fr animates to the natural height, so long
+   details (narrow screens, larger card text, a resized comment box) are never cut off */
 .rec-detail {
-  max-height: 0;
-  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
   opacity: 0;
-  padding: 0 14px;
   border-top: 1px solid transparent;
-  margin-top: 0;
-  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.25s ease,
-              padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s ease;
 }
-.rec-detail.open { 
-  max-height: 800px;
+.rec-detail-body {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 14px;
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.rec-detail.open {
+  grid-template-rows: 1fr;
   opacity: 1;
-  padding: 0 14px 14px;
   border-top-color: var(--border);
+}
+.rec-detail.open .rec-detail-body { padding: 0 14px 14px; }
+@media (prefers-reduced-motion: reduce) {
+  .rec-detail, .rec-detail-body { transition: none; }
 }
 
 .cards-container {
@@ -1359,6 +1374,7 @@ svg.radar text { font-family: var(--font-mono); }
   width: 100%;
   max-width: 720px;
   max-height: 85vh;
+  max-height: 85dvh; /* mobile browsers: the visible viewport, not the one behind the toolbars */
   margin: 24px;
   border-radius: 14px;
   border: 1px solid var(--border-bright);
