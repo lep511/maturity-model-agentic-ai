@@ -5,3 +5,5 @@ large_files.json
 links_output.json
 links_checked.json
 *.log
+# Icon master artwork (the generated favicon / touch / PWA icons are what ships).
+new_icon.png
