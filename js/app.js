@@ -523,6 +523,17 @@ function init() {
     });
   }
 
+  // CSV load modal: backdrop click or Escape closes it (OK has the focus, so Enter does too)
+  const csvLoadModal = document.getElementById('csvLoadModal');
+  if (csvLoadModal) {
+    csvLoadModal.addEventListener('click', function(e) {
+      if (e.target === this) closeCsvLoadModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && csvLoadModal.classList.contains('open')) closeCsvLoadModal();
+    });
+  }
+
   CONTENT_MODAL_IDS.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -1606,10 +1617,44 @@ function showSavedToast() {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
+// ─── CSV LOAD MODAL ──────────────────────────────────────────────────────
+// Outcome of Load CSV, built like the session modals: the new session and a
+// summary of what was read, or the reason the file was rejected.
+function openCsvLoadModal(ok, title, html) {
+  const modal = document.getElementById('csvLoadModal');
+  modal.classList.toggle('error', !ok);
+  document.getElementById('csvLoadModalTitle').textContent = title;
+  document.getElementById('csvLoadModalDesc').innerHTML = html;
+  modal.classList.add('open');
+  setTimeout(() => document.getElementById('csvLoadModalOk').focus(), 100);
+}
+
+function closeCsvLoadModal() {
+  document.getElementById('csvLoadModal').classList.remove('open');
+}
+
+function showCsvLoadError(reasonHtml) {
+  openCsvLoadModal(false, 'Could not load the CSV', `${reasonHtml}<br><strong>No session was created.</strong>`);
+}
+
+// "A", "A and B", "A, B and C", "A, B, C and 4 more" for the modal notes. IDs are
+// escaped and kept on one line, so long values are cut to fit a phone.
+function csvIdList(ids, max = 3) {
+  const shown = ids.slice(0, max).map(id => `<span class="csv-load-id">${escapeHtml(id.length > 24 ? id.slice(0, 23) + '…' : id)}</span>`);
+  if (ids.length > max) return `${shown.join(', ')} and ${ids.length - max}&nbsp;more`;
+  return shown.length > 1 ? `${shown.slice(0, -1).join(', ')} and ${shown[shown.length - 1]}` : shown.join('');
+}
+
 // ─── LOAD CSV ────────────────────────────────────────────────────────────
+// Creates a new session from the file and reports the outcome in #csvLoadModal.
+// A file without the ID and Score columns, or without any row of a best
+// practice of this Lens, is rejected and no session is created.
 function loadCSV(event) {
   const file = event.target.files[0];
+  // Reset the input so the same file can be picked again, also after an error
+  event.target.value = '';
   if (!file) return;
+  const fileHtml = `<span class="csv-load-file">${escapeHtml(file.name)}</span>`;
 
   // ── Extract name and date from filename ───────────────────────────────
   const filename  = file.name.replace('.csv', '');
@@ -1641,7 +1686,14 @@ function loadCSV(event) {
   }
 
   const reader = new FileReader();
+  reader.onerror = () => showCsvLoadError(`${fileHtml} could not be read.`);
   reader.onload = function(e) {
+    const newScores   = {};
+    const newComments = {};
+    const unknownIds  = new Set();   // not best practices of this Lens: ignored
+    const unreadable  = new Set();   // score neither a percentage nor N/A: left unassessed
+    let lensRows      = 0;
+
     try {
       // Quote-aware parse of the whole file (BOM, CRLF and line breaks inside
       // quoted comments are handled). Only ID, Score, Comments and the optional
@@ -1653,17 +1705,22 @@ function loadCSV(event) {
       const idxComments = headers.indexOf('Comments');
       const idxStatus   = headers.indexOf('Status');
 
-      if (idxId === -1 || idxScore === -1) {
-        alert('Invalid CSV format. Make sure it was exported from this tool.');
+      if (!rows.length) {
+        showCsvLoadError(`${fileHtml} is empty.`);
+        return;
+      }
+      const missing = ['ID', 'Score'].filter(h => !headers.includes(h));
+      if (missing.length) {
+        showCsvLoadError(`${fileHtml} has no ${missing.join(' and ')} column${missing.length > 1 ? 's' : ''}. Load a file exported from this tool.`);
         return;
       }
 
-      const newScores   = {};
-      const newComments = {};
-
+      const lensIds = new Set(DATA.map(item => item.id));
       rows.slice(1).forEach(cols => {
         const id   = (cols[idxId] || '').trim();
         if (!id) return;
+        if (!lensIds.has(id)) { unknownIds.add(id); return; }
+        lensRows++;
 
         // Only store scores that have an actual value (skip empty/unassigned);
         // a Status of Excluded marks the item excluded even without a score.
@@ -1674,6 +1731,7 @@ function loadCSV(event) {
         } else if (rawScore !== '' && rawScore !== undefined) {
           const numVal = parseFloat(rawScore) / 100;
           if (!isNaN(numVal)) newScores[id] = numVal;
+          else unreadable.add(id);
         }
         // (empty rawScore → not added to newScores, leaves item as unassessed)
 
@@ -1682,42 +1740,47 @@ function loadCSV(event) {
         if (comment) newComments[id] = comment;
       });
 
-      // ── Create new session from CSV data ──────────────────────────────
-      const newId = generateSessionId();
-      sessions[newId] = {
-        id:        newId,
-        name:      sessionName,
-        date:      new Date(dateStr + 'T12:00:00').toISOString(),
-        isDefault: false,
-        scores:    newScores,
-        comments:  newComments
-      };
-
-      currentSessionId = newId;
-      saveSessions();
-      loadCurrentSession();
-      updateSessionUI();
-      renderCards();
-      updateScores();
-
-      // Reset input so the same file can be loaded again
-      event.target.value = '';
-
-      // Show success toast
-      const toast = document.getElementById('savedToast');
-      toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> CSV loaded as "${escapeHtml(sessionName)}"`;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => {
-          toast.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5.5" stroke="#00d97e"/><path d="M3.5 6l2 2 3-3" stroke="#00d97e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Session saved`;
-        }, 300);
-      }, 2500);
-
+      if (!lensRows) {
+        showCsvLoadError(`No row in ${fileHtml} has the ID of a best practice of this Lens, such as ${escapeHtml(DATA[0]?.id)}. Load a file exported from this tool.`);
+        return;
+      }
     } catch(err) {
-      alert('Error parsing CSV: ' + err.message);
+      showCsvLoadError(`${fileHtml} could not be parsed: ${escapeHtml(err.message)}`);
+      return;
     }
+
+    // ── Create new session from CSV data ──────────────────────────────
+    const newId = generateSessionId();
+    sessions[newId] = {
+      id:        newId,
+      name:      sessionName,
+      date:      new Date(dateStr + 'T12:00:00').toISOString(),
+      isDefault: false,
+      scores:    newScores,
+      comments:  newComments
+    };
+
+    currentSessionId = newId;
+    saveSessions();
+    loadCurrentSession();
+    updateSessionUI();
+    renderCards();
+    updateScores();
+
+    // ── Report what was read (counts over the best practices of the Lens) ──
+    const values    = Object.values(newScores);
+    const excluded  = values.filter(s => s === 'na').length;
+    const nComments = Object.keys(newComments).length;
+    const notes     = [];
+    if (unknownIds.size) notes.push(`Ignored (not in this Lens): ${csvIdList([...unknownIds])}.`);
+    const unscored  = [...unreadable].filter(id => !(id in newScores)); // a later row may score it
+    if (unscored.length) notes.push(`Left unassessed (unreadable score): ${csvIdList(unscored)}.`);
+
+    openCsvLoadModal(true, 'CSV loaded',
+      `<span class="csv-load-name">"${escapeHtml(sessionName)}"</span> was created from ${fileHtml} and is now the current session.` +
+      `<div class="csv-load-summary"><b>${values.length - excluded}</b>&nbsp;assessed · <b>${excluded}</b>&nbsp;excluded · ` +
+      `<b>${DATA.length - values.length}</b>&nbsp;unassessed · <b>${nComments}</b>&nbsp;comment${nComments === 1 ? '' : 's'}</div>` +
+      notes.map(n => `<div class="csv-load-note">${n}</div>`).join(''));
   };
   reader.readAsText(file);
 }

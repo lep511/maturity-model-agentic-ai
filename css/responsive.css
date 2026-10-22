@@ -499,6 +499,7 @@
   #confirmModal,
   #newSessionModal,
   #renameSessionModal,
+  #csvLoadModal,
   #deleteSessionModal {
     align-items: flex-end;
     backdrop-filter: none; /* avoid blur stacking bug on Android */
@@ -517,6 +518,7 @@
   #confirmModal.open .modal-box,
   #newSessionModal.open .modal-box,
   #renameSessionModal.open .modal-box,
+  #csvLoadModal.open .modal-box,
   #deleteSessionModal.open .modal-box {
     transform: translateY(0);
   }
@@ -624,6 +626,8 @@
   /* Modal */
   .modal-title { font-size: 18px; }
   .modal-desc  { font-size: 14px; }
+  .csv-load-summary,
+  .csv-load-note { font-size: 13px; }
   .modal-btn-cancel,
   .modal-btn-confirm { font-size: 15px; }
 

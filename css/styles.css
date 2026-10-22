@@ -402,7 +402,8 @@ header {
 }
 
 #newSessionModal,
-#renameSessionModal {
+#renameSessionModal,
+#csvLoadModal {
   position: fixed;
   inset: 0;
   z-index: 2000;
@@ -416,12 +417,52 @@ header {
   transition: opacity 0.2s;
 }
 #newSessionModal.open,
-#renameSessionModal.open {
+#renameSessionModal.open,
+#csvLoadModal.open {
   opacity: 1;
   pointer-events: all;
 }
-#renameSessionModal.open .modal-box {
+#renameSessionModal.open .modal-box,
+#csvLoadModal.open .modal-box {
   transform: translateY(0) scale(1);
+}
+
+/* CSV LOAD MODAL: green check with the summary of the new session, or the red
+   warning of the delete modal when the file is rejected (.error) */
+#csvLoadModal .modal-icon {
+  background: var(--green-dim);
+  border-color: rgba(0,217,126,0.3);
+}
+#csvLoadModal.error .modal-icon {
+  background: rgba(255,71,87,0.1);
+  border-color: rgba(255,71,87,0.3);
+}
+#csvLoadModal .csv-load-icon-error,
+#csvLoadModal.error .csv-load-icon-ok { display: none; }
+#csvLoadModal.error .csv-load-icon-error { display: block; }
+#csvLoadModal .modal-desc { overflow-wrap: anywhere; } /* long file names and IDs */
+.csv-load-name { color: var(--text-primary); font-weight: 600; }
+.csv-load-file {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--text-primary);
+}
+.csv-load-id {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  white-space: nowrap; /* an ID never splits at its hyphen */
+}
+.csv-load-summary {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.csv-load-summary b { color: var(--text-primary); font-weight: 600; }
+.csv-load-note {
+  margin-top: 0.5rem;
+  font-size: 12px;
+  color: var(--yellow);
 }
 
 /* DELETE SESSION MODAL */
