@@ -487,7 +487,18 @@ function toggleAgentMcp() {
   const open = !box.classList.contains('open');
   box.classList.toggle('open', open);
   document.getElementById('agentMcpBtn').setAttribute('aria-expanded', String(open));
-  if (open) loadAgentPrompt().catch(() => {}); // a failure is reported by Copy prompt
+  if (open) {
+    resetAgentCopy(); // fresh label, and an earlier copy can no longer close the box
+    loadAgentPrompt().catch(() => {}); // a failure is reported by Copy prompt
+  }
+}
+
+// Copy prompt back to its idle label; also cancels a pending close.
+function resetAgentCopy() {
+  clearTimeout(agentCopyTimer);
+  const btn = document.getElementById('agentMcpCopy');
+  btn.classList.remove('copied', 'failed');
+  btn.textContent = 'Copy prompt';
 }
 
 function closeAgentMcp() {
@@ -518,19 +529,22 @@ function copyToClipboard(text) {
     : new Promise(resolve => { legacy(); resolve(); });
 }
 
+// After a copy the button shows Copied for 2 s and the box closes (the label is
+// reset when the box opens again, so it does not change during the fade-out).
+// After a failure the box stays open and Copy failed lasts 2 s, so the user can
+// retry.
 function copyAgentPrompt() {
   const btn = document.getElementById('agentMcpCopy');
   const copy = agentPromptText !== null
     ? copyToClipboard(agentPromptText)
     : loadAgentPrompt().then(copyToClipboard);
-  const show = (cls, label) => {
-    clearTimeout(agentCopyTimer);
-    btn.classList.remove('copied', 'failed');
+  const show = (cls, label, after) => {
+    resetAgentCopy();
     btn.classList.add(cls);
     btn.textContent = label;
-    agentCopyTimer = setTimeout(() => { btn.classList.remove(cls); btn.textContent = 'Copy prompt'; }, 2000);
+    agentCopyTimer = setTimeout(after, 2000);
   };
-  copy.then(() => show('copied', 'Copied'), () => show('failed', 'Copy failed'));
+  copy.then(() => show('copied', 'Copied', closeAgentMcp), () => show('failed', 'Copy failed', resetAgentCopy));
 }
 
 // Close the Agent MCP box when clicking outside it, or with Escape
