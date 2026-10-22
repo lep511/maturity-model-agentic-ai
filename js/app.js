@@ -463,6 +463,85 @@ function confirmRenameSession() {
   }, 1800);
 }
 
+// ─── AGENT MCP ───────────────────────────────────────────────────────────────
+// The Agent MCP box (desktop only) copies agent/prompt.md, a prompt that walks a
+// coding agent through this page and offers to set up the MCP server. The file
+// is fetched when the box opens, so the copy normally runs inside the click
+// itself (Safari and Firefox allow clipboard writes only during a user gesture).
+let agentPromptText = null;
+let agentPromptRequest = null;
+let agentCopyTimer = null;
+
+function loadAgentPrompt() {
+  if (!agentPromptRequest) {
+    agentPromptRequest = fetch(`agent/prompt.md?v=${Date.now()}`, { cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
+      .then(text => (agentPromptText = text))
+      .catch(err => { agentPromptRequest = null; throw err; }); // retried on the next open or copy
+  }
+  return agentPromptRequest;
+}
+
+function toggleAgentMcp() {
+  const box = document.getElementById('agentMcpBox');
+  const open = !box.classList.contains('open');
+  box.classList.toggle('open', open);
+  document.getElementById('agentMcpBtn').setAttribute('aria-expanded', String(open));
+  if (open) loadAgentPrompt().catch(() => {}); // a failure is reported by Copy prompt
+}
+
+function closeAgentMcp() {
+  const box = document.getElementById('agentMcpBox');
+  if (!box || !box.classList.contains('open')) return;
+  box.classList.remove('open');
+  const btn = document.getElementById('agentMcpBtn');
+  btn.setAttribute('aria-expanded', 'false');
+  if (box.contains(document.activeElement)) btn.focus();
+}
+
+// navigator.clipboard needs a secure context (HTTPS or localhost); elsewhere, or
+// when the browser refuses, a hidden textarea and execCommand('copy') are used.
+function copyToClipboard(text) {
+  const legacy = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    if (!ok) throw new Error('copy refused');
+  };
+  return navigator.clipboard && window.isSecureContext
+    ? navigator.clipboard.writeText(text).catch(legacy)
+    : new Promise(resolve => { legacy(); resolve(); });
+}
+
+function copyAgentPrompt() {
+  const btn = document.getElementById('agentMcpCopy');
+  const copy = agentPromptText !== null
+    ? copyToClipboard(agentPromptText)
+    : loadAgentPrompt().then(copyToClipboard);
+  const show = (cls, label) => {
+    clearTimeout(agentCopyTimer);
+    btn.classList.remove('copied', 'failed');
+    btn.classList.add(cls);
+    btn.textContent = label;
+    agentCopyTimer = setTimeout(() => { btn.classList.remove(cls); btn.textContent = 'Copy prompt'; }, 2000);
+  };
+  copy.then(() => show('copied', 'Copied'), () => show('failed', 'Copy failed'));
+}
+
+// Close the Agent MCP box when clicking outside it, or with Escape
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.agent-mcp');
+  if (wrap && !wrap.contains(e.target)) closeAgentMcp();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeAgentMcp();
+});
+
 // Close dropdown when clicking outside
 document.addEventListener('click', function(e) {
   const dropdown = document.getElementById('sessionDropdown');
@@ -1975,7 +2054,7 @@ loadData().then(() => {
     bottomSection.appendChild(exportBtn);
     sidebar.appendChild(bottomSection);
 
-    // ── About the Lens button ────────────────────────────────────────────────
+    // ── About button ─────────────────────────────────────────────────────────
     const aboutBtn = document.createElement('button');
     aboutBtn.className = 'sidebar-action-btn';
     aboutBtn.innerHTML = `
@@ -1983,7 +2062,7 @@ loadData().then(() => {
         <circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.4"/>
         <path d="M6.5 6v3.5M6.5 4v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
-      About the Lens`;
+      About`;
     aboutBtn.addEventListener('click', function () {
       closeSidebar();
       if (typeof openAboutModal === 'function') openAboutModal();

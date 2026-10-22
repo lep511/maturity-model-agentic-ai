@@ -17,7 +17,7 @@ A static web app for self-assessing an agentic AI workload against the **AWS Wel
 | 41 focus areas (`AGENTOPS01` ... `AGENTSUS03`), each with a guiding question, capability intent, 5 maturity levels and common issues | Sidebar navigation grouped by pillar, card group headers, **Maturity levels** modal |
 | 150 best practices with a High / Medium / Low risk level | One card each: summary, desired outcome, risk badge, related AWS services, **Implementation guidance** modal (shows the implementation steps), link to the official page |
 | Lens roadmap reading paths (Building your first agent, Moving to production, Scaling to multi-agent systems, Hardening an existing deployment) | Roadmap filter pills and tags on cards |
-| Design principles, definitions, pillar introductions | **About the Lens** modal |
+| Design principles, definitions, pillar introductions | **About** modal |
 
 Scoring uses a 6-point coverage scale per best practice: 0%, 25%, 50%, 75%, 100% or *Excluded from analysis*.
 
@@ -84,6 +84,8 @@ claude mcp add agentic-ai-lens -- node /path/to/maturity-model-agentic-ai/mcp/st
 
 Clients configured with JSON use `{"mcpServers": {"agentic-ai-lens": {"url": "https://agentic-ai-lens-assessment.vercel.app/mcp"}}}`. From the Claude API, pass the URL in `mcp_servers` (`type: "url"`) and add an `mcp_toolset` entry in `tools` (beta `mcp-client-2025-11-20`).
 
+On the page, the **Agent MCP** button (desktop only) copies [`agent/prompt.md`](agent/prompt.md), a prompt to paste into Codex, Claude Code, Kiro or any coding assistant: it walks you through the page, asks which model provider your workload uses and offers to set up this server, with the configuration for Kiro, Cursor, Claude Code, Codex and VS Code.
+
 Streamable HTTP in revision 2026-07-28 is POST-only, has no sessions, and mirrors the JSON-RPC body into headers: every request carries `MCP-Protocol-Version` and `Mcp-Method`, and `tools/call`, `resources/read` and `prompts/get` also carry `Mcp-Name`. Clients that still start with the legacy `initialize` handshake (revision 2025-11-25 and earlier) are served as well. A raw request:
 
 ```bash
@@ -107,6 +109,8 @@ curl -s https://agentic-ai-lens-assessment.vercel.app/mcp \
 │   └── mcp.mjs                # Vercel Function: MCP server over Streamable HTTP (stateless)
 ├── mcp/
 │   └── stdio.mjs              # Local MCP server over stdio
+├── agent/
+│   └── prompt.md              # Prompt copied by the Agent MCP button (page walkthrough + MCP setup for coding agents)
 ├── lib/
 │   ├── api/
 │   │   ├── data.mjs           # Loads and indexes data/ + guidance/ (cached per instance)
@@ -295,6 +299,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 * Responsive layout for tablets and phones: filter drawer, stacked cards with a full-width score selector, compact score summary, bottom-sheet modals, touch-sized controls and 16px form fields (no zoom on iOS), and a landscape layout for phones
 * Read-only JSON API (`/api`, OpenAPI at `/api/openapi.json`) over the same content
 * MCP server (revision 2026-07-28) at `/mcp` and over stdio: tools, `lens://` resources and prompts, including assessment scoring from the exported CSV
+* **Agent MCP** button on desktop: copies a prompt (`agent/prompt.md`) that has a coding agent walk you through the page, ask which model provider you use and set up the MCP server
 
 ## License
 

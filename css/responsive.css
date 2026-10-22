@@ -122,13 +122,29 @@
 
 
 /* ──────────────────────────────────────────────────────────────────────────
-   1100px — Tablet landscape: collapse right panel, shrink header
+   1340px / 1240px — Narrow desktop: the header row is full, so no label wraps
+   if Print Report keeps only its icon (title gives the tooltip) and, from
+   1240px down, the header takes the compact metrics of the 1100px layout
    ────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 1100px) {
+@media (max-width: 1340px) {
+  .btn-print {
+    font-size: 0;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    place-content: center; /* the hidden label is a grid row too: do not stretch the rows */
+    flex-shrink: 0;
+  }
 
-  /* Header */
-  :root { --header-h: 60px; }
+  .btn-print svg {
+    margin: 0 !important;
+    display: block !important;
+  }
+}
 
+@media (max-width: 1240px) {
   header {
     padding: 0 1.25rem;
     gap: 10px;
@@ -138,12 +154,22 @@
     font-size: 13px;
   }
 
-  .session-manager {
-    margin-right: 1rem;
-  }
-
   .session-selector {
     min-width: 160px;
+  }
+}
+
+
+/* ──────────────────────────────────────────────────────────────────────────
+   1100px — Tablet landscape: collapse right panel, shrink header
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+
+  /* Header (padding, brand title and session selector: see 1240px above) */
+  :root { --header-h: 60px; }
+
+  .session-manager {
+    margin-right: 1rem;
   }
 
   /* Main layout: hide right panel, use 2 columns */
@@ -171,22 +197,6 @@
   .header-actions .btn-load-csv,
   .header-actions .btn-export-csv {
     display: none;
-  }
-
-  /* ── Icon-only print button (no text) above 1024 ── */
-  .btn-print {
-    font-size: 0;
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    display: inline-grid;
-    place-items: center;
-    flex-shrink: 0;
-  }
-
-  .btn-print svg {
-    margin: 0 !important;
-    display: block !important;
   }
 }
 
@@ -986,4 +996,12 @@
   .print-checkbox-row { min-height: 36px; }
 
   .print-sel-all { padding: 6px 4px; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Touch-only devices (phones, tablets), any width: the Agent MCP button is
+   for desktops, where the prompt is pasted into a coding tool
+   ────────────────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+  .agent-mcp { display: none; }
 }

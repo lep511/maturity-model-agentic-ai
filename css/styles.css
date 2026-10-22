@@ -1667,6 +1667,49 @@ footer span { color: var(--aws); }
   fill: none;
 }
 
+/* Agent MCP: a box under the button with the Copy prompt action (desktop only:
+   responsive.css hides it with the header actions and on touch-only devices) */
+.agent-mcp { position: relative; }
+.btn-agent-mcp[aria-expanded="true"] { border-color: var(--aws); color: var(--aws); background: var(--aws-dim); }
+
+/* Opens like the session dropdown, aligned to the right edge of the button so it
+   stays on screen at 1025px; visibility keeps Copy prompt out of the tab order
+   while the box is closed */
+.agent-mcp-box {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 340px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.25s;
+}
+.agent-mcp-box.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+.agent-mcp-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+.agent-mcp-text strong { color: var(--text-primary); font-weight: 600; }
+.agent-mcp-copy { display: block; margin-left: auto; min-width: 118px; }
+.agent-mcp-copy.copied { background: var(--green); }
+.agent-mcp-copy.failed { background: var(--red); color: #fff; }
+
 /* ─── MOBILE SCORE STRIP — hidden by default, shown via responsive.css ──────── */
 #mobileScoreStrip {
   display: none;

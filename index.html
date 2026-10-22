@@ -78,12 +78,26 @@
   </div>
 
   <div class="header-actions">
-    <button class="btn-outline btn-about" onclick="openAboutModal()" title="About the AWS Well-Architected Agentic AI Lens">About the Lens</button>
+    <!-- AGENT MCP (desktop only): box with the prompt for a coding agent (agent/prompt.md) -->
+    <div class="agent-mcp">
+      <button class="btn-outline btn-agent-mcp" id="agentMcpBtn" onclick="toggleAgentMcp()" aria-expanded="false" aria-controls="agentMcpBox">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="display:inline;vertical-align:middle;margin-right:5px">
+          <rect x="1.5" y="2.5" width="13" height="11" rx="2" stroke="currentColor" stroke-width="1.4" fill="none"/>
+          <path d="M4.75 6.25L6.75 8l-2 1.75M8.75 10h2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        Agent MCP
+      </button>
+      <div class="agent-mcp-box" id="agentMcpBox" role="dialog" aria-label="Agent MCP">
+        <p class="agent-mcp-text"><strong>Using a coding agent?</strong> Copy this prompt into Codex, Claude Code, Kiro, or any coding assistant and it will walk you through this page, ask which model provider you want, and offer to set up the MCP server.</p>
+        <button class="btn-primary agent-mcp-copy" id="agentMcpCopy" onclick="copyAgentPrompt()">Copy prompt</button>
+      </div>
+    </div>
+    <button class="btn-outline btn-about" onclick="openAboutModal()" title="About the AWS Well-Architected Agentic AI Lens">About</button>
     <button class="btn-outline btn-reset" onclick="resetAll()">Reset All</button>
     <input type="file" id="loadCSVInput" accept=".csv" style="display:none" onchange="loadCSV(event)">
     <button class="btn-outline btn-load-csv" onclick="document.getElementById('loadCSVInput').click()">Load CSV</button>
     <button class="btn-outline btn-export-csv" onclick="exportCSV()">Export CSV</button>
-    <button class="btn-outline btn-print" onclick="openPrintPreview()">
+    <button class="btn-outline btn-print" onclick="openPrintPreview()" title="Print Report">
       <svg width="14" height="14" viewBox="0 0 18 18" fill="none" style="display:inline;vertical-align:middle;margin-right:5px">
         <rect x="3" y="5.5" width="12" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4" fill="none"/>
         <path d="M5.5 5.5V3.5a1 1 0 011-1h5a1 1 0 011 1v2" stroke="currentColor" stroke-width="1.4"/>
