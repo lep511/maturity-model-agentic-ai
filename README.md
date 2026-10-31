@@ -31,7 +31,7 @@ The same content is exposed as a read-only JSON API implemented as a Vercel Func
 | `GET /api/lens` | Abstract, design principles, pillars, roadmap, definitions |
 | `GET /api/pillars`, `GET /api/pillars/{slug}` | Pillars with counts; detail adds design principles and focus areas (`slug`, name, prefix or abbreviation such as `SEC`) |
 | `GET /api/focus-areas`, `GET /api/focus-areas/{id}` | Focus areas (`?pillar=`, `?roadmap=`, `?expand=1`); detail adds capability intent, 5 maturity levels, common issues and the best practices |
-| `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=` (every word must match, any order, guidance included; ordered by relevance), `?fields=`, `?limit=`, `?offset=` |
+| `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=` (every word must match, any order; implementation guidance is searched only as a fallback when no field-level match exists; ordered by relevance), `?fields=`, `?limit=`, `?offset=` |
 | `GET /api/best-practices/{id}` | One best practice (`?include=guidance` embeds the guidance markdown); ids accept `AGENTOPS01-BP01` or `AGENTOPS01_BP01` |
 | `GET /api/best-practices/{id}/guidance` | Condensed implementation guidance as `text/markdown` (`?format=json` for JSON) |
 | `GET /api/roadmap`, `GET /api/roadmap/{id}` | Lens roadmap reading paths (`first-agent`, `production`, `multi-agent`, `hardening`) |
@@ -62,7 +62,7 @@ The server exposes **11 read-only tools**, **6 resources** under the `lens://` s
 | --- | --- |
 | `list_pillars`, `get_pillar` | The six pillars with counts and focus-area ids; detail adds the intro, design principles and focus-area questions (slug, name, prefix or abbreviation such as `SEC`) |
 | `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap (a filter is required when expanding, about 15 KB per focus area); detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
-| `search_best_practices` | Free-text search (every word must match in any order across the record and its implementation guidance; title matches rank first) and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
+| `search_best_practices` | Free-text search (every word must match in any order across the record; implementation guidance is searched only as a fallback when no field-level match exists; title matches rank first) and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
 | `get_best_practice` | One best practice (optionally with the guidance markdown embedded) |
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
 | `get_roadmap` | The Lens reading paths, one of them with its best practices (id, title, risk, summary) |
