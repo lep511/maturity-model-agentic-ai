@@ -5,7 +5,7 @@ Fetches the markdown rendering of every Lens page (same URL as the HTML page,
 with a ``.md`` suffix), parses it, and emits:
 
 * ``data/<pillar-slug>/<bp-id>.json``  one compact item per best practice (150)
-* ``data/lens/focus_areas.json``       the 41 focus areas with their maturity tables
+* ``data/lens/focus_areas.json``       the 41 focus areas with capability intent and common issues
 * ``data/lens/lens.json``              lens-level metadata (principles, roadmap, definitions)
 * ``data/manifest.json``               index consumed by ``js/app.js``
 * ``guidance/<pillar-slug>/<bp-id>.md`` condensed implementation guidance per practice
@@ -331,7 +331,8 @@ def parse_focus_area(md: str, qid: str) -> dict:
     issues_idx = find_line(lines, r"^## Common issues to watch for")
     topics_idx = find_line(lines, r"^\*\*Topics\*\*")
     end = topics_idx if topics_idx >= 0 else len(lines)
-    intent = collect_bullets(lines, intent_idx + 1, mat_idx if mat_idx >= 0 else end) if intent_idx >= 0 else []
+    intent_end = mat_idx if mat_idx >= 0 else (issues_idx if issues_idx >= 0 else end)
+    intent = collect_bullets(lines, intent_idx + 1, intent_end) if intent_idx >= 0 else []
     issues = collect_bullets(lines, issues_idx + 1, end) if issues_idx >= 0 else []
     levels = []
     if mat_idx >= 0:
@@ -340,9 +341,11 @@ def parse_focus_area(md: str, qid: str) -> dict:
             m = row_rx.match(line)
             if m:
                 levels.append({"level": int(m.group(1)), "name": m.group(2), "description": absolutize_links(m.group(3), url)})
-    for label, ok in (("capability intent", intent), ("maturity levels", len(levels) == 5), ("common issues", issues)):
+    for label, ok in (("capability intent", intent), ("common issues", issues)):
         if not ok:
             warn(f"{qid}: {label} missing or incomplete")
+    if mat_idx >= 0 and len(levels) != 5:
+        warn(f"{qid}: maturity levels missing or incomplete")
     return {
         "id": qid, "slug": qid.lower(), "name": name, "question": question,
         "intro": absolutize_links(" ".join(intro), url),

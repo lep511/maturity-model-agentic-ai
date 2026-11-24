@@ -5,7 +5,7 @@ Checks:
 * data/manifest.json parses, ``total`` == len(items), every path exists
 * every item JSON parses, has the required fields, a unique id matching its filename,
   a known pillar, a known focus area, a valid risk level, and is <= MAX_CHARS characters
-* data/lens/focus_areas.json has 41 focus areas with 5 maturity levels each
+* data/lens/focus_areas.json has 41 focus areas
 * data/lens/lens.json has 6 pillars
 * every item has a matching guidance markdown file under guidance/
 
@@ -63,8 +63,6 @@ def main() -> int:
     if len(fa_by_id) != EXPECTED["focus_areas"]:
         err(f"expected {EXPECTED['focus_areas']} focus areas, found {len(fa_by_id)}")
     for fa in fas:
-        if len(fa.get("maturity_levels", [])) != 5:
-            err(f"{fa['id']}: expected 5 maturity levels, found {len(fa.get('maturity_levels', []))}")
         if fa.get("pillar") not in pillar_names:
             err(f"{fa['id']}: unknown pillar {fa.get('pillar')!r}")
         if not fa.get("question"):

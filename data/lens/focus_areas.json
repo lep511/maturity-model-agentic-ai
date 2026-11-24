@@ -14,33 +14,7 @@
       "Operational signals, failure test outcomes, and business metrics feed a continuous improvement loop that keeps agent behavior aligned with evolving business needs.",
       "Operational artifacts such as job descriptions, handoff runbooks, and failure test scenarios are treated as living documents that stay in sync with the agents they describe."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent scope, handoffs, and failure testing are ad-hoc. Knowledge about what each agent is meant to do, and how agents interact, lives with individual builders. Out-of-scope requests produce unpredictable responses, handoffs lose context, and failure modes are typically first encountered during production incidents."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Each agent has a documented job description covering purpose, stakeholders, and measurable success criteria. Basic handoff runbooks and human escalation paths cover the most common scenarios. An initial failure test suite covers the happy path and a handful of dependent component failures, and reviews happen on an informal cadence."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Agent job descriptions, handoff protocols, and failure test suites are standardized across teams and stored in shared repositories. [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) enforce scope at runtime, structured context packages accompany every handoff, and failure tests run in CI/CD as a mandatory gate across dependent components, orchestration protocols, and business processes. Handoff success rates and failure test pass rates are tracked as first-class metrics."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Operational controls are automated and data-driven. [AWS Agent Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) supports runtime discovery and intelligent routing across agents and tools. [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) run on a regular cadence to validate agent performance and resilience, and [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) alarms on handoff and evaluation metrics trigger automated remediation."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Operational practice is a continuously refined, self-improving system. Production incidents automatically generate new failure test scenarios, and agent job descriptions evolve through spec-driven development with reproducible audit trails. Multi-agent orchestration uses and contributes to industry standards such as [Model Context Protocol](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) and [Agent-to-Agent communication](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-frameworks/introduction.html). Resilience metrics and business outcome metrics are correlated in real time and feed directly into roadmap decisions."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams define agents by what they can do rather than what they are accountable for, leaving operators without a clear way to judge whether the agent is working or to decide when to escalate.",
       "Multi-agent workflows are assembled bottom-up from individual agent capabilities, without documented handoff protocols or human escalation paths, producing systems that are hard to operate when a single agent fails.",
@@ -73,33 +47,7 @@
       "Rollback to a known-good behavioral baseline is automated, tested regularly, and completes within minutes of the decision to revert.",
       "Operational signals, user feedback, and business outcome metrics flow into a structured improvement backlog that closes the loop from observation to validated change."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Prompts and behavioral configurations are embedded in application code or maintained by hand in each environment. Changes are deployed directly to production without evaluation, and there is no version history to roll back to when a change regresses. Configuration differences between development, staging, and production are common and only noticed after incidents."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Prompts and behavioral configurations are stored outside application code in a versioned repository such as [Amazon Bedrock Prompt Management](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html). Infrastructure baselines are defined in [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) or the [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html), and changes follow a documented lifecycle with peer review. Rollback is possible but manual."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "A full prompt lifecycle (Draft, Review, Active, Archived) is enforced through [AWS CodePipeline](https://docs.aws.amazon.com/codepipeline/latest/userguide/approvals-action-add.html) approval gates, with automated evaluation using [Amazon Bedrock Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html) as a promotion gate. [AWS CloudFormation drift detection](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html) and [AWS Config rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html) monitor for configuration drift, and [AWS CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-events-with-cloudtrail.html) captures change attribution. Rollback runbooks are defined and tested."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Behavioral changes roll out in stages using [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) weighted routing, with automated promotion gates driven by [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) quality metrics. A/B testing compares behavioral variants under traffic, and [automated remediation](https://docs.aws.amazon.com/config/latest/developerguide/remediation.html) restores approved configurations when drift is detected. A multi-channel feedback pipeline built on [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) feeds an improvement backlog."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "The full lifecycle is self-service for teams, with automated rollback that restores behavioral baselines within minutes of a quality threshold being exceeded. Cross-environment consistency is validated continuously, and [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) correlates deployment timestamps with quality trends so every metric change is attributable to a specific behavioral version. Feedback-to-improvement workflows close the loop from signal to validated change, and the organization contributes its patterns back to the broader agentic AI community."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Prompts are embedded directly in application code, so any behavioral change forces a full code deployment and makes it impossible to iterate on agent behavior independently.",
       "Configuration changes are applied through manual console edits in individual environments, which causes development, staging, and production to drift apart and produces \"it worked in test\" failures in production.",
@@ -131,33 +79,7 @@
       "The agent portfolio is visible in a single catalog with cross-team dependencies tracked, so teams discover existing capabilities before building new agents.",
       "Portfolio-level rationalization (retirement, consolidation, continued investment) is driven by evidence of utilization, cost, and business value rather than team-level preference."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent lifecycle is informal. Teams spin up agents on demand, often straight to production, with no documented stages, no registry, and no designated owners. Deployments are manual. There is no agent-specific CI/CD or behavioral evaluation. Scaling is static or per-workload and revisited only when something breaks. No portfolio-level visibility exists across teams."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A lifecycle with defined stages exists on paper and most teams follow it. Agents are tracked in a team-level registry. Basic CI/CD runs unit tests, and deployments use infrastructure as code templates. Per-environment scaling boundaries are set manually. Teams can list the agents they own, but there is no cross-team catalog or dependency view."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Lifecycle stages are standardized across the organization with validation gates at each transition. AgentOps pipelines include agent-specific evaluation through [Amazon Bedrock Evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html) and staged rollout through [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) versioning. Auto-scaling is driven by agent-specific metrics rather than raw CPU or memory. A shared agent catalog is emerging, and the first quarterly portfolio reviews are held."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Lifecycle transitions are fully automated, including emergency termination switch and decommissioning runbooks. CI/CD behavioral gates block release when task accuracy or hallucination thresholds regress, with automated rollback from [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) alarms. Scaling policies, stored centrally, adjust as agents move between lifecycle stages. [AWS Agent Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with semantic capability search and [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) dependency notifications is the default path for new agent creation."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Lifecycle, deployment, scaling, and portfolio management are policy-codified and continuously refined from operational data. A dependency graph backs impact analysis before any agent change. Portfolio rationalization (consolidation, retirement, reinvestment) runs as a regular operating rhythm with business-value measurement. Governance overhead scales sub-linearly with agent count, and the organization contributes its patterns back to the industry."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents accumulate in production without documented owners or lifecycle states, so retirement and incident response stall because nobody knows who is accountable for each agent.",
       "Agent deployments rely on traditional software CI/CD without agent-specific behavioral evaluation, letting prompt or tool regressions reach users that unit tests would never catch.",
@@ -189,33 +111,7 @@
       "Tool failures are contained and routed through documented fallback chains, so a single degraded dependency doesn't cascade into agent-wide outages.",
       "Tool inventory, version distribution, and per-tool reliability are monitored centrally, giving operators the visibility to evolve and retire tools without disrupting dependent agents."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "No centralized registry exists. Teams build agent-to-tool integrations point-to-point with each tool's interface. Authentication, error handling, and logging are per-tool and inconsistent. A single degraded tool often cascades into broader agent failures because no fallback plan exists, and tool usage is visible only through ad-hoc logs."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A registry lists the tools in use with owner and version, even if enforcement is informal. Most new tools are exposed through a standard protocol, typically [MCP through Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html), rather than as bespoke integrations. Basic retry and timeout policies are applied per tool, and teams document the most common tool failures. Audit logging is collected but not currently centralized."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Tools are exposed through [AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) or an equivalent registry and discovered by agents through semantic search. Protocol-based integration using MCP and [A2A in AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a-protocol-contract.html) is the default for new tools. Per-tool authentication, authorization with [Cedar policies in Policy in AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html), and audit logging are enforced centrally at the service layer. Fallback chains and [circuit-breaker](https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/circuit-breaker.html) cutoffs exist for the most critical tools, and per-tool reliability metrics are tracked in a shared dashboard."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "The registry is the single source of truth for tool definitions, versions, ownership, and deprecation timelines, and registration is a gate on production use. Standardized protocols and least-privilege policies are enforced across the organization, with Cedar policy reviews part of the change process. Fallback chains, [exponential backoff and jitter](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/), and automatic cutoffs are applied consistently based on a shared error taxonomy. Tool telemetry is instrumented end-to-end through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), with alarms and runbooks owned by tool teams."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "The tool inventory is governed by policy-as-code. New tools must pass registry, protocol, policy, and observability gates before any agent can invoke them. Protocol and policy choices are continuously validated and tightened using closed-loop feedback from production telemetry. Fallback chains adjust automatically based on historical reliability, and the organization contributes improvements back to the open protocol specifications it depends on. Tool deprecation is routine and low-risk."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams build point-to-point tool integrations without a shared registry or protocol, producing duplicate tools and inconsistent documentation that agents can't reliably discover or use across team boundaries.",
       "Tools are registered without a documentation standard or a named owner, so agents encounter undocumented parameter schemas and error codes only at runtime.",
@@ -246,33 +142,7 @@
       "Workflow effectiveness is measured through a defined KPI framework covering operational, quality, efficiency, and business dimensions, and KPIs are reported to technical and business stakeholders on a regular cadence.",
       "Operators have workflow-specific dashboards that surface health, bottlenecks, and remediation runbooks within seconds, shortening mean time to detect and mean time to resolve for agent incidents."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Observability is limited to infrastructure metrics, such as [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) duration and [Amazon API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html) latency. Agent reasoning, tool invocations, and memory operations are not instrumented. Logs are unstructured and scattered across accounts. Incidents are diagnosed through manual log correlation. No behavioral baselines, agent KPIs, or immutable audit trails exist."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Primary agent workflows are instrumented with distributed tracing using [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) or [OpenTelemetry](https://aws.amazon.com/otel/) spans. Structured JSON logs flow to [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) with documented schemas. Basic [Amazon CloudWatch dashboards](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html) and static threshold alarms exist. Initial log retention is configured for operational and compliance needs."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Telemetry schemas are standardized across agents, and end-to-end trace correlation is achieved through W3C Trace Context propagation. Behavioral baselines are collected and [Amazon CloudWatch Anomaly Detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html) is configured for key metrics. A KPI framework covers operational, quality, efficiency, and business dimensions. Workflow-specific dashboards are linked to runbooks, and structured logs are queried through [Amazon CloudWatch Logs Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AnalyzingLogData.html)."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Anomaly detection distinguishes data drift, concept drift, and performance drift, and alerts are routed by type and severity through automated response workflows. KPIs are reviewed on a regular cadence and baselines adjust automatically. Immutable audit trails use [Amazon S3 Object Lock in compliance mode](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock-overview.html) with PII redaction through [Amazon Bedrock Guardrails sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html). Quality KPIs incorporate [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) scores, and dashboards are annotated with deployment events to correlate metric changes with configuration changes."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Observability is self-healing. Anomaly detection triggers automated remediation for known patterns, and predictive KPI forecasting flags degradation before thresholds are exceeded. Continuous learning loops feed observability signals back into agent configuration, model selection, and tool design. The organization contributes to industry best practices for agentic AI observability."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Organizations instrument infrastructure metrics but not agent-specific spans such as reasoning iterations, tool invocations, and memory operations.",
       "Teams implement tracing without propagating context across agent boundaries, producing disconnected trace fragments that can't be reassembled into the workflow operators need to diagnose incidents.",
@@ -307,33 +177,7 @@
       "Evaluation datasets, prompts, and scoring rubrics are versioned and kept current as agent capabilities and use cases evolve.",
       "Rollback paths for prompts, tools, models, and agent versions are defined, rehearsed, and wired to the same telemetry that detects quality threshold violations."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Testing is one-time and focused on the happy path. Teams rely on manual inspection of agent outputs and infrequent exact-match assertions, missing failures that only appear in tool-use, multi-agent, or production traffic paths. No formal evaluation metrics exist beyond deployment-time smoke tests. Approvals are informal emails or chats, and rollback is a manual, untested redeploy of an older artifact."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Unit and integration tests exist for the core reasoning, tool, and memory components, and run in a [CI/CD](https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html) pipeline. Evaluation is performed at key milestones using [Amazon Bedrock model evaluation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html) and documented acceptance criteria. Approval workflows distinguish at least two risk tiers, and rollback procedures are documented per agent. Coverage of edge cases, adversarial inputs, and production shadow runs is still patchy."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "A four-layer testing pyramid, covering unit, integration, end-to-end, and shadow, is standard across agent teams, with [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) supplying built-in evaluators as standardized quality gates. Continuous evaluation tracks output quality, safety, efficiency, and business alignment over time, and risk-tiered approval workflows route changes by scope of impact. Rollback procedures are automated through pipeline triggers and exercised regularly."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Shadow testing runs alongside production for every significant release, with divergences triaged through [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) traces correlated to evaluation scores. Online evaluation samples live interactions continuously, with thresholds that trigger automated rollback through deployment alarms. Risk-tiered approvals include business owners and SMEs for autonomy-increasing changes, and evaluation datasets evolve automatically from incident and feedback data. Quality, safety, and business metrics are tracked across agent versions as first-class release artifacts."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Testing, evaluation, and validation are an integrated, self-healing system. Custom evaluators encode organization-specific quality standards and are versioned with the agents they cover. Policy-as-code expresses risk-tier rules and approval routing, and rollback is provably correct, tested quarterly through game-day exercises. Evaluation scoring, shadow comparisons, and human feedback feed a continuous improvement loop that updates datasets, prompts, and guardrails automatically. The organization contributes patterns and evaluators back to internal communities and external forums."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams stop at deterministic unit tests and skip shadow testing on real traffic, so agents ship with unknown behavior on edge cases, adversarial inputs, and production data distributions.",
       "Quality is measured once at release and never again, so data drift, prompt decay, and upstream model updates silently erode output quality between releases.",
@@ -366,33 +210,7 @@
       "Human operators have tested, rehearsed runbooks they can execute without the agent infrastructure, so business operations continue through worst-case agent outages.",
       "Recovery mechanisms, knowledge bases, and emergency procedures are exercised regularly, and findings feed back into improvements to the agent infrastructure and to the runbooks themselves."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent failures are handled reactively by whoever notices first. Recovery procedures are not documented and runbooks for worst-case scenarios are missing. Operational knowledge lives with individuals, and change management treats agent updates as generic code changes without considering business alignment."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Retries and basic fallbacks are implemented for the most important dependencies. Post-incident reviews are held for significant incidents and findings are filed, although they are not systematically propagated into runbooks. An initial set of break-glass procedures is documented for the highest-impact business processes, and change management explicitly covers agent prompts, tools, and [foundation models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html)."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Automatic cutoffs, fallback chains, and recovery workflows cover every external dependency and are monitored in [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html). Operational knowledge is captured in a centralized searchable system such as [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html), with post-incident reviews feeding entries directly. Change management classifies agent changes by technical scope and business impact and routes approvals accordingly, and break-glass runbooks are walked through in tabletop exercises."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Recovery time objectives are defined for each failure scenario, tracked in dashboards, and validated through regular chaos engineering exercises. Business-alignment reviews run on a defined cadence, and agent-to-business-process mappings generate automated notifications through [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) when processes or policies change. Break-glass drills execute end-to-end in non-production environments, runbook updates are tied to drill findings, and operational knowledge has explicit owners who keep entries current."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Agent recovery is self-healing and continuously tuned based on production telemetry, with automatic cutoffs, model fallbacks, and multi-agent degradation modes all adjusted against measured outcomes. Operational knowledge is queryable in natural language through internal assistants built on [Amazon Bedrock Agents](https://docs.aws.amazon.com/bedrock/latest/userguide/agents.html) and is continuously maintained as part of normal operations. Change management feedback loops visibly drive infrastructure and business-process improvements. Break-glass readiness is assessed continuously through instrumented drills, and lessons from incidents shape both automated recovery and manual fallback procedures in the next iteration."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Recovery logic is implemented per component but is never tested in combination, so cascading failures that span multiple components are discovered only during real incidents when business impact is already significant.",
       "Post-incident reviews produce documents that are filed but never translated into runbook or platform changes, so the organization pays the cost of learning from each incident without compounding the value.",
@@ -424,33 +242,7 @@
       "Hallucinations are detected and contained before they cascade across sessions or propagate to downstream agents in a multi-agent workflow.",
       "Memory operations are monitored continually, and anomalous access or injection signals are routed to the incident response pipeline for review."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Memory is shared across agents, users, or sessions with no namespace partitioning, stored without encryption, and written without validation. Hallucinations propagate unchecked, cross-session contamination is indistinguishable from normal operation, and there is no tamper detection on reads."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Memory is partitioned per session or per user with basic identity and access management (IAM) scoping on the store, and encryption at rest is turned on. Syntactic validation checks types, lengths, and formats before memory writes, and memory events flow to centralized logs. Detection is largely reactive and depends on human review."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Memory resources use hierarchical namespace schemas, for example [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) with per-actor and per-session placeholders, to partition data automatically. Multi-layer validation combines schema checks with [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) for policy enforcement and personally identifiable information (PII) filtering, and [contextual grounding checks](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html) run on high-stakes outputs before consolidation."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Cryptographic integrity verification using HMAC signatures backed by [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) runs on every memory read. All write paths share the same validation pipeline, including tool outputs and inter-agent messages. Anomaly detection in [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) alarms on unusual access patterns, and a hallucination circuit breaker broadcasts through [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) to quarantine affected entries across downstream agents."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Memory architecture is validated through routine red-team exercises that simulate poisoning and propagation. Validation policies and grounding thresholds adapt based on observed patterns, and detection signals feed directly into automated containment. Memory governance is codified and auditable."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Shared namespaces treated as the default rather than an explicit design decision, so one affected session can read or overwrite context that belongs to a different user or tenant.",
       "Validation applied only at the public API boundary, whereas tool outputs, inter-agent messages, and consolidation writes bypass the pipeline. This creates a blind spot for content that originates inside the agent system.",
@@ -481,33 +273,7 @@
       "Tools and the MCP servers that host them are available to agents only after going through a documented security review and being registered with a pinned version, data classification, and review expiry.",
       "Tool usage is observable end to end, with authorization decisions, validation failures, and invocation rates feeding detection and compliance workflows."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents are granted blanket access to available tools, and authorization is delegated to the agent's own reasoning. Parameters flow to tools without schema enforcement, error responses return raw stack traces, internal endpoint addresses, or database schema details to the agent's context, and there is no registry or version control over tools or the MCP servers that host them. High-risk writes, deletes, and financial actions execute without review."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Each agent runs under a dedicated identity with scoped permissions on the tools it needs. Schema validation is applied in the tool handler for user-facing parameters, error responses are sanitized so internal details don't reach the agent or the user, and [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) timeouts and memory allocations bound the runtime cost and execution time of any single tool invocation. Tools and the MCP servers hosting them are documented in a shared list, but enforcement depends on reviewer discipline."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Agent-to-tool traffic flows through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-gateway.html), which centralizes OAuth-based inbound authorization and target-specific outbound authentication. Tools and the MCP servers that host them are registered in a version-controlled registry with documented permissions, data classification, and review expiry, and [strict tool use](https://docs.aws.amazon.com/bedrock/latest/userguide/tool-use.html) constrains model-generated parameters to conform to the tool schema at the decoding layer."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "[Policy in Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-policy.html) enforces [Cedar](https://docs.cedarpolicy.com/) policies with a default-deny posture at the gateway, evaluating every tool call against identity-aware conditions and parameter constraints outside the agent's reasoning loop. Human-in-the-loop checkpoints intercept high-risk mutating operations through [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) callback patterns, rate limits run at both the gateway and tool tiers, and [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) alarms fire on authorization failures and validation spikes."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Tool authorization, validation, and registry controls are codified end to end and validated continuously through red-team exercises and automated drift detection with [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html). Deprecation workflows remove expired tools and MCP server entries automatically, policies adapt from observed behavior, and centralized MCP server governance (covering registration, version pinning, network egress controls, and shared discovery) is enforced consistently across accounts."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Tool access granted at the agent level but enforced only by the agent's reasoning, so nothing outside the model helps prevent an injected or poisoned prompt from invoking tools that sit outside the agent's intended scope.",
       "Schema validation applied to user-facing parameters but not to parameters the model generates, on the assumption that the model can't produce malformed output. In practice, model-generated parameters are an attack surface that carries injection payloads and invalid types.",
@@ -538,33 +304,7 @@
       "Agents run with the minimum permissions their task requires, through short-lived credentials, permission boundaries, and IAM Conditions.",
       "Permission posture is continually validated, with automated drift detection, unused-access findings, and documented periodic reviews keeping privilege aligned with actual usage."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents authenticate with shared API keys or static tokens, and some roles are reused across agents and human users. Permissions are broad, credentials are long-lived, and audit trails don't clearly distinguish agent actions from human actions. There is no permission boundary, no revocation path, and no review cadence."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Each agent has a dedicated [AWS Identity and Access Management (IAM)](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) role with a consistent naming and tagging convention. Certificates from [AWS Private Certificate Authority](https://docs.aws.amazon.com/privateca/latest/userguide/PcaWelcome.html) are used where mutual TLS is required, credentials rotate through [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html), and [AWS CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) logs agent activity separately from human activity. Initial least-privilege policies are in place, although drift is common."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "[Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) centralizes agent workload identities, token issuance, and the token vault, with customer-managed [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) keys protecting secrets. Human operators access AWS through [AWS IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html), and Service Control Policies (SCPs) in [AWS Organizations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) help prevent agents from assuming human roles. [AWS STS AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) issues short-lived credentials with session policies, and [IAM Access Analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html) provides baseline findings."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "When an agent acts on behalf of a user, [GetWorkloadAccessTokenForJWT](https://docs.aws.amazon.com/bedrock-agentcore-control/latest/APIReference/API_GetWorkloadAccessTokenForJWT.html) embeds user context as claims so that downstream services enforce user-level authorization without the agent holding the user's credentials. [IAM permission boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html) cap every agent role, [IAM Conditions](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html) restrict access by region, tag, time window, and source VPC, and just-in-time elevation with automatic revocation handles high-privilege operations. [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html) and [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) alert on policy changes in near real time."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Identity and permission governance is fully codified, with continuously validated least-privilege baselines derived from CloudTrail data and aggregated findings in [AWS Security Hub CSPM](https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html). Unused-access and unusual-authentication findings feed automated remediation. Access reviews run on a cadence that matches the customer's risk profile, with timestamped, documented sign-off, and identity controls are validated through red-team exercises against impersonation and privilege-escalation paths."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Shared API keys or static tokens left in use for agent authentication, with no rotation cadence or revocation path defined. The credential becomes a long-lived secret distributed across environments, and any disclosure exposes every agent that holds it until each one is rotated.",
       "Agent roles and human roles blurred at the edges, whether through role reuse, role chaining, or missing trust-policy and SCP guardrails, so audit trails can't cleanly distinguish agent actions from human actions during incident investigation.",
@@ -598,33 +338,7 @@
       "Reviewers receive sufficient decision context, timeout policies, and escalation paths to make informed approvals without stalling the workflow or defaulting to rubber-stamping.",
       "Guardrail interventions, approval decisions, and evaluation results are logged, alerted on, and reviewed on a defined cadence to keep policies current with emerging patterns."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Operational boundaries exist only as natural-language instructions in the system prompt. No content guardrails, input validation, or human-in-the-loop controls are in place. Alignment depends on the model following instructions, and a single adversarial input can redirect the agent with no defense in depth."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "[Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) are configured with basic [content filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filter.html) covering inputs and outputs. A single approval tier exists for a subset of consequential actions, implemented through built-in mechanisms such as [Amazon Bedrock Agents user confirmation](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-userconfirmation.html) or routed through ad-hoc channels such as email or chat. Guardrail interventions are captured in logs but reviewed irregularly."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Tiered guardrail configurations align filter strengths to each agent's use case, and [denied topics and word filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters-overview.html) are calibrated per risk profile. Deterministic risk classification routes approvals through a structured workflow mechanism such as [AWS Step Functions callback workflows](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html) or [return of control](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-returncontrol.html), with defined timeouts and escalation paths. [Amazon CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) fire on intervention spikes, and guardrail versioning supports rollback of policy changes."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Validation runs at every stage of the call chain: input, inference, output, and tool invocation. [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) run on a defined cadence with alarms on correctness, tool selection accuracy, and safety score drift. Persistent trust grants are scoped narrowly by command and parameter shape, tiered by risk, and made auditable and revocable. Full decision context is written to durable storage before approval notifications, and approval records are linked to the centralized audit trail."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Alignment controls are calibrated from intervention and evaluation data, and risk classification adapts to dynamic signals such as operation frequency, time of day, and source location. Multi-reviewer consensus is available for the highest-risk operations, including asynchronous workflows running on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html). Policy updates flow through versioned configurations with provable change history, and the feedback loop from logged interventions back into policy is automated rather than manual."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Alignment is treated as a prompt-engineering exercise rather than a layered enforcement problem, so a single adversarial input that influences the model can collapse multiple boundaries at once.",
       "Content filtering is applied only to model outputs, leaving the inference path open to prompt injection and consuming capacity on adversarial inputs that could have been rejected up front.",
@@ -656,33 +370,7 @@
       "Sensitive fields are masked or redacted before logs reach long-term storage, so completeness of behavioral records doesn't conflict with data protection obligations.",
       "Security investigators can reconstruct the complete chain of agent interactions for past requests, without relying on the agent's own account of its reasoning."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Only final agent outputs are captured, typically to application logs that share credentials and lifetime with the agent itself. Intermediate reasoning, tool invocations, and trigger attribution are lost. Logs are mutable, sensitive data is unmasked, and there is no practical way to reconstruct how the agent reached a given conclusion."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "[Amazon Bedrock model invocation logging](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html) is turned on, delivering prompts and responses to a single destination chosen based on access and retention needs: [Amazon CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html) for operational visibility or [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) for retention. [AWS CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) is turned on across agent accounts. Trace IDs are generated within each service, but correlation across asynchronous boundaries is partial, and sensitive data protection is inconsistent."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Decision artifacts and CloudTrail logs are delivered to a dedicated [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) bucket in a separate Log Archive account, aligned with the [AWS Security Reference Architecture](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/welcome.html), with [versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) turned on and bucket policies that deny delete and overwrite. [CloudTrail log file validation](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html) is on. [Amazon CloudWatch Logs data protection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/mask-sensitive-log-data.html) masks common sensitive patterns. [AWS Distro for OpenTelemetry](https://aws-otel.github.io/) instruments agent code, correlation IDs are propagated through [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-message-metadata.html#sqs-message-attributes) and [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-events.html), and [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) produces end-to-end traces."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "[Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability-telemetry.html) captures session, trace, and span hierarchies that include agent reasoning, tool calls, and memory operations. [AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) continuously scores correctness, helpfulness, tool selection accuracy, and safety, with alarms on score drift. Tamper-evident retention is achieved through bucket policies that deny delete and overwrite, MFA delete, and (where compliance requirements call for it) [S3 Object Lock](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html) in governance mode after careful review of the operational implications. [Amazon Athena](https://docs.aws.amazon.com/athena/latest/ug/what-is.html) with [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/components-overview.html#data-catalog-intro) makes the artifact store queryable, and standard investigation queries are documented."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Tiered retention moves artifacts from [CloudWatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/SettingLogRetention.html) through [Amazon S3 Standard](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html) to [Amazon Glacier](https://docs.aws.amazon.com/AmazonS3/latest/userguide/storage-class-intro.html#sc-glacier) with automated [S3 Lifecycle](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lifecycle-mgmt.html) transitions tied to data classification tags. [AWS KMS customer-managed keys](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#customer-cmk) with automatic rotation protect all log destinations. Investigation-time queries return answers within a target investigation window defined for each customer based on data volume and incident-response objectives, anomaly detection runs on the artifact index, and the observability data feeds back into evaluation and guardrail tuning."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Only final outputs are captured, so incident responders can see what the agent did but not why it did it, which is the first question asked in nearly every investigation.",
       "Decision artifacts share the credentials and lifetime of the agent that generated them, which means an affected agent can modify or delete its own record of what happened.",
@@ -712,33 +400,7 @@
       "Coordination patterns are monitored continually against established baselines, so deviations are detected proactively rather than discovered after the fact.",
       "Every coordination step is attributable to a verified agent identity and recorded for investigation. This includes agent card discovery (the [A2A protocol](https://aws.amazon.com/blogs/machine-learning/introducing-agent-to-agent-protocol-support-in-amazon-bedrock-agentcore-runtime/) mechanism by which one agent locates a peer and reads a JSON agent card describing its name, capabilities, supported skills, and authentication requirements), task delegation, and result collection."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents run in a flat network with no segmentation. Inter-agent messages rely on transport-level encryption alone, with no message signing or identity verification on the receiving side. Orchestration is unstructured, with broad IAM permissions on workflow APIs and no circuit breakers, and coordination patterns are not monitored."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Basic network segmentation groups agents by trust tier, typically through separate [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html) or [Amazon VPCs](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html). [Amazon SQS server-side encryption](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html) helps protect queued messages with [AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html) keys. [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) orchestrates workflows with execution logging turned on, although IAM permissions remain broad and circuit breakers are not currently in place."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Message-level signing through [AWS KMS asymmetric keys](https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-concepts.html#asymmetric-cmks) covers messages that cross trust boundaries or traverse queues and event buses, with separate keys per trust zone. Step Functions state machines are managed as code through [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-stepfunctions-statemachine.html) or the [AWS Cloud Development Kit (AWS CDK)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_stepfunctions-readme.html), [input validation](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-input-output-processing.html) and [circuit breakers](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html#error-handling-retrying-after-an-error) are in place, and [AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/what-is-privatelink.html) keeps cross-zone traffic on private paths."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "[Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) with [A2A protocol](https://aws.amazon.com/blogs/machine-learning/introducing-agent-to-agent-protocol-support-in-amazon-bedrock-agentcore-runtime/) support structures inter-agent discovery and task delegation, and [Cedar policies](https://docs.cedarpolicy.com/) in [AgentCore Policy](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-in-amazon-bedrock-agentcore/) enforce trust boundaries at the tool layer. Coordination metrics are captured as [Amazon CloudWatch custom metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) with baselines, and [CloudWatch anomaly detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html) flags deviations. [Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) findings are correlated with coordination logs in [AWS Security Hub CSPM](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-what-is.html)."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Trust boundary configurations are continuously validated through [AWS Config](https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html) managed and [custom rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config_develop-rules_lambda-functions.html), with alerts on any configuration that creates unauthorized cross-zone connectivity. [AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) feed tool selection accuracy and correctness scores into coordination monitoring as an early-warning layer. Incident response runbooks for coordination anomalies are exercised regularly, and validated patterns are folded back into the organization's reference architecture."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Multi-agent systems are deployed as a single trust zone, so an issue with any one agent can spread laterally across the entire network before the scope is understood.",
       "Teams rely on transport-level encryption for inter-agent traffic and treat message-level signing as unnecessary, which means messages sitting in queues or event buses can't be verified at consumption time.",
@@ -772,33 +434,7 @@
       "Behavioral baselines exist for each agent, and deviations trigger rapid containment through credential revocation and circuit-breaker activation, with forensic state captured before isolation.",
       "Security assessments combine continuous automated scanning with scheduled red team and purple team exercises targeted at agent-specific manipulation scenarios, and findings flow back into guardrails, detection rules, and incident response runbooks. Red team exercises are adversarial simulations where a dedicated team attempts to compromise the agent system using the techniques a real attacker would use. Purple team exercises run the same scenarios collaboratively with the defenders so detection rules and runbooks are updated based on what was observed during the simulation."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Review pipelines are informal and routed to whoever is available, with no workload metrics or priority classification. Reviewers evaluate agent decisions without confidence scores, historical context, or independent verification. Agent behavior is observed only through infrastructure metrics, and containment depends on manual investigation after the fact. Security assessments are one-off or absent."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Review requests flow through a documented queue with coarse priority tiers, and single-reviewer approval applies to most agent decisions. Agent outputs include generic grounding checks, but reviewers don't see historical patterns or manipulation warnings. Generic security assessments cover agent deployments, and agent-specific red team scenarios are limited."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "A prioritized review pipeline backed by [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) and [Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) tracks time-to-decision and approval-rate metrics, with alarms on rubber-stamping patterns. Reviewers see grounding scores from [Amazon Bedrock Guardrails contextual grounding](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html) checks, deviation flags against historical decisions, and plain-language warnings for flagged manipulation attempts. High-risk operations require independent review from more than one person using [AWS Step Functions parallel states](https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-parallel-state.html). Behavioral metrics are published as custom metrics with [Amazon CloudWatch anomaly detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html), and findings from [Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html) and [Amazon Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html) are centralized in [AWS Security Hub CSPM](https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html). Red team exercises run on a defined cadence using the OWASP Top 10 for Agentic Applications as the starting scenario library."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Review quality is managed through dashboards and composite alarms that automatically escalate or quarantine when review-behavior metrics degrade. Blind review and consensus logic are the default for high-risk operations, with disagreements routed to senior reviewers. Containment is automated through [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rules.html) rules that capture forensic state to [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html), revoke credentials by attaching a deny-all policy to the agent's IAM role, and broadcast quarantine events for circuit breakers in dependent workflows. Purple team activities run after each assessment cycle and update [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) configurations, detection rules, and runbooks based on observed patterns."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Review quality metrics, agent behavioral baselines, and containment procedures are continuously tuned based on outcomes, and new attack techniques feed directly into detection and response tooling. Containment runbooks are regularly exercised through [AWS Fault Injection Service](https://docs.aws.amazon.com/fis/latest/userguide/what-is.html) to validate that isolation, circuit breakers, and forensic capture behave as expected. Purple team findings, [Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) evaluation trends, and runtime threat signals drive continuous refinement of guardrails, detection thresholds, and reviewer training."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Review capacity is planned by volume alone, without metrics that detect rubber-stamping when queues back up, so human oversight degrades silently under load as reviewers approve faster than they can evaluate.",
       "Reviewers see agent recommendations without confidence scores, anomaly flags, or similar past decisions, and apply the same level of scrutiny to high-risk and low-risk actions because they have no basis for calibrating their attention.",
@@ -833,33 +469,7 @@
       "Validation strictness is calibrated to the likelihood and impact of each risk scenario rather than applied uniformly, and telemetry on confidence scores, blocked content, and false-positive rates drives continual tuning.",
       "Filtering and guardrail decisions are logged with enough context to support compliance auditing, to detect systemic data leakage patterns, and to feed periodic re-optimization of denied topics, sample prompts, and filter thresholds."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Input validation, if present, runs only on direct user messages. Retrieved external content, tool outputs, inter-agent messages, and memory reads are treated as trusted. Sensitive information in agent outputs is controlled, if at all, by asking the model to self-censor. Prompt injection and data leakage incidents are found by users or downstream systems rather than by controls."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "[Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) is deployed with [prompt attack detection](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-prompt-attack.html) and basic [sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-info.html) covering common PII categories, primarily on user inputs and user-facing responses. Denied topics are defined but not tuned against representative data, and assessment modes use default settings. Inter-agent messages, memory writes, and tool outputs are covered inconsistently."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Every agent has its input surfaces mapped and a validation control assigned to each, applied through the [ApplyGuardrail API](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_ApplyGuardrail.html) with prompt attack detection in block mode. Output filtering runs on every outbound path, including inter-agent messages, writes to [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html), and audit logs, with masking or blocking chosen per data classification. Guardrail telemetry captures per-filter confidence scores and blocked content in [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) for review."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Guardrails configuration is tuned periodically using the [Amazon Bedrock Guardrails Optimizer](https://github.com/aws-samples/amazon-bedrock-samples/tree/main/responsible_ai/bedrock-guardrails-optimizer) against annotated production samples. Denied topic definitions use the full character budget with representative sample prompts, and assessment modes are selected per filter category based on likelihood and impact. [Amazon Comprehend custom entity recognizers](https://docs.aws.amazon.com/comprehend/latest/dg/custom-entity-recognition.html) extend coverage to organization-specific data types, and filtering decisions feed alarms that detect systemic increases in sensitive-data generation or blocked-content volume. Compliance auditing is in place: guardrail and filtering decisions are written to tamper-evident storage with the input, output, intervention type, filter scores, and the originating agent and user identity, retention is aligned to the applicable regulatory framework, and standard audit queries support reporting against frameworks such as the EU AI Act, SOC 2, and HIPAA."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Input validation and output filtering are self-tuning: optimization runs on a schedule against fresh production samples, false-positive and false-negative rates are primary metrics, and validation telemetry is correlated with runtime threat detection and penetration-test findings to identify active exploitation. Content retrieval is restricted to approved sources with runtime attestation, and evolving attack patterns flow directly into updated guardrails, denied topics, and filter thresholds."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Input and output boundaries receive uneven defense, with rigorous checks on user inputs but little coverage for tool outputs, retrieved external content, inter-agent messages, and memory reads, leaving the most commonly targeted vectors unprotected.",
       "Guardrails are treated as a one-time configuration rather than a tuning loop, so denied topic definitions, filter thresholds, and assessment modes decay as attack patterns and data classifications change.",
@@ -891,33 +501,7 @@
       "Security assessments run in dedicated testing environments with scoped credentials, logged activity, and impact-containment controls, so realistic attack simulation doesn't put production agents, memory, or downstream systems at risk.",
       "Runtime threat detection, vulnerability scanning, and penetration test findings are correlated in a unified view, with automated remediation workflows that tighten mean time to detection and mean time to remediation."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Security scanning is limited to rule-based static analysis against known vulnerability signatures, run late in the development lifecycle or only before release. Penetration testing, if it happens, targets generic web application flaws and doesn't exercise agent-specific attack surfaces. Testing runs against shared or production-like environments with long-lived credentials, and findings are delivered without reproducible attack paths or fix guidance."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Design documents and pull requests receive security review, often manually, and a baseline scanner runs in the build pipeline. Penetration testing uses a documented scenario library but runs on a periodic cadence that lags agent capability changes. Test environments are separated from production for high-risk assessments, and test credentials are stored in [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html). Findings are tracked to remediation but the handoff between security and development teams is still manual."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "AI-powered vulnerability scanning runs across design, development, and deployment phases, using tools such as [AWS Security Agent](https://docs.aws.amazon.com/securityagent/latest/userguide/what-is.html) to evaluate architecture documents, pull requests, and running applications against organization-wide security requirements. [On-demand penetration testing](https://docs.aws.amazon.com/securityagent/latest/userguide/enable-penetration-test.html) exercises agent orchestration endpoints, tool invocation paths, and multi-agent communication channels, with findings carrying [CVSS scores](https://docs.aws.amazon.com/securityhub/latest/userguide/exposure-findings-severity.html) and reproducible attack paths. Test environments replicate production behavior with isolated memory stores and scoped credentials, and findings from [Amazon GuardDuty](https://docs.aws.amazon.com/guardduty/latest/ug/what-is-guardduty.html), [Amazon Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html), and [Amazon Inspector](https://docs.aws.amazon.com/inspector/latest/user/what-is-inspector.html) are aggregated in [AWS Security Hub CSPM](https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html)."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Security validation is integrated into CI/CD and runs whenever agent system prompts, tool registrations, permission scopes, orchestration patterns, or code are modified. [AWS Security Agent delivers code fix suggestions](https://docs.aws.amazon.com/securityagent/latest/APIReference/API_StartCodeRemediation.html) alongside validated findings, and regression testing confirms that fixes are effective. [Amazon GuardDuty Extended Threat Detection](https://docs.aws.amazon.com/guardduty/latest/ug/guardduty-extended-threat-detection.html) correlates multi-step attack sequences across API activity, network behavior, and data access. Automated remediation workflows capture forensic state, apply containment, and route fixes through a tracked pipeline. [Amazon CloudWatch composite alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm.html) combine [Amazon Bedrock AgentCore evaluation](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) score drift with runtime threat findings for high-confidence detection."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Vulnerability scanning, penetration testing, runtime threat detection, and agent evaluations operate as a single feedback loop that continuously refines detection logic, remediation automation, and scenario coverage. Penetration testing runs on-demand and feeds measurable improvement in mean time to detection and mean time to remediation. Test environments, scoped credentials, and impact-containment controls are validated through controlled failure injection, and purple team outcomes flow back into scanner heuristics and detection rules."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Security testing concentrates on deployment-time scans of a production build, skipping design-phase review and pull-request analysis, so architectural flaws and agent-behavior issues are found late when remediation is most expensive.",
       "Scanners and pentests are adapted from traditional web applications and don't exercise agent-specific surfaces such as tool parameter manipulation, memory poisoning, multi-agent trust boundaries, and prompt injection chains, leaving the most distinctive agentic risks untested.",
@@ -950,33 +534,7 @@
       "Inter-agent communication follows a consistent taxonomy of message schemas, versioned endpoints, error formats, and retry policies, so agents compose into workflows without custom translation layers between every pair.",
       "Compute, inference, and model-tier allocation adapt in real time to workload and capacity signals, so agents maintain steady performance under variable load without manual capacity planning."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents call each other directly over synchronous channels with ad-hoc message formats and no durable queue between them. A single slow or failing agent cascades into the rest of the workflow, and there is no consistent way to trace which hop lost a message. Capacity is provisioned statically, so demand spikes cause throttling and low-demand periods waste resources."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have introduced a messaging layer (typically [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) and [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html)) for the most critical agent-to-agent paths, and dead-letter queues catch repeated failures. Agents run on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) with basic layer separation, and on-demand [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) inference absorbs most capacity variability. Communication schemas are documented but not uniformly enforced."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Durable messaging is the default for agent-to-agent and agent-to-system communication, with schemas registered in [EventBridge Schema Registry](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-schema-registry.html) and workflows orchestrated through [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html). Specialized agents run as single-purpose actors on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) with scoped IAM roles, communicate through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) or the [A2A protocol](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-a2a.html), and expose per-agent metrics through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html). Tiered model selection routes simple tasks to smaller models and reasoning-heavy work to larger ones."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Fail-fast logic, fallback behaviors, and runtime capability toggling are enforced automatically at layer boundaries, and [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) enforces standardized access control at the gateway boundary through [Cedar](https://docs.cedarpolicy.com/) policies. [Cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) is the default for production agents, and [Bedrock Provisioned Throughput](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html) underwrites latency-sensitive paths. Contract tests in CI/CD help prevent protocol regressions, and scheduled scaling pre-provisions capacity ahead of known demand patterns."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "The messaging substrate, layer isolation, inter-agent contracts, and capacity allocation are continuously recalibrated from observability data rather than revised on a fixed review cadence. New workflows inherit the resilience pattern by default through reusable templates and shared services, and the organization contributes its agent reliability patterns (messaging topology, fail-fast envelopes, tiered model routing) back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams wire up agent-to-agent communication over direct synchronous calls and only discover the coupling when one agent's latency or failure takes the whole workflow down.",
       "Agent architectures ship as a single service rather than as separate compute, memory, cognition, and orchestration layers, so an issue in any component forces a full restart instead of a contained fix.",
@@ -1009,33 +567,7 @@
       "Instructions reach agents through canonical prompt templates, versioned configuration, and explicit handoff schemas, so interpretation of objectives is consistent across single-agent and multi-agent workflows.",
       "Agent actions are routed to the appropriate tier of human oversight based on risk and reversibility, so high-consequence decisions receive review without adding latency to routine work."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents are general-purpose processors with broad system prompts and ambiguous input and output contracts. Permissions are coarse-grained, logging is generic and lacks agent-specific decision points, prompts are ad-hoc and unversioned, and every agent action receives the same level of human review, or none at all."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have started decomposing workflows into single-purpose agents and defining input and output schemas. Each agent has a dedicated IAM execution role, [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) captures per-agent telemetry, and prompt templates live in shared documentation. Some high-risk actions require human approval, though classification is informal."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Atomic agents run on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) with [structured output](https://docs.aws.amazon.com/bedrock/latest/userguide/structured-output.html) enforcement and regular validation through [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html). Access is restricted through [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) and [AWS Identity and Access Management (IAM)](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html) policies scoped per agent. Behavioral baselines drive alerts through [Amazon CloudWatch Anomaly Detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html), prompt templates are versioned, and a documented risk framework routes agent actions into autonomous, notify, and approve tiers."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Access boundaries are enforced through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) with [Cedar](https://docs.cedarpolicy.com/) policies at the gateway, and [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) intercept policy-violating outputs before escalation to human reviewers. Prompt-version comparisons run through [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) before traffic migrates, [IAM Access Analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html) drives least-privilege remediations from [AWS CloudTrail](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html) data, and approval workflows carry timeouts, escalation paths, and full audit context."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Atomic task contracts, least-privilege scopes, anomaly baselines, prompt libraries, and oversight tiers are continuously recalibrated from observability data. Automated responses quarantine anomalous agents, adversarial contract tests block prompt-injection regressions in CI/CD, and the organization publishes its agent reliability patterns and measurements back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents accumulate broad, overlapping responsibilities over time, so a single misinterpretation can affect multiple capabilities and failure modes become harder to reproduce as scope expands.",
       "IAM execution roles and policy boundaries are written with wildcards or at the convenience of a first deployment, so the scope of impact of any unpredicted LLM action is wider than the agent's legitimate function.",
@@ -1070,33 +602,7 @@
       "Agents detect degraded memory conditions, transition into well-defined reduced modes, and communicate their current capabilities transparently to users and orchestration systems.",
       "Memory and state health are instrumented as first-class telemetry, so retrieval quality, failover activations, and checkpoint lifecycle are observable and operationally tunable."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent memory sits in a single undifferentiated store with no classification, no retention policy, and no failover plan. Long-running workflows restart from zero on any failure because no state is persisted between steps. Memory outages are indistinguishable from agent outages because there is no degraded mode to fall back to, and memory health is reviewed only after an incident."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have separated short-term and long-term memory, typically using [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) session-scoped and persistent namespaces. Basic retention policies are in place for short-term memory, and some long-running workflows persist checkpoint state explicitly. Redundancy and failover rely on managed service defaults, and failure modes are tested only as part of major release readiness reviews."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "A documented memory taxonomy (session context, persistent knowledge, episodic records) drives classification at ingestion time, and [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) supplements agent memory with organizational corpora for retrieval-augmented generation. Multi-step workflows are orchestrated through [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) or equivalent state machines with idempotent steps, so recovery is a cheap replay from the last checkpoint. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) reports retrieval quality and checkpoint health, and mode transitions for graceful degradation follow written runbooks."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Fail-fast logic routes memory access to fallback stores or in-process caches when primary stores misbehave, and read-through caches serve long-term memories during temporary unavailability. Mode transitions for graceful degradation (full, session-only, stateless) are automated from memory health metrics, and recovery detection returns agents to full mode without human intervention. [AWS Fault Injection Service](https://docs.aws.amazon.com/fis/latest/userguide/what-is.html) experiments against the memory layer run on a schedule, and checkpoint lifecycle is managed through TTL-based expiration rather than manual cleanup."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Memory classification, retention, and checkpoint policies are tuned continuously from observability data rather than through periodic reviews. Cross-agent shared memory, tiered retrieval, and reranking strategies are recalibrated on measured retrieval quality, and chaos-engineering results drive design changes in memory topology rather than one-time fixes. Memory-related failure modes surface in telemetry and dashboards before they affect users, and the organization contributes memory and state patterns back to its internal communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams store all agent memory in a single undifferentiated tier, so retrieval returns stale intermediate reasoning alongside stable domain facts and degrades task quality silently.",
       "Long-running workflows lack checkpointing, so any transient failure forces a full restart and the workflow pays its full cost every time something goes wrong.",
@@ -1128,33 +634,7 @@
       "The control plane itself is redundant, durable, and loosely coupled to agents, so coordination infrastructure is at least as reliable as the agents it coordinates.",
       "Arbitration decisions, routing outcomes, fallback activations, and control-plane health are all observable as first-class telemetry, and failure modes are validated through regular fault-injection and disaster recovery exercises."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents coordinate directly with each other, so conflicts produce deadlocks, circular dependencies, or inconsistent state. Orchestration hard-codes specific agent identifiers, fallback paths are absent, and the control plane often runs as a single instance with in-memory state. Multi-agent failures are diagnosed only after incidents."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A central arbiter exists for critical conflict resolution, and agents are registered in a simple catalog that orchestrators consult for routing. Basic fallback logic handles primary agent failures, although fallback behavior is one-time per workflow. The control plane uses managed services such as [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) for execution, but workflow state isn't persisted end to end."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Arbitration policies are externalized from the arbiter binary and stored in [Parameter Store, a capability of AWS Systems Manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) or [Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html), with human escalation through [Amazon SNS](https://docs.aws.amazon.com/sns/latest/dg/welcome.html) for unresolvable conflicts. Agents are registered in [Amazon Bedrock AgentCore Registry](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/registry.html) with structured capability metadata and discovered through semantic search. Fallback chains are documented per critical agent, and workflow orchestration uses [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) for durable state."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "The arbiter is event-driven through [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html), activating only for conflict resolution rather than mediating every message. Capability registration is automated in CI/CD so the registry stays aligned with deployed state. Proactive health checking through the [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) /ping endpoint drives fallback activation without waiting for timeouts, and [AWS Fault Injection Service](https://docs.aws.amazon.com/fis/latest/userguide/what-is.html) exercises validate fallback chains on a schedule. Agents tolerate brief control-plane outages because they are designed to complete in-flight work independently."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Arbitration policies, routing decisions, and fallback tiers are recalibrated continuously from [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) telemetry rather than through periodic review cycles. Contention hotspots and capability gaps surface in [Amazon CloudWatch Contributor Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContributorInsights.html) and drive targeted redesign of coordination protocols. Disaster recovery exercises are routine, control-plane failover is provably automated, and the organization contributes multi-agent orchestration patterns back to its internal communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams let agents coordinate peer-to-peer without a dedicated arbiter, producing deadlocks and inconsistent outcomes whenever agents contend for the same resource.",
       "Orchestration hard-codes specific agent identifiers, so routing can't adapt when agents are replaced or become unavailable, and agent changes require orchestration code changes.",
@@ -1188,33 +668,7 @@
       "Agent behavior improves through evaluation-driven cycles where feedback is collected, outcomes are assessed, and prompt or configuration changes are validated offline before deployment, rather than through runtime self-modification.",
       "Per-stage health, retrieval quality, and evaluation results are observable as first-class telemetry, so the weakest links in cognition surface in dashboards rather than user complaints."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent cognition is a monolithic pipeline where any component failure causes complete cognition failure. Agents rely on model training data for domain knowledge, with no retrieval grounding and no feedback collection. Systematic errors are discovered through user complaints, and adaptation happens through one-time prompt tweaks applied directly to production."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Reasoning is broken into identifiable stages, and basic retrieval grounds agent output in organizational knowledge through [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html). Teams capture some feedback signals, and periodic evaluations compare agent outputs against a small set of golden-path examples. Fallbacks exist for obvious failure paths but are not exercised systematically."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Each reasoning stage has explicit input and output schemas and independent error handling, deployed on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html). Multi-tier feedback (action-level, task-level, session-level) is captured and stored alongside task records, and [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) assesses agent performance against representative task sets. Knowledge base synchronization pipelines are automated, and chunking and reranking strategies are tuned per content type."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Automatic cutoffs between stages activate stage-specific fallbacks when error rates exceed thresholds, and tiered context retrieval plus [Amazon Bedrock cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) keep cognition available when primary tiers degrade. Multimodal preprocessing through [Amazon Bedrock Data Automation](https://docs.aws.amazon.com/bedrock/latest/userguide/bda.html) is a distinct stage with its own fallbacks. Offline prompt optimization workflows deploy validated improvements through gradual rollout, and knowledge freshness thresholds produce observable alerts."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Per-stage quality, retrieval effectiveness, and evaluation outcomes feed a continuous improvement loop that tunes chunking, reranking, model tier selection, and prompt strategies. Hallucination rates, grounding coverage, and per-stage fallback activation are tracked as key reliability indicators, and cognition architecture decisions are driven by observability data rather than intuition. The organization contributes agent-cognition patterns and measurements back to its internal communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams build agent cognition as a monolithic pipeline, so any stage failure causes a complete cognition failure and debugging has to pick apart a single large black box after the fact.",
       "Agents rely only on model training data for domain-specific knowledge and produce confidently wrong answers about current facts, because retrieval grounding isn't in place.",
@@ -1246,33 +700,7 @@
       "Operators can disable and re-enable individual capabilities at runtime without redeployment, and each capability has a tested fallback behavior that activates when it is toggled off.",
       "Resilience mechanisms are exercised regularly through fault injection and game days, so gaps are discovered in testing rather than during production incidents."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents call legacy systems directly without adapter layers, so legacy error codes and protocol quirks leak into agent logic. There are no explicit fallbacks, so legacy outages cascade into complete agent failure. Retries are applied without idempotency, which can produce duplicate transactions, and disabling a problematic capability requires redeployment. Resilience is assumed rather than tested."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Integration adapters are introduced for the most critical legacy systems, exposing tool interfaces that translate to legacy protocols internally. One-time fallbacks are added after the first outages reveal the need, and retries start using idempotency keys for a small set of high-risk operations. Teams occasionally run manual failure tests before major releases. Telemetry on adapter health is partial and varies by system."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Adapters are registered in [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) with a canonical error taxonomy, so agents handle legacy failures consistently. Each legacy dependency has a matched fallback strategy: cache-based for reference data, queue-based for transactional operations through [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html), and graceful degradation for real-time data. Idempotency is implemented through [Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) conditional writes and TTL-based expiration, and capability toggling through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) Cedar policies allows runtime control. [AWS Fault Injection Service](https://docs.aws.amazon.com/fis/latest/userguide/what-is.html) experiments run on a defined schedule."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Legacy integration health is monitored through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) with alarms that trigger automatic cutoffs using [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) circuit breaker logic, and recovery probes re-enable access when systems recover. Idempotency keys propagate through multi-step workflows and are passed to external systems that support native idempotency. Fallback behaviors are tested alongside primary implementations, and fallback activation rates feed a continuous prioritization of legacy reliability investment. FIS experiments are part of CI/CD, and quarterly game days validate runbooks under realistic conditions."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Adapter patterns, fallback strategies, and idempotency mechanisms are standardized across the organization and continuously refined based on operational data. Capability toggles, fallback activation rates, and legacy health trends are integrated into decision-making for legacy modernization investment. Self-healing behavior (automatic cutoff, graceful degradation, and recovery) is the default, and game days rehearse multi-system failures rather than single-service outages. The organization publishes internal patterns for agent-to-legacy integration and shares benchmarks across teams."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents couple directly to legacy interfaces without adapter layers, so legacy protocol changes ripple through agent code and every agent handles legacy error codes in its own way.",
       "Legacy dependencies are assumed to have the reliability of cloud-based services, so no fallback paths exist and a single legacy outage causes complete agent failure.",
@@ -1309,33 +737,7 @@
       "End-to-end distributed tracing covers every agent invocation, with agent-specific annotations and framework-level reasoning steps captured in the same trace view.",
       "Traces, metrics, and logs are correlated in unified dashboards, so operators diagnose incidents from evidence rather than by pivoting between tools."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent workflows run as monolithic processes, so any failure causes a complete restart and lost work. Retries are applied uniformly, including to non-retryable errors, and without exponential backoff or jitter. Tracing is limited to the application boundary, and incident responders reconstruct the execution path from logs. Recovery actions are manual."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A few long-running workflows are split into stages, and retries use exponential backoff for a limited set of known-transient errors. [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) alarms notify operators on elevated error rates. Tracing is added for critical paths but doesn't propagate across queue boundaries. Failure classification exists in one-time code rather than a shared library."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Workflows are orchestrated in [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) with state persistence at every transition and [redrive](https://docs.aws.amazon.com/step-functions/latest/dg/redrive-executions.html) enabled for incremental recovery. Failure classification is standardized in a shared library, and retries use exponential backoff with full jitter. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) captures end-to-end traces across agent components, and [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) enforces retry budgets. Stage-level validation helps prevent errors from propagating through later stages."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Self-healing responses address common failure patterns directly (prompt refinement, tool substitution, context reconstruction) before fallbacks engage. Fallback strategies route persistent failures to degraded responses, cached answers, or human review queues rather than returning errors. Distributed tracing includes agent-specific annotations and [Strands Agents](https://strandsagents.com/docs/user-guide/observability-evaluation/traces/) reasoning steps, and trace context propagates through every communication path including asynchronous messages. [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) validate that recovered outputs match pre-failure quality baselines."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Recovery strategies are continuously refined based on recovery metrics and trace analysis. Fallback paths are tested alongside primary implementations, and stage decomposition is driven by observed failure and timeout patterns. Trace-based alerting fires on anomalies before they become incidents, and correlated dashboards turn traces, metrics, and logs into a single investigative surface. The organization publishes internal recovery patterns and shares lessons across teams."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Long-running workflows run as monolithic processes, so a failure late in the workflow loses all progress and forces complete restart.",
       "Retry logic is applied uniformly to every failure, retrying non-retryable errors that will never succeed and delaying the human intervention that would resolve them.",
@@ -1368,33 +770,7 @@
       "Resource isolation separates high-priority user-facing agents from background workloads, and contention is detected through composite scores before it causes failures.",
       "Memory utilization is tracked per tier (in-context, short-term session, long-term persistent) with automated responses for summarization, pruning, and consolidation before exhaustion produces silent failures."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Configuration is hardcoded in agent code, so every parameter change requires a redeployment. Telemetry exists only at the request boundary, which hides stage-level degradation. Agents share a single resource pool, so any workload spike degrades every tenant. Memory utilization is monitored only at the infrastructure level, and in-context exhaustion produces silent failures. Graceful degradation is activated manually, if at all."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Configuration is centralized but managed manually, with one-time versioning and limited schema validation. Basic [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) metrics capture inference latency and error rate, but stage-level telemetry is partial. Resource isolation is informal, with heavy workloads sometimes placed on separate infrastructure. Memory growth is tracked for a few known-leaky components, and degradation responses are scripted but triggered by operators."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Runtime configuration is managed through a central service such as [AWS AppConfig](https://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html) with JSON Schema validation and gradual rollout, and secrets live in [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) or [Parameter Store SecureString parameters](https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-store-about.html). [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) captures stage-level telemetry, and [Amazon Bedrock model invocation logging](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html) records per-call token counts and latency. Priority tiers have separate [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) instances, and memory utilization is tracked per tier with alarms at 80% context-window utilization."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "[CloudWatch anomaly detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html) establishes baselines automatically, and [CloudWatch composite alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm_How_To.html) combine multi-stage signals into automated graceful degradation. Resource contention is detected through composite scores that combine concurrency, token consumption, and queue depths, and mitigation is automated through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html). [Amazon Bedrock Provisioned Throughput](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html) gives latency-sensitive agents dedicated capacity. Memory growth is analyzed through [CloudWatch Metric Math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html), and summarization, pruning, and consolidation responses are automated. Drift monitoring alerts on configuration fleets running mixed versions."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Degradation policies and configuration patterns are continuously refined based on operational data. Composite health scores, anomaly thresholds, and automated mitigation rules are tuned from observed outcomes rather than intuition. Memory management responses are self-healing across all tiers, and resource allocation adjusts dynamically based on priority and observed demand. The organization publishes reusable telemetry and configuration patterns internally and shares benchmarks on graceful degradation effectiveness across teams."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Configuration is hardcoded or partially centralized, so parameter changes require redeployment and configuration drift between instances is detected only through downstream failures.",
       "Configuration changes are applied without validation or staged rollout, which lets misconfigured values reach production and degrade agent behavior instantly.",
@@ -1427,33 +803,7 @@
       "Production traffic is profiled on a defined cadence to decompose end-to-end latency into per-phase contributions, with optimization effort ranked by contribution multiplied by addressable variance rather than by contribution alone.",
       "Success criteria, telemetry, and phase-level alerts feed CI/CD quality gates and regression alarms, so performance posture stays aligned with production behavior as prompts, tools, and models drift."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Performance targets are aspirational rather than measurable, with no per-workload KPIs and only infrastructure metrics in place. Telemetry is limited to runtime logs and [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) duration metrics, and end-to-end latency is the only signal monitored. Performance regressions are discovered through user reports rather than observability, and criteria are revisited only after incidents."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Latency and throughput targets are documented for flagship workloads, and basic traces flow through [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) or CloudWatch. Agent-specific metrics (task completion, tokens per task) are emitted but are not currently tied to alerts or SLOs. Per-phase decomposition is one-time rather than encoded in criteria, and profiling happens reactively after the first incident."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Every production workload has structured service level objectives with service level indicators, thresholds, attainment goals, and intervals managed through [Amazon CloudWatch Application Signals](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-ServiceLevelObjectives.html). OpenTelemetry-compatible telemetry through the [AWS Distro for OpenTelemetry](https://aws-otel.github.io/docs/introduction) populates the CloudWatch generative AI observability surface, and per-phase latency budgets are allocated from the end-to-end target. Profiling runs against production traffic and per-phase percentile metrics are published."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Phase-level [CloudWatch anomaly detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html) and burn-rate alarms fire on drift before end-to-end SLOs are exceeded, with composite alarms correlating signals to reduce noise. SLOs are gated in CI/CD through automated load and evaluation tests, and [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) validates quality as part of the pipeline. Per-phase profiles are refreshed on a defined cadence and optimization targets are ranked by contribution and addressable variance."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Success criteria, per-phase budgets, and thresholds are recalibrated continuously from production telemetry rather than through manual review cycles. Evaluation-set-driven quality gates and cost-per-task ceilings travel with every release, and profiling feeds the architecture roadmap. The organization contributes performance measurement patterns and reasoning-cost profiles back to its communities of practice and tunes targets from data rather than launch-time assumption."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams define success criteria in infrastructure terms and miss agent-specific dimensions such as reasoning latency, token efficiency, tool accuracy, and time-to-first-token, so the criteria can't detect the regressions that actually affect users.",
       "Single latency targets are applied across streaming and non-streaming agents, or across interactive and batch workloads, which either over-provisions some agents or sets unachievable goals for others.",
@@ -1484,33 +834,7 @@
       "User-facing agents stream tokens with sub-second time-to-first-token, pre-inference work is compressed to preserve the TTFT budget, and tool invocations mid-stream surface progress to the user rather than unexplained pauses.",
       "Retry strategies and graceful degradation paths are bounded by explicit latency budgets so failure recovery stays inside the end-to-end service level objective rather than eroding it silently."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents run without iteration limits or confidence-based termination, and a single large model serves every task regardless of complexity. Independent operations run sequentially, connections are re-established per invocation, and user-facing agents wait for the complete response before any output reaches the user. Failures propagate without explicit retry budgets."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Iteration caps and basic retry limits are in place for flagship agents, and task classification is documented but not consistently routed. Streaming is enabled for some user-facing interactions but the pre-inference path isn't optimized for time-to-first-token. Model selection happens at design time rather than benchmarked against the workload's task distribution."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Task classes are mapped to model tiers benchmarked on the workload's own distribution through [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html), with cascading fallback configured for low-confidence outputs. Independent operations execute concurrently inside framework primitives such as the [Strands Agents](https://strandsagents.com/), and [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) streaming APIs deliver output token-by-token. Retry strategies are bounded by explicit latency and token budgets."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Model assignments and routing rules are externalized as runtime configuration in [AWS AppConfig](https://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html) and promoted through progressive rollouts gated by CloudWatch alarms. Connection pooling through [Amazon RDS Proxy](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html) and warm runtimes through [Amazon Bedrock AgentCore Runtime sessions](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-sessions.html) or [AWS Lambda provisioned concurrency](https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html) remove cold starts on the critical path. Tool invocations during streaming surface structured progress events to the client."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Pipeline shape, caps, model routing, and fallback rules are recalibrated continuously from production telemetry, and [Amazon Bedrock latency-optimized inference](https://docs.aws.amazon.com/bedrock/latest/userguide/latency-optimized-inference.html) is evaluated for each eligible model. Voice and real-time workloads run on [Amazon Bedrock AgentCore Runtime bi-directional streaming](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime-bidirectional-streaming.html) through [Amazon Nova Sonic](https://docs.aws.amazon.com/nova/latest/userguide/speech.html). Reasoning iteration counts, TTFT, and fallback-escalation rates sit alongside latency and cost on every dashboard, and the organization contributes pipeline patterns back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents reason without iteration caps or early termination signals, producing runaway loops that consume tokens and time without improving output quality.",
       "A single large model serves every task regardless of complexity, paying the latency and cost premium of a heavyweight model for work a smaller one resolves as well.",
@@ -1544,33 +868,7 @@
       "Multi-layer caching (prompt prefixes, retrieval results, tool outputs) reduces redundant work across iterations and sessions, with TTLs and keys tuned per layer against measured hit rates and staleness tolerance.",
       "Retrieval is expressed as a set of agent-invoked tools with bounded iteration, sufficiency checks, and parallel sub-query execution so complex questions converge within the workload's latency budget."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Memory, context, and retrieval are treated as single-tier concerns. Full conversation history and the entire tool catalog flow into every prompt, RAG chunks are fixed-size with no relevance filtering, and no caching exists beyond what individual services provide by default. Token consumption and retrieval latency are reviewed only after a cost spike or a user-reported slowdown."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have separated short-term from long-term memory and adopted basic summarization of conversation history. RAG is running through a managed service such as [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html), and prompts are structured so that system instructions and stable tool definitions sit in a reusable prefix. Per-component token usage and retrieval latency are measured for production agents but tuning is still manual and reactive."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Memory tiers use storage matched to access pattern, with [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) or [Amazon ElastiCache](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html) serving short-term state and [AgentCore Memory long-term strategies](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/long-term-configuring-built-in-strategies.html) or [Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/application-agentic-memory.html) serving cross-session knowledge. RAG pipelines use semantic chunking, hybrid search, and a re-ranking stage, with top-k caps and per-passage thresholds enforced. Prompts compose with [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html), and prompt templates are versioned in [Amazon Bedrock Prompt management](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management-create.html) with per-component token budgets."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Retrieval is expressed as a set of agent tools through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) with sufficiency evaluation, bounded iteration, and parallel sub-query execution for complex questions. Multi-layer caching is active across prompt prefixes, semantic retrieval keys, and tool outputs, with per-layer hit rates monitored against floors. Memory extraction, eviction, and prompt-template promotion run through automated pipelines, and per-tier latency and cache hit rate feed continuous tuning in [Amazon CloudWatch generative AI observability](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/GenAI-observability.html)."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Memory tier sizing, retrieval budgets, and cache TTLs are recalibrated continuously from production telemetry rather than by scheduled review. Prompt components, tool selection, and retrieval routing are evaluated through [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) gated in CI/CD, and optimization patterns flow back to internal communities of practice. The organization contributes memory and retrieval patterns to the broader agentic AI community."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams store all agent memory in a single database regardless of access pattern, which forces sub-millisecond session reads and large-scale semantic searches to compete on the same backend and degrades both.",
       "Conversation history and the full tool catalog are included in every prompt without summarization or dynamic selection, so prompt size and latency grow linearly with session length even after the information stops being useful.",
@@ -1603,33 +901,7 @@
       "Message and event payloads carry references to durable stores rather than embedded data, keeping transfer times low and letting consumers skip work on events that have become irrelevant.",
       "Connection pooling, protocol-level compression, and token caching keep per-interaction overhead flat as the number of agent-to-agent hops and tool invocations grows."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent communications run over synchronous HTTP/REST with full JSON payloads on every call. Polling is the default event-detection mechanism. Connections are opened per call, and protocol choice, payload size, and authentication overhead are not tracked. Scaling problems surface only after an outage or a timeout cascade."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have introduced asynchronous messaging through [Amazon SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) for point-to-point workflows and [Amazon SNS](https://docs.aws.amazon.com/sns/latest/dg/welcome.html) for fan-out. Dead letter queues are attached to critical queues and queue depth is monitored. Most event triggers still use polling, and protocol selection is inconsistent across agents."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "MCP is standardized for agent-to-tool communication through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html), and [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) with content-based filtering routes push-based events to the agents that need them. Message payloads pass references rather than data, and agents on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) use the runtime's session management for within-workflow communication. Protocol selection guidelines are documented and followed."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "A2A through AgentCore Runtime handles structured agent-to-agent coordination, and [Amazon API Gateway WebSocket APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api.html) serve streaming user interactions. Connection pooling, protocol-level compression, and token caching through [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) are standard. Idempotency keys protect against duplicate event delivery. Backpressure on queues and event-to-invocation latency are alerted on and drive automated scaling."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Protocol selection, queue sizing, and event filtering are recalibrated continuously from production telemetry. Per-hop authentication and serialization overhead is budgeted and optimized at the workflow level rather than per service. Communication patterns and interoperability work feed back into internal standards and are shared with the broader agentic AI community."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams default to synchronous HTTP/REST for every agent communication, creating tight coupling where a slow downstream component blocks the entire upstream chain and propagates scaling issues across the workflow.",
       "Agents receive broad event streams without content-based filtering and spend compute receiving, parsing, and discarding events they never act on, which inflates cost and obscures the latency of events that do matter.",
@@ -1661,33 +933,7 @@
       "Multi-stage pipelines use streaming and micro-batching to overlap stage processing, with right-sized compute per stage and end-to-end tracing that makes bottlenecks attributable.",
       "Delegation and handoff operations transfer only the context the receiving agent needs, through shared context stores and standardized interfaces, and handoff latency is a first-class metric."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Multi-agent workflows run sequentially without explicit orchestration. Teams chain agent calls in application code, pass full payloads and conversation history between steps, and use sub-agents for work that a tool could do in milliseconds. There is no cycle detection, no timeout, and no per-step telemetry, so runaway delegation chains and slow branches surface only as user-visible failures."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Workflows are classified as dynamic, deterministic, or hybrid, and each is placed on a suitable orchestrator. [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html) is adopted for deterministic flows, and native framework orchestration is used for dynamic graphs. Basic parallelism is enabled for independent subtasks, and shared stores on [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) or [Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) replace inline payloads for large results. Timeouts and fallback paths exist for the most critical workflows."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Dynamic graph workflows run with cycle detection, maximum depth limits, and bounded fan-out cardinality. Collaboration models are selected per workflow (supervisor-worker, pipeline, peer-to-peer, swarm) using framework-native primitives such as [Strands Agents](https://strandsagents.com/) agent-as-tool and [Amazon Bedrock Agents multi-agent collaboration](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-multi-agent-collaboration.html). Multi-stage pipelines use streaming through the [Amazon Bedrock streaming inference API](https://docs.aws.amazon.com/bedrock/latest/userguide/api-methods-run-inference.html) and micro-batching, with right-sized compute per stage. Shared context stores on [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) carry delegation context instead of inline transfers."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Per-step, per-branch, and workflow-level timeouts are derived from the task SLO, and slow branches terminate with the best partial result rather than blocking. End-to-end distributed tracing through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) or [AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/aws-xray.html) makes the critical path attributable, and stage rebalancing is a routine practice. Delegation happens through standardized interfaces on [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html), asynchronous delegation with [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html) callbacks is used where the parent has parallel work, and predictable receivers are pre-warmed using [AWS Lambda provisioned concurrency](https://docs.aws.amazon.com/lambda/latest/dg/provisioned-concurrency.html) or warm session pools."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Orchestration patterns, collaboration models, and context schemas are continuously refined against measured data. Handoff latency, parallel efficiency, state payload size, and collaboration overhead metrics sit on shared dashboards that drive design iteration. New workflows start from reusable patterns, and the organization contributes reference implementations for dynamic graph orchestration, hybrid Step Functions skeletons, and standardized delegation interfaces back into the internal community."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams default to sub-agents for capabilities that a tool call would handle in milliseconds, paying full reasoning-loop cost for deterministic, single-step work.",
       "Workflows run steps sequentially even when the dependency graph permits parallel execution, pushing end-to-end latency to the sum of step durations rather than the critical path.",
@@ -1723,33 +969,7 @@
       "Meta-tools encapsulate predictable multi-step sequences into single server-side operations, collapsing reasoning iterations for routine work while individual tools remain available for novel cases.",
       "Per-tool latency, error rate, cutoff state, and cache effectiveness are instrumented, so tool-layer regressions are attributable before they dominate task latency."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Tools are integrated directly by each agent team, with no shared protocol and no catalog discipline. The full tool list is presented to the model on every reasoning iteration, tool calls run sequentially, and results are recomputed on every invocation. Connections are re-established per call, timeouts default to SDK values that are too generous, and retries run without backoff. There is no per-tool telemetry, so regressions surface only as user-facing slowness."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "[Model Context Protocol (MCP)](https://modelcontextprotocol.io) is adopted as the integration protocol and [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) exposes tools through a consistent interface. Semantic tool discovery is used for large catalogs so the model sees a filtered set rather than every tool. Basic connection pooling is in place for custom endpoints, and per-tool timeouts are set from measured p95 latency. Retries use backoff and jitter, and per-tool latency and error rate metrics are published through [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html)."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Parallel tool execution is enabled for independent calls. Tool APIs are designed for agent consumption with compact schemas, pagination, and partial responses. Results are cached at multiple scopes (request, session, global) using in-process caches and [Amazon ElastiCache](https://docs.aws.amazon.com/AmazonElastiCache/latest/dg/WhatIs.html) where appropriate. Batch APIs replace single-item loops for multi-item work, and [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)-based tools initialize clients outside the handler to preserve connection pools across invocations."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Automatic cutoffs route around degraded tools, falling back to cached results or controlled errors rather than exhausting the reasoning budget. Frequently repeated tool sequences are identified from telemetry and consolidated into meta-tools deployed on AWS Lambda and exposed through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html). Meta-tool performance is compared against the equivalent individual-tool sequence, and per-tool dashboards alarm on latency, error rate, timeout rate, and cutoff state regressions."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Tool integration, invocation, and meta-tool strategies are continuously refined against operational data. Meta-tools are retired when they stop outperforming the individual-tool baseline, cache TTLs are tuned per tool, and tool catalogs evolve with usage patterns. The organization publishes reusable agent-friendly tool patterns (compact schemas, cutoff wrappers, meta-tool templates) and shares benchmarks across teams, keeping the tool-layer contribution to end-to-end latency at the lower bound defined by each tool's inherent processing time."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams present every available tool to the model on every reasoning iteration, consuming context window capacity and degrading selection accuracy once the catalog grows beyond 10 to 15 tools.",
       "Independent tool calls run sequentially rather than in parallel, so tool-layer latency compounds linearly with the number of calls instead of tracking the maximum.",
@@ -1782,33 +1002,7 @@
       "Tenant context propagates through the full stack, and per-tenant dashboards track latency, error rates, throttle state, and resource consumption against the tier's SLA.",
       "Isolation is validated through regular noisy-neighbor testing, so the deployment model's performance claims are measured rather than assumed."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Tenants are served from a single shared deployment with no isolation mechanisms or from duplicated siloed infrastructure with no tier policy. Throttling, if it exists, is at the API edge only and uses static limits. There is no per-tenant telemetry, so noisy-neighbor effects and SLA violations are discovered after customers report them. Tenant onboarding requires manual infrastructure provisioning for every new customer."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A small number of tiers (standard and premium, optionally enterprise) is documented with performance SLAs, isolation requirements, and pricing. The standard tier runs on pooled infrastructure such as [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html) with session-level isolation. [Amazon API Gateway usage plans](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-usage-plans.html) enforce per-tenant rate limits at the edge. Data is isolated per tier using [Amazon DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html) partition keys for pooled tiers."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Throttling is enforced at every shared layer, not only at the edge. Tenant-aware queuing limits per-tenant concurrency on [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) invocations, and memory and tool layers enforce their own per-tenant limits. Premium tenants use dedicated resources such as [Amazon Bedrock provisioned throughput](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-throughput.html). Tenant context propagates through the runtime, memory, and tool layers. Per-tenant dashboards in [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) track consumption and SLA compliance."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Adaptive throttling loosens limits during low-load periods and tightens during contention, honoring tier priority so premium tenants retain capacity. Onboarding for standard-tier tenants is configuration-driven through [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html) or [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) templates rather than a bespoke infrastructure build. Alarms fire on per-tenant limit proximity and SLA violations, and noisy-neighbor testing runs on a regular cadence to validate isolation claims against real load."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Tier definitions, throttling policies, and deployment models are continuously refined against operational data. Onboarding is fully self-service for standard and premium tiers with guardrails that help prevent tier-inappropriate configurations. Cost and performance per tenant are reported to tenant-facing dashboards, and isolation effectiveness is validated through automated chaos and noisy-neighbor scenarios. The organization publishes reusable multitenant reference patterns internally and contributes benchmarks across teams."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams deploy fully isolated infrastructure for every tenant regardless of need, wasting capacity on tenants whose requirements would be met by pooled resources.",
       "Teams use a single pooled deployment without per-layer isolation, letting high-volume tenants consume disproportionate capacity and degrade performance for everyone else.",
@@ -1839,33 +1033,7 @@
       "Agent hierarchies are as shallow as the workflow allows, with autonomous workers that complete multi-step sub-tasks without per-step supervisor check-ins.",
       "Reasoning and coordination costs are instrumented as distinct, observable metrics, and cost-quality baselines feed continuous refinement of thresholds, manifests, and delegation patterns."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents run without explicit termination contracts. Reasoning loops continue until they happen to exit or time out. Multi-agent workflows pass full conversation history at each handoff, and orchestration cost isn't separated from worker cost. Token usage is reviewed only after an unexpected bill or a production incident."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have adopted basic termination contracts, including iteration caps and session-level token budgets, and tag invocations so orchestration and worker costs can be reported separately. Shared context for collaborating agents is starting to displace per-invocation context relay, but isn't yet the default. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) is enabled for most production agents, and manual reviews of reasoning cost occur at regular intervals."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Cost-quality baselines exist per reasoning phase. Selective reflection is used so full self-correction runs only when initial output quality falls below a threshold. Handoffs follow structured payload schemas, and shared memory through [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) is the default for collaborating agents. Orchestration-to-execution token ratios are tracked per workflow, and teams choose AI supervision over rule-based routing only after a determinism analysis."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Termination conditions, iteration limits, and routing policies are enforced at the control-plane boundary through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) and [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) rather than relying on agent self-restraint. Hybrid supervisor patterns run in production, and plan-then-execute is the default for repeatable workflows. Per-tier cost attribution is automated, with [AWS Budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html) alerts on orchestration-to-execution ratios and supervisor-to-worker ratios. Tool call efficiency is evaluated in CI/CD through [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html)."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Termination parameters, manifest compression, and delegation depth are recalibrated continuously from observability data rather than through manual review cycles. Reasoning cost models and supervisor-to-worker ratio targets drive design review for every new workflow. Agent architectures evolve primarily in response to cost-quality telemetry, and the organization contributes reasoning-cost patterns and measurements back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams run agents without explicit iteration caps, confidence thresholds, or token budgets, which can leave unbounded reasoning loops undetected until reviewing cost metrics or performance data.",
       "Multi-agent workflows pass full conversation history between agents at every handoff, so coordination costs scale with conversation length rather than task complexity.",
@@ -1899,33 +1067,7 @@
       "High-volume recurring tasks run on specialized or customized models whose one-time training cost amortizes against sustained per-invocation savings.",
       "Cost-per-correct-response, token consumption, cache hit rate, and cascade escalation rate are tracked per model tier and fed back into routing, caching, and customization decisions."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Teams invoke a single default foundation model for every agent task regardless of complexity, and prompts, tool lists, and outputs grow without review. No prompt caching, semantic caching, or model customization is in place. Cost surprises are attributed to traffic growth rather than investigated."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A documented model routing policy maps task types to specific model tiers, and environments are aligned to the appropriate [Amazon Bedrock on-demand pricing tier](https://docs.aws.amazon.com/bedrock/latest/userguide/capacity-limits-cost-optimization.html) (Flex, Standard, Priority). Prompt compression, explicit output length constraints, and [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html) for stable system prompts are applied to the highest-volume agents. Token consumption is reviewed periodically against aggregate cost dashboards."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "A pre-classifier routes every invocation to a model tier based on task complexity, and model cascading with confidence-based escalation is the default pattern for non-trivial reasoning. Semantic caching and plan template reuse run alongside prompt caching, with TTLs differentiated by task freshness. Token consumption, cache hit rates, and cascade escalation rates are tracked per reasoning phase using [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and [Bedrock batch inference](https://docs.aws.amazon.com/bedrock/latest/userguide/batch-inference.html) is used for non-time-sensitive work."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Routing, caching, and guardrails are automated. [Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) policies enforce model tier limits, cache policies are event-driven, and fallback chains handle timeouts without same-tier retries. High-volume task categories run on distilled or parameter-efficient fine-tuned models in production, validated through A/B testing with [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) and served through [Custom Model Import](https://docs.aws.amazon.com/bedrock/latest/userguide/model-customization-import-model.html) on [AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html). Cost-per-correct-response is a tracked service-level metric and drives quarterly refresh decisions."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Model portfolios are continuously optimized. Complexity classifiers, cascade thresholds, cache similarity thresholds, and customization refresh cadences are all tuned from production telemetry. Customized models are refreshed on a continuous pipeline with automated training data extraction, evaluation, and promotion gates. The organization drives cost-per-outcome improvements quarter over quarter while maintaining or raising decision quality baselines, and contributes patterns and benchmarks back to the broader practitioner community."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Every agent invocation defaults to the most capable general-purpose model, resulting in higher inference costs for routine classification and formatting that could use cost-effective alternatives.",
       "System prompts and tool catalogs accumulate without review, so the fixed input-token tax paid on every invocation rises silently across months even when traffic is flat.",
@@ -1959,33 +1101,7 @@
       "Session state and durable agent learning are persisted through managed lifecycle controls, helping prevent unbounded storage growth without discarding knowledge that improves future reasoning.",
       "Memory and state costs are observable per agent and per session, with alarms surfacing retrieval patterns and storage growth before they become material."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Memory is a single undifferentiated layer. Full conversation history is passed into every invocation, and there is no retrieval filtering, compression, or lifecycle policy. Per-session memory and state cost isn't measured, so token growth and storage growth are detected only when a bill or context overflow forces the issue."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Short-term and long-term memory are separated, and a basic rolling summarization keeps the longest sessions from unbounded growth. Retrieval uses [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) or equivalent vector search with a fixed top-K. Baseline dashboards expose token usage per session, but tuning is one-time and applied by individual teams."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Tiered memory is the standard across agent teams, with managed services such as [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) used for short-term and long-term storage. Retrieval is relevance-scored, chunk sizes are right-sized, and context utilization is monitored against a defined target. Lifecycle policies archive or purge stale state on [Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html) or equivalent, and [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) dashboards cover most agents."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Memory compression, pruning, and selective retrieval are automated defaults, and session lifecycle parameters are tuned per workload. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) provides per-agent and per-session cost attribution, with alarms for context overflow, retrieval hot spots, and unexpected storage growth. Vector index parameters and top-K are reviewed regularly against recall and cost data."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Memory architecture is continuously optimized from observed access patterns. Top-K, chunk size, tier placement, and checkpoint frequency adapt to workload signals rather than static configuration. Cost regressions on memory and state are caught in pre-production by automated checks against historical baselines, and insights from operations feed back into reasoning pattern and retrieval design."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Memory is treated as a single undifferentiated store, so every byte pays high-performance storage rates regardless of whether it is ever read again.",
       "Full conversation history is injected into every invocation, causing token cost to grow linearly with session length and pushing long sessions toward context overflow.",
@@ -2017,33 +1133,7 @@
       "Failures are contained through automatic cutoffs and fallback tools designed to preserve agent functionality without unbounded retry costs.",
       "Per-agent, per-tool invocation metrics and costs are visible at the session and reasoning-cycle level, enabling targeted optimization."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Tool serving infrastructure runs continuously regardless of agent activity. Tools are invoked without checking whether the required information already exists in context or memory, and retries are effectively unlimited. There is no cost attribution per tool or per agent, and no caching strategy. Failures cascade into retry storms because cutoffs are absent."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Tool serving moves onto managed, consumption-based infrastructure such as [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) and [AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html). Basic session-scoped caching and exponential backoff with caps are implemented. Agents receive a cost-ranked tool selection rubric in their system prompts, and invocation telemetry is captured through [AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html). Cost attribution exists at the service level but not currently at the agent or reasoning-cycle level."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Tool interfaces are designed for batched inputs and complete result sets. Session-scoped caching is complemented by distributed, cross-session caching on [Amazon OpenSearch Service Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless.html). Automatic cutoffs are enforced through [AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) rather than application logic, and fallback tools preserve agent functionality during degradation. Per-agent and per-tool cost attribution is reported through [AWS Cost Explorer](https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html) tags, and tool-selection accuracy is evaluated periodically with [AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html)."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Semantic caching recognizes functionally equivalent tool calls through embedding similarity, and cache time to live (TTL) values are calibrated per tool based on data volatility. Input validation in [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) action group functions helps prevent wasted invocations from malformed calls. Cutoffs and retry budgets are codified in [Cedar](https://docs.cedarpolicy.com/) policies enforced at the Gateway boundary. Real-time dashboards track cache hit rates, cutoff state transitions, and retry cost as a proportion of total tool cost."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Tool serving is self-optimizing. Cache TTLs, cutoff thresholds, and tool-selection rubrics adjust automatically based on observed hit rates, failure patterns, and cost outcomes. Event-driven cache invalidation purges stale data immediately when source systems change, supporting aggressive caching without staleness. Tool-selection and retry patterns are continuously evaluated against business outcomes, and optimization findings feed back into system prompts, policies, and infrastructure automatically."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents invoke tools without first checking context or managed memory, generating duplicate calls across reasoning iterations and driving up per-session costs.",
       "Narrow tool interfaces return minimal data, forcing agents to chain follow-up calls to assemble complete context and multiplying per-call overhead.",
@@ -2075,33 +1165,7 @@
       "Tenant identifiers flow through all agent operations, supporting consumption-based billing, noisy-neighbor detection, and quota enforcement.",
       "Technical telemetry is translated into business metrics. Cost-per-decision, cost-per-task-completion, and ROI against manual processes are reported, and they are available to business stakeholders through self-service dashboards."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent costs are visible only at the AWS account level. No standard tag taxonomy exists, and [AWS Cost Explorer](https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html) reports can't separate agents, workflows, or tenants. Teams react to billing surprises after the fact because per-agent and per-reasoning-phase attribution is missing."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "A standard tag taxonomy (agent-id, agent-role, workflow-id, task-type, environment) is applied to [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) invocations and [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) sessions. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) exports traces to [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html), and tag-based cost allocation is activated in AWS Cost Explorer. Per-agent and per-workflow reports exist, but coverage is uneven and multitenant attribution is limited."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Workflow trace IDs propagate through every agent invocation, tool call, and memory operation. Orchestration overhead ratios, cost-per-reasoning-cycle, and cost-per-task-completion are tracked on [CloudWatch dashboards](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Dashboards.html). [AWS Budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html) alerts and [CloudWatch alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) drive timely intervention. Tenant identifiers flow through [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) for multitenant deployments."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Cost aggregation rolls up invocation, agent, workflow, and tenant costs automatically. Tenant-level quotas are enforced through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) with [Cedar policies](https://docs.cedarpolicy.com/), and noisy-neighbor alarms fire when consumption exceeds three times the historical baseline. Business-facing dashboards in [Amazon Quick](https://docs.aws.amazon.com/quicksuite/latest/user/welcome.html) combine [AWS Cost and Usage Reports](https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html) and observability telemetry to show ROI against manual processes. Experimentation infrastructure routes traffic to alternative collaboration patterns so architecture decisions are made with cost-quality data."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Cost attribution is continuously refined and shapes the organization's agent design decisions. Automated narrative generation from a small [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) model explains cost drivers and recommends optimizations with quantified savings estimates. Pooled-compared-to-dedicated break-even analysis informs tenant placement, per-tenant pricing models adapt to consumption patterns, and business units review cost narratives on a fixed monthly cadence. Cost visibility is a core input to quarterly investment decisions rather than an after-the-fact report."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Cost reporting stops at the AWS account level, so teams can't separate supervisor overhead from worker execution or identify which reasoning phase consumes disproportionate tokens.",
       "Tag taxonomies exist on paper but are applied inconsistently across model invocations, function executions, and data operations, which silently breaks per-agent and per-workflow attribution.",
@@ -2136,33 +1200,7 @@
       "Frequently invoked agents reuse warm sessions with cached initialization artifacts, and infrequent agents scale to zero to avoid idle capacity charges.",
       "Cold start rates, cache hit rates, and per-version storage are instrumented and reviewed, giving owners the signal to address cost drivers before they scale with the fleet."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent discovery, versioning, and initialization are handled one-time. Teams deploy heavyweight service mesh or custom registries without evaluating consumption-based alternatives. Container versions accumulate in [Amazon ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/what-is-ecr.html) without lifecycle policies, and cold starts are absorbed on every invocation because session lifetimes, caching, and session affinity are not configured. Cost visibility is limited to account-level billing, so expensive patterns grow silently as the fleet expands."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Managed discovery such as [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) is adopted for tool-based agent collaboration. Custom registries, where needed, use consumption-based storage such as [Amazon DynamoDB on-demand capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html#HowItWorks.OnDemand). Version retention policies are defined but enforced manually. Warm session patterns are applied to a small number of high-frequency agents, and cold start rates are tracked for those agents."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Gateway or a consumption-based registry is the standard, and metadata caching with configurable TTLs is used across the fleet. [Amazon ECR lifecycle policies](https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html) delete unused images automatically, and container base layers are shared so ECR deduplicates them across agent versions. Weighted endpoint routing is used for blue/green and canary deployments on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agents-tools-runtime.html). Persistent filesystem caching amortizes initialization across sessions, and cold start and initialization costs are measured per agent type through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html)."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Discovery, versioning, and initialization cost metrics are dashboarded in [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) and reviewed on a routine cadence. Canary promotion is automated using cost-per-task-completion alongside error rate and latency, driven from [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) promotion logic. Session affinity routing is implemented in the orchestration layer, and [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) is configured for lazy loading so agents fetch only essential startup context. Cost anomalies on discovery, deployment, or initialization trigger alerts automatically."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Discovery, deployment, and initialization patterns are continuously refined based on operational data. Agent version vending is fully self-service with cost-aware guardrails, and cold start rates sit below 10% across the fleet. Retention, promotion, and warm pool policies are self-healing and driven by observed usage. The organization publishes reusable agent and container patterns internally, and shares benchmarks on discovery, versioning, and initialization cost efficiency across teams."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Organizations deploy heavyweight service mesh infrastructure for simple capability lookups, paying fixed monthly costs for features the agent fleet doesn't use.",
       "Teams put the registry on the critical path for every invocation, repeatedly re-reading capability metadata instead of caching it, so read costs grow linearly with invocation volume.",
@@ -2194,33 +1232,7 @@
       "Cost optimization is a continuous organizational practice, with monthly reviews, A/B-tested changes, and quantitative cost-quality trade-off analysis feeding quarterly improvement targets.",
       "Cost signals are translated into business value, with cost-per-decision, cost-per-task-completion, and return on investment reported alongside spending so that investment decisions are grounded in outcomes rather than raw spend."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent cost governance is informal and reactive. Agents are deployed without per-agent budget limits or automatic cutoffs, and cost overruns are discovered through monthly bills rather than real-time signals. Anomaly detection relies on generic infrastructure monitoring that misses agent-specific failure modes, and there is no standing review cadence for cost optimization."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Account-level budgets and basic alerts are in place through [AWS Budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html), and a small set of agent-level budget limits exist for the highest-spending agents. Baseline telemetry is collected through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html), and [AWS Cost Anomaly Detection](https://docs.aws.amazon.com/cost-management/latest/userguide/manage-ad.html) flags gross billing deviations. Cost optimization happens as ad-hoc projects triggered by overruns rather than on a regular cadence."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Hierarchical budget limits (per-cycle, per-task, per-day) and automatic iteration and token cutoffs are enforced deterministically through [Amazon Bedrock AgentCore Policy](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/policy.html) and [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html). [Amazon CloudWatch Anomaly Detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html) operates on AgentCore Observability metrics with 2σ and 3σ thresholds, and custom detectors catch reasoning loop spikes and tool invocation storms. A monthly cost optimization review runs against a standard agenda, and investigation runbooks are in place for common anomaly types."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Cost governance is proactive and integrated with delivery. Graduated throttling preserves agent function under pressure, and approval workflows gate cost-impacting capability changes. A/B testing through [Amazon Bedrock agent alias routing](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-alias.html) validates optimizations before promotion, and [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) quantifies cost-quality trade-offs. Cost gates in the CI/CD pipeline block regressions, and quarterly improvement targets are tracked against cost-per-decision and cost-per-task-completion."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Cost governance is codified, continuously validated, and self-adjusting. Budget policies, cutoffs, and graduated throttling are enforced as code, and anomaly thresholds are refreshed automatically from rolling baselines. Optimization feedback loops run continuously, with A/B tests, cost-quality efficiency ratios, and runbooks feeding back into agent design so that recurring failure modes are engineered out. Cost, quality, and business outcomes are reported together, and the organization shares cost-engineering patterns externally and contributes to industry practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Agents are deployed to production without per-agent budget limits or automatic iteration and token cutoffs, leaving runaway reasoning loops and tool invocation storms as a primary cost failure mode.",
       "Cost controls are treated as mutually exclusive with agent autonomy, so that teams either grant unbounded spending authority or restrict agents so heavily that task completion suffers.",
@@ -2251,33 +1263,7 @@
       "Cognitive pathways are right-sized to task complexity, with model selection, retrieval depth, and memory scope each matched to actual needs rather than defaulting to the largest or broadest option.",
       "Long-running and frontier workloads run against explicit specifications covering success criteria, resource budgets, and termination conditions, with checkpoints that make compute investment reviewable against business value."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents are provisioned for worst-case scenarios without explicit resource contracts, and delegated child agents inherit no constraints. Workflows are rebuilt from scratch per use case, with no shared pattern library or inventory of reusable components. Every agent establishes its own connections to external services, duplicating infrastructure across instances. Foundation model calls default to the largest available model, and long-running agents run without specifications or checkpoints."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have started to decompose workflows into specialized agents with basic timeout and memory limits configured per agent. Some recurring workflow patterns have been extracted into templates, though discovery is informal. A handful of shared services (usually a central cache or a common authentication path) are in production. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) is enabled for most production agents, and manual reviews of resource consumption occur on a regular cadence."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Specialized agents are the default pattern, deployed on [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) with explicit resource boundaries, and reusable workflow patterns are published through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) as discoverable MCP tools. Shared caches such as [Amazon ElastiCache](https://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/BestPractices.html) are standard, and authentication runs through [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html). Tiered model routing and scoped retrieval against [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) are in place for most workflows, and long-running agents run with documented specifications."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Resource budgets are enforced at the orchestration layer through [AWS Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-nested-workflows.html) and AgentCore Policies rather than relying on agent self-restraint. Pattern libraries are maintained, governed, and instrumented so a single optimization propagates to every consuming workflow. [Amazon Bedrock cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) distributes model traffic, and [Amazon Bedrock Data Automation](https://docs.aws.amazon.com/bedrock/latest/userguide/bda.html) handles document extraction in place of large vision models. Frontier agents run with cascading budgets, checkpoint-based evaluation, and state persistence through [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html)."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Resource boundaries, routing thresholds, retention policies, and specification templates are continuously recalibrated from [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) data rather than through manual review cycles. Shared services and pattern libraries are the default composition point for new workflows, and new development that doesn't reuse existing components is the exception. Resource utilization efficiency (successful completions per unit of compute) is a first-class metric alongside cost and latency, and the organization contributes reusable patterns and sustainability measurements back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams provision agents for worst-case scenarios and let parent agents delegate work to child agents without cascading resource budgets, so runaway consumption in one subtree is discovered only after the monthly bill.",
       "Recurring workflow logic is rebuilt for each new use case, accumulating duplicated code and testing debt while missing the renewable-architecture benefit of optimizing a shared pattern once and propagating the improvement everywhere.",
@@ -2310,33 +1296,7 @@
       "Regional and connectivity choices are deliberate, so traffic stays close to the services agents depend on and private paths are used where security or latency justifies them.",
       "Environmental impact is measured alongside operational metrics, and deferrable workloads are scheduled and placed with carbon-awareness to reduce footprint without affecting user-facing performance."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agent memory, caching, and infrastructure run without deliberate right-sizing. Memory grows unboundedly, caches are isolated to each agent if they exist at all, and compute is statically provisioned for peak demand. Environmental impact isn't measured, and Region placement is treated as an afterthought."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have adopted [Amazon Bedrock AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) with basic retention policies and have enabled [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html) for stable system prompts. [Amazon Bedrock AgentCore Runtime](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/runtime.html) is used for some agents, and [AWS Sustainability](https://docs.aws.amazon.com/sustainability/latest/userguide/what-is-sustainability.html) has been turned on for reporting but has not informed design decisions."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Tiered memory with shared persistent context through [AgentCore Memory](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/memory.html) namespaces is the default for multi-agent systems. Shared caches exposed through [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) amortize work across the fleet. Token caching in [Amazon Bedrock AgentCore Identity](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html) reduces repeated credential validation. [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) tracks memory access patterns, cache hit rates, and efficiency metrics, and a 30-day environmental baseline has been established."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Infrastructure scaling, Regional placement, and private connectivity through [VPC interface endpoints](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/vpc-interface-endpoints.html) are driven by observed patterns. Context compression, semantic retrieval through [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html), and streaming responses are standard. Deferrable workloads run off-peak, and [Amazon Bedrock cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) routes batch workloads to Regions with favorable energy profiles where latency allows. Sustainability dashboards combining operational and carbon metrics are reviewed on a regular cadence."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Memory tiers, cache policies, and infrastructure provisioning are continuously recalibrated from telemetry rather than through periodic review. Environmental footprint is a first-class design input for every new agent workload, and efficiency improvements compound week over week as coverage expands. The organization contributes reasoning-cost and sustainability patterns back to its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams build flat memory architectures without tiered storage, so frequently accessed context competes with archival data for the same tier and retrieval costs grow with every new session.",
       "Organizations treat each agent instance as an isolated system with its own cache, missing the fleet-wide amortization that turns one cache hit into savings for every agent that asks the same question.",
@@ -2368,33 +1328,7 @@
       "A central catalog of deployed agents captures owner, purpose, dependencies, and usage, and teams consult it before building new agents.",
       "The agent portfolio is actively rationalized, with inactive agents flagged for review, decommissioned through a structured lifecycle, and reclaimed infrastructure returned to the shared pool."
     ],
-    "maturity_levels": [
-      {
-        "level": 1,
-        "name": "Initial",
-        "description": "Agents are built and deployed without competency tiering, ownership assignment, or portfolio oversight. Documentation is thin, decommissioning is one-time, and institutional knowledge is held only by the original developers rather than recorded in any specification."
-      },
-      {
-        "level": 2,
-        "name": "Emerging",
-        "description": "Teams have categorized competencies into human-owned, agent-augmented, and fully automated tiers, and [Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) are in place for high-stakes escalation. Declarative configuration in [Amazon Bedrock AgentCore](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html) captures the baseline agent specification. Basic ownership metadata is recorded for each deployed agent."
-      },
-      {
-        "level": 3,
-        "name": "Defined",
-        "description": "Documented workflows feed agent development through [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) RAG sources, and [Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway.html) routing separates routine tasks from cases that require human judgment. [Amazon Bedrock AgentCore Evaluations](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/evaluations.html) compares agent outputs against expert baselines, and rotation programs keep subject matter experts practiced in the underlying work. A central agent catalog with ownership and purpose is maintained."
-      },
-      {
-        "level": 4,
-        "name": "Proactive",
-        "description": "Runtime documentation generated through [Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html) validates design specifications against actual behavior, and production promotion is gated on current documentation. [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) metrics flag inactive agents for owner review, and a structured decommissioning lifecycle moves agents through active, under review, deprecated, and decommissioned states. Quarterly portfolio rationalization reviews are a standing cadence."
-      },
-      {
-        "level": 5,
-        "name": "Optimized",
-        "description": "Governance is continuous rather than periodic. Portfolio health metrics (total agent count, percentage with active usage, percentage with current documentation) are reviewed at the organizational level. Specification currency, evaluation baselines, and competency tiering adjust based on operational telemetry, and the organization shares its agent governance patterns with its communities of practice."
-      }
-    ],
+    "maturity_levels": [],
     "common_issues": [
       "Teams automate unfamiliar or poorly understood processes where decision criteria and success metrics are not documented, so agent development wastes resources on untested methodologies.",
       "Organizations skip competency tiering, so agents end up handling high-stakes or ambiguous decisions that should be routed to human experts and subject matter expertise quietly atrophies.",

@@ -98,7 +98,7 @@ Single-page app with no build step — vanilla HTML/CSS/JS served as static file
 
 - `data/manifest.json` — `{ "lens", "focus_areas", "items": [150 paths in pillar order], "total": 150 }`
 - `data/lens/lens.json` — lens metadata: abstract, design principles, pillars (intro, pillar design principles, focus-area ids), roadmap reading paths, definitions, counts, publication date
-- `data/lens/focus_areas.json` — 41 records: `id`, `pillar`, `name`, `question` (from the focus-area page), `appendix_question` (Appendix A wording, used by the update checker), `intro`, `capability_intent[]`, `maturity_levels[]` (5 rows), `common_issues[]`, `best_practices[]`, `roadmap[]`, `doc_url`
+- `data/lens/focus_areas.json` — 41 records: `id`, `pillar`, `name`, `question` (from the focus-area page), `appendix_question` (Appendix A wording, used by the update checker), `intro`, `capability_intent[]`, `maturity_levels[]` (empty since AWS removed the section), `common_issues[]`, `best_practices[]`, `roadmap[]`, `doc_url`
 - `data/<pillar-slug>/<bp-id>.json` — one item per best practice (pillar slugs: `operational-excellence`, `security`, `reliability`, `performance-efficiency`, `cost-optimization`, `sustainability`)
 - `guidance/<pillar-slug>/<bp-id>.md` — condensed implementation guidance (1:1 with the item files). The "Implementation guidance" modal fetches the file (falling back to `/api/best-practices/{id}/guidance?format=json`) and renders only its `### Implementation steps` section via `extractMarkdownSection()`; the full file is available through the API
 

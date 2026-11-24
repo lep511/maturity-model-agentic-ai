@@ -49,13 +49,13 @@ assert(badPillar.isError === true && Array.isArray(badPillar.data.error.valid), 
 const fas = await call('list_focus_areas', { pillar: 'cost-optimization' });
 assert(fas.data.count === 7 && !('maturity_levels' in fas.data.items[0]), 'list_focus_areas by pillar, compact');
 const fasX = await call('list_focus_areas', { roadmap: 'first-agent', expand: true });
-assert(fasX.data.count === 4 && fasX.data.items[0].maturity_levels.length === 5, 'list_focus_areas by roadmap, expanded');
+assert(fasX.data.count === 4 && Array.isArray(fasX.data.items[0].maturity_levels), 'list_focus_areas by roadmap, expanded');
 assert((await call('list_focus_areas', { pillar: 'zzz' })).isError === true, 'bad filter -> isError');
 const fasNoFilter = await call('list_focus_areas', { expand: true });
 assert(fasNoFilter.isError === true && Array.isArray(fasNoFilter.data.error.valid_pillars), 'expand=true without a filter -> isError (520 KB guard)');
 assert((await call('list_focus_areas', { expand: true, pillar: 'SUS' })).data.count === 3, 'expand=true with a pillar filter works');
 const fa = await call('get_focus_area', { id: 'agentsec03' });
-assert(fa.data.id === 'AGENTSEC03' && fa.data.maturity_levels.length === 5 && fa.data.best_practices_detail.length === 4, 'get_focus_area (lowercase id) with maturity levels and practices');
+assert(fa.data.id === 'AGENTSEC03' && Array.isArray(fa.data.maturity_levels) && fa.data.best_practices_detail.length === 4, 'get_focus_area (lowercase id) with practices');
 assert(Object.keys(fa.data.best_practices_detail[0]).join() === 'id,title,risk,summary,doc_url' && !('links' in fa.data), 'embedded practices are compact and links are dropped');
 
 const all = await call('search_best_practices', { limit: 500 });
@@ -208,7 +208,7 @@ assert(comp.completion.values.length === 9 && comp.completion.values[0] === 'AGE
 const prompts = await client.listPrompts();
 assert(prompts.prompts.map(p => p.name).sort().join() === 'explain_best_practice,gap_report,review_focus_area', 'three prompts');
 const review = await client.getPrompt({ name: 'review_focus_area', arguments: { focus_area_id: 'agentsec03' } });
-assert(review.messages[0].role === 'user' && review.messages[0].content.text.includes('AGENTSEC03') && review.messages[0].content.text.includes('Maturity levels') && review.messages[0].content.text.includes('export_assessment_csv'), 'review_focus_area prompt ends with the export tool');
+assert(review.messages[0].role === 'user' && review.messages[0].content.text.includes('AGENTSEC03') && review.messages[0].content.text.includes('Capability intent') && review.messages[0].content.text.includes('export_assessment_csv'), 'review_focus_area prompt includes capability intent and export tool');
 const gap = await client.getPrompt({ name: 'gap_report', arguments: { csv } });
 assert(gap.messages[0].content.text.includes('Overall coverage') && gap.messages[0].content.text.includes('147 in total') && gap.messages[0].content.text.includes('```csv'), 'gap_report prompt embeds the computed summary and the CSV');
 assert(gap.messages[0].content.text.includes('Coverage by focus area') && gap.messages[0].content.text.includes('Assessed rows (3 of 150)') && !gap.messages[0].content.text.includes('Operational excellence,AGENTOPS01 x'), 'gap_report embeds per-focus-area coverage and only the assessed rows (minimal columns), not the raw export');

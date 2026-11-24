@@ -1,6 +1,6 @@
 # AWS Well-Architected Agentic AI Lens — Self-Assessment
 
-A static web app for self-assessing an agentic AI workload against the **AWS Well-Architected Agentic AI Lens**: 150 best practices organized into 41 focus areas across the 6 Well-Architected pillars. Score each best practice, review the official maturity levels for every focus area, follow the Lens roadmap reading paths, and track progress per pillar with a radar chart, CSV export and printable reports.
+A static web app for self-assessing an agentic AI workload against the **AWS Well-Architected Agentic AI Lens**: 150 best practices organized into 41 focus areas across the 6 Well-Architected pillars. Score each best practice, review the capability intent and common issues for every focus area, follow the Lens roadmap reading paths, and track progress per pillar with a radar chart, CSV export and printable reports.
 
 > **Unofficial study aid.** The content in `data/` and `guidance/` is condensed from the
 > [AWS Well-Architected Framework – Agentic AI Lens](https://docs.aws.amazon.com/wellarchitected/latest/agentic-ai-lens/agentic-ai-lens.html)
@@ -14,7 +14,7 @@ A static web app for self-assessing an agentic AI workload against the **AWS Wel
 | Lens structure | In the app |
 | --- | --- |
 | 6 pillars (Operational excellence, Security, Reliability, Performance efficiency, Cost optimization, Sustainability) | Top stats bar, pillar filter pills, pillar progress bars, radar axes |
-| 41 focus areas (`AGENTOPS01` ... `AGENTSUS03`), each with a guiding question, capability intent, 5 maturity levels and common issues | Sidebar navigation grouped by pillar, card group headers, **Maturity levels** modal |
+| 41 focus areas (`AGENTOPS01` ... `AGENTSUS03`), each with a guiding question, capability intent and common issues | Sidebar navigation grouped by pillar, card group headers, **Focus area details** modal |
 | 150 best practices with a High / Medium / Low risk level | One card each: summary, desired outcome, risk badge, related AWS services, **Implementation guidance** modal (shows the implementation steps), link to the official page |
 | Lens roadmap reading paths (Building your first agent, Moving to production, Scaling to multi-agent systems, Hardening an existing deployment) | Roadmap filter pills and tags on cards |
 | Design principles, definitions, pillar introductions | **About** modal |
@@ -30,7 +30,7 @@ The same content is exposed as a read-only JSON API implemented as a Vercel Func
 | `GET /api` | Index: lens metadata, counts, endpoint list |
 | `GET /api/lens` | Abstract, design principles, pillars, roadmap, definitions |
 | `GET /api/pillars`, `GET /api/pillars/{slug}` | Pillars with counts; detail adds design principles and focus areas (`slug`, name, prefix or abbreviation such as `SEC`) |
-| `GET /api/focus-areas`, `GET /api/focus-areas/{id}` | Focus areas (`?pillar=`, `?roadmap=`, `?expand=1`); detail adds capability intent, 5 maturity levels, common issues and the best practices |
+| `GET /api/focus-areas`, `GET /api/focus-areas/{id}` | Focus areas (`?pillar=`, `?roadmap=`, `?expand=1`); detail adds capability intent, common issues and the best practices |
 | `GET /api/best-practices` | Best practices with `?pillar=`, `?focus_area=`, `?risk=High,Medium`, `?roadmap=first-agent`, `?q=` (every word must match, any order; implementation guidance is searched only as a fallback when no field-level match exists; ordered by relevance), `?fields=`, `?limit=`, `?offset=` |
 | `GET /api/best-practices/{id}` | One best practice (`?include=guidance` embeds the guidance markdown); ids accept `AGENTOPS01-BP01` or `AGENTOPS01_BP01` |
 | `GET /api/best-practices/{id}/guidance` | Condensed implementation guidance as `text/markdown` (`?format=json` for JSON) |
@@ -61,7 +61,7 @@ The server exposes **11 read-only tools**, **6 resources** under the `lens://` s
 | Tool | What it returns |
 | --- | --- |
 | `list_pillars`, `get_pillar` | The six pillars with counts and focus-area ids; detail adds the intro, design principles and focus-area questions (slug, name, prefix or abbreviation such as `SEC`) |
-| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap (a filter is required when expanding, about 15 KB per focus area); detail adds capability intent, the 5 maturity levels, common issues and the best practices (id, title, risk, summary) |
+| `list_focus_areas`, `get_focus_area` | Focus areas filtered by pillar or roadmap (a filter is required when expanding, about 8 KB per focus area); detail adds capability intent, common issues and the best practices (id, title, risk, summary) |
 | `search_best_practices` | Free-text search (every word must match in any order across the record; implementation guidance is searched only as a fallback when no field-level match exists; title matches rank first) and filters (`pillar`, `focus_area`, `risk`, `roadmap`); compact listing by default with `limit` 50, so a whole pillar fits in one call; `detail: true` (pages capped at 25 records) or `fields` for full records; paginated |
 | `get_best_practice` | One best practice (optionally with the guidance markdown embedded) |
 | `get_implementation_guidance` | The *Implementation steps* section (default) or the full condensed guidance as markdown |
@@ -135,7 +135,7 @@ curl -s https://agentic-ai-lens-assessment.vercel.app/mcp \
 │   ├── manifest.json          # Index of all generated files (lens, focus_areas, items, total)
 │   ├── lens/
 │   │   ├── lens.json          # Lens metadata: abstract, design principles, pillars, roadmap, definitions
-│   │   └── focus_areas.json   # 41 focus areas: question, capability intent, maturity levels, common issues
+│   │   └── focus_areas.json   # 41 focus areas: question, capability intent, common issues
 │   ├── operational-excellence/ agentops01-bp01.json ...   (26 items)
 │   ├── security/               agentsec01-bp01.json ...   (30 items)
 │   ├── reliability/            agentrel01-bp01.json ...   (33 items)
@@ -289,7 +289,7 @@ See [`data/ToolsInfo.md`](data/ToolsInfo.md) for script options.
 
 * 150 best practices scored on a 6-point coverage scale (0%, 25%, 50%, 75%, 100%, Excluded)
 * Filters by pillar, focus area, Lens roadmap reading path, unassessed and excluded items, plus full-text search
-* Official 5-level maturity table, capability intent and common issues for every focus area
+* Official capability intent and common issues for every focus area
 * **Implementation guidance** modal with the official implementation steps of each practice; the full condensed guidance (desired outcome, anti-patterns, benefits, steps, resources) is kept in `guidance/` and served by the API
 * Overall score, pillar progress and a 6-axis radar chart, all computed as coverage over every applicable best practice (unassessed items count as 0%, excluded items are left out)
 * Multi-session management persisted in the browser (localStorage + cookie): create, switch, rename (pencil next to each session) and delete sessions

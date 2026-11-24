@@ -913,7 +913,7 @@ function renderCards() {
         ${fa.question ? `<div class="fa-group-question">${escapeHtml(fa.id)}: ${escapeHtml(fa.question)}</div>` : ''}
       </div>
       <span class="cap-group-phase-badge phase-tag-${pi}">${PILLAR_SHORT[pi] || escapeHtml(fa.pillar)}</span>
-      ${FA_BY_ID[faId] ? `<button class="fa-info-btn" onclick="openFocusAreaModal('${escapeHtml(fa.id)}')" title="Capability intent, maturity levels and common issues">Maturity levels</button>` : ''}
+      ${FA_BY_ID[faId] ? `<button class="fa-info-btn" onclick="openFocusAreaModal('${escapeHtml(fa.id)}')" title="Capability intent and common issues">Focus area details</button>` : ''}
     `;
     fragment.appendChild(header);
 
@@ -1465,7 +1465,7 @@ function closeGuidanceModal() {
   syncModalScrollLock();
 }
 
-// ─── FOCUS AREA MODAL (question, intent, maturity levels, common issues) ─────
+// ─── FOCUS AREA MODAL (question, intent, common issues) ─────────────────────
 
 function openFocusAreaModal(faId) {
   const fa = FA_BY_ID[faId];
@@ -1481,6 +1481,14 @@ function openFocusAreaModal(faId) {
   if (link) link.href = fa.doc_url || '#';
 
   const list = (arr) => arr && arr.length ? `<ul>${arr.map(x => `<li>${mdInline(x)}</li>`).join('')}</ul>` : '<p class="fa-modal-empty">Not available.</p>';
+  const maturityHtml = (fa.maturity_levels || []).length
+    ? `<h3>Maturity levels</h3>
+       <p class="fa-modal-hint">These levels summarize what each stage of maturity looks like for this focus area as a whole. Use them as a reference when scoring the best practices below.</p>
+       <table class="maturity-table">
+         <thead><tr><th>Level</th><th>Name</th><th>What it looks like</th></tr></thead>
+         <tbody>${fa.maturity_levels.map(l => `<tr><td class="ml-level">${l.level}</td><td class="ml-name">${escapeHtml(l.name)}</td><td>${mdInline(l.description)}</td></tr>`).join('')}</tbody>
+       </table>`
+    : '';
   const bps = (fa.best_practices || []).map(id => {
     const item = DATA.find(d => d.id === id);
     const s = scores[id];
@@ -1494,12 +1502,7 @@ function openFocusAreaModal(faId) {
     ${fa.intro ? `<p>${mdInline(fa.intro)}</p>` : ''}
     <h3>Capability intent</h3>
     ${list(fa.capability_intent)}
-    <h3>Maturity levels</h3>
-    <p class="fa-modal-hint">These levels summarize what each stage of maturity looks like for this focus area as a whole. Use them as a reference when scoring the best practices below.</p>
-    <table class="maturity-table">
-      <thead><tr><th>Level</th><th>Name</th><th>What it looks like</th></tr></thead>
-      <tbody>${(fa.maturity_levels || []).map(l => `<tr><td class="ml-level">${l.level}</td><td class="ml-name">${escapeHtml(l.name)}</td><td>${mdInline(l.description)}</td></tr>`).join('')}</tbody>
-    </table>
+    ${maturityHtml}
     <h3>Common issues to watch for</h3>
     ${list(fa.common_issues)}
     <h3>Best practices in this focus area</h3>
